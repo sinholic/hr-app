@@ -1,0 +1,41 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+Auth::routes();
+Route::group(["middleware" => "auth", "namespace" => "Admin"], function () {
+    Route::get('/', 'DashboardController@index')->name('dashboard');
+    Route::group([
+        "prefix" => "dashboard"
+    ], function () {
+        Route::get('hr', 'DashboardController@index')->name('dashboard.hr');
+    });
+    Route::group([
+        "prefix" => "application"
+    ], function () {
+        // Route::resources([
+        //     'recruitments' => 'RecruitmentController'
+        // ]);
+        // Recruitments
+        Route::get('recruitments', 'RecruitmentController@index')->name('recruitments.index');
+        Route::get('recruitments/create', 'RecruitmentController@create')->name('recruitments.create');
+        Route::post('recruitments', 'RecruitmentController@store')->name('recruitments.store');
+        Route::put('recruitments/{model}', 'RecruitmentController@update')->name('recruitments.update');
+        Route::get('recruitments/approve/{model}', 'RecruitmentController@approve')->name('recruitments.approve');
+        Route::get('recruitments/reject/{model}', 'RecruitmentController@reject')->name('recruitments.reject');
+        // Recruitments - Candidate
+        Route::get('recruitments/{model}/candidates', 'CandidateController@index')->name('candidates.view');
+        Route::get('recruitments/{model}/candidates/create', 'CandidateController@create')->name('candidates.create');
+        Route::post('recruitments/{model}/candidates', 'CandidateController@store')->name('candidates.store');
+    });
+});
