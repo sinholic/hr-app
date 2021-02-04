@@ -71,21 +71,21 @@
                                             $when           = $button_extend['when'] ?? '';
                                             $when_key       = $button_extend['when_key'] ?? '';
                                             $when_value     = $button_extend['when_value'] ?? '';
-                                            $skip_role      = false;
+                                            $skip_when      = true;
                                             $state_show     = false;
                                             // dd($data->$when->$when_key == $when_value ? 'YES' : 'NO');
                                         ?>
-                                        @if($when != '')
-                                            @if($when_key != '')
-                                                <?php $skip_role = $state_show = $data->$when->$when_key == $when_value ? true : false ?>
-                                            @else
-                                                <?php $skip_role = $state_show = $data->$when == $when_value ? true : false ?>
-                                            @endif
-                                        @endif
-                                        @if(isset($button_extend['roles']) && !$skip_role)
+                                        @if(isset($button_extend['roles']))
                                             @hasanyrole($button_extend['roles'])
-                                                <?php $state_show = false ?>
+                                                <?php $state_show = false; $skip_when = false; ?>
                                             @endhasanyrole
+                                        @endif
+                                        @if($when != ''  && !$skip_when)
+                                            @if($when_key != '')
+                                                <?php $state_show = $data->$when->$when_key == $when_value ? true : false ?>
+                                            @else
+                                                <?php $state_show = $data->$when == $when_value ? true : false ?>
+                                            @endif
                                         @endif
                                         @if($state_show)
                                             <a href="{{ route($button_extend['action'], $data->$params) }}" class="btn btn-{{ $button_extend['class'] ?? 'primary' }}">{{ ucwords($button_extend['label']) }}</a>
