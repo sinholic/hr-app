@@ -162,7 +162,7 @@ class CandidateController extends Controller
         $data = $request->all();
         if ($request->hasFile("curriculum_vitae")) {
             $fileName = Uuid::uuid4()->toString()."." . $request->file("curriculum_vitae")->getClientOriginalExtension();
-            $request->file("curriculum_vitae")->move(public_path() . "uploads/cv/".$fileName);
+            $request->file("curriculum_vitae")->move(public_path() . "/uploads/cv/".$fileName);
             $data['curriculum_vitae'] = $fileName;
         }
         Candidate::create($data);
