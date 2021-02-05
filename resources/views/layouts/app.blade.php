@@ -13,9 +13,10 @@
 
     <!-- Plugin styles -->
     <link rel="stylesheet" href="{{ asset('vendors/bundle.css') }}" type="text/css">
+    <!-- <link rel="stylesheet" href="{{ asset('assets/vendors/pris/prism.css') }}" type="text/css"> -->
 
     <!-- App styles -->
-    <link rel="stylesheet" href="{{ asset('assets/css/app.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}" type="text/css">
     @yield('css-header')
 </head>
 <body>
@@ -26,18 +27,18 @@
     <!-- end::preloader -->
     <?php
         $menus = array(
-            (object) array(
-                'menu_tab_id' => 'dashboard',
-                'menu_tab_label' => 'Dashboards',
-                'menu_tab_icon' => 'bar-chart-2',
-                'child_menus' => array(
-                    (object) array(
-                        'label' => 'HR System',
-                        'link' => 'dashboard.hr',
-                        'id'    => 'hr'
-                    ),
-                ),
-            ),
+            // (object) array(
+            //     'menu_tab_id' => 'dashboard',
+            //     'menu_tab_label' => 'Dashboards',
+            //     'menu_tab_icon' => 'bar-chart-2',
+            //     'child_menus' => array(
+            //         (object) array(
+            //             'label' => 'HR System',
+            //             'link' => 'dashboard.hr',
+            //             'id'    => 'hr'
+            //         ),
+            //     ),
+            // ),
             (object) array(
                 'menu_tab_id' => 'application',
                 'menu_tab_label' => 'Apps',
@@ -48,21 +49,21 @@
                         'link' => 'recruitments.index',
                         'id'    => 'recruitments'
                     ),
-                    (object) array(
-                        'label' => 'Form',
-                        'link' => 'index',
-                        'id'    => 'dashboard.hr'
-                    ),
-                    (object) array(
-                        'label' => 'Chat',
-                        'link' => 'index',
-                        'id'    => 'dashboard.hr'
-                    ),
-                    (object) array(
-                        'label' => 'Employee',
-                        'link' => 'index',
-                        'id'    => 'dashboard.hr'
-                    )
+                    // (object) array(
+                    //     'label' => 'Form',
+                    //     'link' => 'index',
+                    //     'id'    => 'dashboard.hr'
+                    // ),
+                    // (object) array(
+                    //     'label' => 'Chat',
+                    //     'link' => 'index',
+                    //     'id'    => 'dashboard.hr'
+                    // ),
+                    // (object) array(
+                    //     'label' => 'Employee',
+                    //     'link' => 'index',
+                    //     'id'    => 'dashboard.hr'
+                    // )
                 ),
             ),
         );

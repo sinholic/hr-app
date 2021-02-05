@@ -10725,6 +10725,10 @@ a.btn:hover {
     text-decoration: none !important
 }
 
+a.btn{ 
+    color: #fff !important;
+}
+
 .page-link {
     color: #1565c0
 }

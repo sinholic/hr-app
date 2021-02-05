@@ -17,11 +17,14 @@
                             <i data-feather="edit-2"></i>
                         </a>
                     </h6>
+                    <h6 class="d-flex align-items-center justify-content-center">{{ Auth::user()->roles[0]->name }}</h6>
                 </div>
                 <div class="dropdown-menu-body">
                     <div class="list-group list-group-flush">
                         <a href="#" class="list-group-item">Profile</a>
-                        <a href="#" class="list-group-item text-danger" data-sidebar-target="#settings">Sign Out!</a>
+                        <a href="{{ route('logout') }}" class="list-group-item text-danger" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            Sign Out!
+                        </a>
                     </div>
                 </div>
             </div>
