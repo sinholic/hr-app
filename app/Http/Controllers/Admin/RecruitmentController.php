@@ -219,7 +219,7 @@ class RecruitmentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Recruitment  $recruitment
+     * @param  \App\Recruitment  $model
      * @return \Illuminate\Http\Response
      */
     public function edit(Recruitment $model)
@@ -231,7 +231,7 @@ class RecruitmentController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Recruitment  $recruitment
+     * @param  \App\Recruitment  $model
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Recruitment $model)
@@ -256,7 +256,7 @@ class RecruitmentController extends Controller
     /**
      * Show the form for approve the recruitment.
      *
-     * @param  \App\Recruitment  $recruitment
+     * @param  \App\Recruitment  $model
      * @return \Illuminate\Http\Response
      */
     public function approve(Recruitment $model)
@@ -307,7 +307,7 @@ class RecruitmentController extends Controller
     /**
      * Show the form for reject the recruitment.
      *
-     * @param  \App\Recruitment  $recruitment
+     * @param  \App\Recruitment  $model
      * @return \Illuminate\Http\Response
      */
     public function reject(Recruitment $model)
