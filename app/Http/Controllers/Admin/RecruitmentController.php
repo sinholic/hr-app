@@ -247,7 +247,7 @@ class RecruitmentController extends Controller
         if (isset($request->sallary_adjusted) && is_null($request->sallary_adjusted)) {
             $data['sallary_adjusted'] = $data['sallary_proposed'];
         }
-        $recruitment->update($data);
+        $model->update($data);
         
 
         return redirect()->route("recruitments.index")->withSuccess("Recruitment has been Updated Successfully");
