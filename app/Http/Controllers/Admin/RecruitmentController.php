@@ -81,6 +81,15 @@ class RecruitmentController extends Controller
                     'when_value'            =>  'WAITING FOR APPROVAL' // Value that right for the condition
                 ),
                 array(
+                    'label'                 =>  'adjustment',  // Button text to be shown in the HTML
+                    'action'                =>  'recruitments.adjustment', // Routes to action, eg : dashboard.index, user.create
+                    'class'                 =>  'warning',  // Default button class, leave it blank if you want the primary color
+                    'roles'                 =>  ['Super Admin','Management'], // Roles to be checked for the UI to be show
+                    'when'                  =>  'request_status', // Field or relation you want to check to show the button
+                    'when_key'              =>  'name', // Only add this when we check on relationship value
+                    'when_value'            =>  'WAITING FOR APPROVAL' // Value that right for the condition
+                ),
+                array(
                     'label'                 =>  'reject',   // Button text to be shown in the HTML
                     'action'                =>  'recruitments.reject', // Routes to action, eg : dashboard.index, user.create
                     'class'                 =>  'danger',  // Default button class, leave it blank if you want the primary color
@@ -260,6 +269,40 @@ class RecruitmentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function approve(Recruitment $model)
+    {
+        $requestStatus      =   Option::firstWhere([
+            'type'  =>  'REQUEST_STATUS',
+            'name'  =>  'APPROVED'
+        ])->id;
+        $contents   = array(
+            array(
+                'label'     =>  'Remark for approval',
+                'field'     =>  'remark',
+                'type'      =>  'textarea'
+            ),
+            array(
+                'field'     =>  'request_status_id',
+                'type'      =>  'hidden',
+                'value'     =>  $requestStatus
+            ),
+            array(
+                'field'     =>  'change_request_status_by_user',
+                'type'      =>  'hidden',
+                'value'     =>  \Auth::user()->id
+            ),
+        );
+        return view('page.content.edit')
+        ->with('model', $model)
+        ->with('contents', $contents);
+    }
+
+    /**
+     * Show the form for adjustment the recruitment.
+     *
+     * @param  \App\Recruitment  $model
+     * @return \Illuminate\Http\Response
+     */
+    public function adjustment(Recruitment $model)
     {
         $requestStatus      =   Option::firstWhere([
             'type'  =>  'REQUEST_STATUS',

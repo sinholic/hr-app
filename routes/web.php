@@ -32,6 +32,7 @@ Route::group(["middleware" => "auth", "namespace" => "Admin"], function () {
         Route::post('recruitments', 'RecruitmentController@store')->name('recruitments.store');
         Route::put('recruitments/{model}', 'RecruitmentController@update')->name('recruitments.update');
         Route::get('recruitments/approve/{model}', 'RecruitmentController@approve')->name('recruitments.approve');
+        Route::get('recruitments/adjustment/{model}', 'RecruitmentController@adjustment')->name('recruitments.adjustment');
         Route::get('recruitments/reject/{model}', 'RecruitmentController@reject')->name('recruitments.reject');
         // Recruitments - Candidate
         Route::get('recruitments/{model}/candidates', 'CandidateController@index')->name('candidates.view');
