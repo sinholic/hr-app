@@ -334,7 +334,7 @@ class RecruitmentController extends Controller
             ),
         );
         return view('page.content.edit')
-        ->with('model', $recruitment)
+        ->with('model', $model)
         ->with('contents', $contents);
     }
 }
