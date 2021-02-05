@@ -226,17 +226,6 @@ class RecruitmentController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Recruitment  $model
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Recruitment $model)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -248,7 +237,8 @@ class RecruitmentController extends Controller
         if ($request->number_of_people_approved) {
             $request->validate(
                 [
-                    'number_of_people_approved'     =>  'required|lte:number_of_people_requested',
+                    'number_of_people_approved'     =>  'integer|min:0',
+                    'sallary_adjusted'              =>  'integer|min:0',
                 ]
             );
         }
