@@ -21,6 +21,7 @@ class CandidateController extends Controller
         $datas = Candidate::with([
             'candidate_status',
         ])
+        ->where('recruitment_id', $model->id)
         ->orderBy('created_at','DESC')
         ->get();
         $contents = array(

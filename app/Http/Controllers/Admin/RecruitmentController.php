@@ -48,6 +48,16 @@ class RecruitmentController extends Controller
                 'label'     =>  '# Approved people'
             ),
             array(
+                'field'     =>  'user_requested',
+                'key'       =>  'name',
+                'label'     =>  'Requested by'
+            ),
+            array(
+                'field'     =>  'user_change_status',
+                'key'       =>  'name',
+                'label'     =>  'Approved/Rejected by'
+            ),
+            array(
                 'field'     =>  'priority',
                 'key'       =>  'name'
             ),
