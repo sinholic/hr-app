@@ -3,13 +3,13 @@
         <div class="navigation-menu-tab-header" data-toggle="tooltip" title="{{ Auth::user()->name }}" data-placement="right">
             <a href="#" class="nav-link" data-toggle="dropdown" aria-expanded="false">
                 <figure class="avatar avatar-sm">
-                    <img src="{{ asset('assets/media/image/user/women_avatar1.jpg') }}" class="rounded-circle" alt="avatar">
+                    <img src="https://ui-avatars.com/api/?name={{ \Auth::user()->name }}" class="rounded-circle" alt="avatar">
                 </figure>
             </a>
             <div class="dropdown-menu dropdown-menu-right dropdown-menu-big">
                 <div class="p-3 text-center" data-backround-image="{{ asset('assets/media/image/image1.jpg') }}">
                     <figure class="avatar mb-3">
-                        <img src="{{ asset('assets/media/image/user/women_avatar1.jpg') }}" class="rounded-circle" alt="image">
+                        <img src="https://ui-avatars.com/api/?name={{ \Auth::user()->name }}" class="rounded-circle" alt="image">
                     </figure>
                     <h6 class="d-flex align-items-center justify-content-center">
                         {{ Auth::user()->name }}

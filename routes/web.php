@@ -14,11 +14,11 @@ use Illuminate\Support\Facades\Route;
 */
 Auth::routes();
 Route::group(["middleware" => "auth", "namespace" => "Admin"], function () {
-    Route::get('/', 'DashboardController@index')->name('dashboard');
+    Route::get('/', 'DashboardController@index')->name('index');
     Route::group([
         "prefix" => "dashboard"
     ], function () {
-        Route::get('hr', 'DashboardController@index')->name('dashboard.hr');
+        Route::get('hr', 'DashboardController@humanResource')->name('dashboard.hr');
     });
     Route::group([
         "prefix" => "application"

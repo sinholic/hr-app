@@ -17,19 +17,7 @@
     }), 
         n.on("load", function() {
         t(".preloader").fadeOut(400, function() {
-            setTimeout(function() {
-                // toastr.options = {
-                //     timeOut: 2e3,
-                //     progressBar: !0,
-                //     showMethod: "slideDown",
-                //     hideMethod: "slideUp",
-                //     showDuration: 200,
-                //     hideDuration: 200,
-                //     positionClass: "toast-top-center"
-                // }, 
-                // toastr.success("Welcome Roxana Roussell."), 
-                t(".theme-switcher").removeClass("open")
-            }, 500)
+            t(".theme-switcher").removeClass("open")
         })
     }), n.on("load", function() {
         setTimeout(function() {

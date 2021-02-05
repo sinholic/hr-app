@@ -16,4 +16,14 @@ class DashboardController extends Controller
     {
         return view('page.dashboard.index');
     }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function humanResource()
+    {
+        return view('page.dashboard.hr');
+    }
 }

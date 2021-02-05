@@ -4,7 +4,7 @@
     <!-- begin::navigation-logo -->
     <div>
         <div id="navigation-logo">
-            <a href="{{ route('dashboard') }}">
+            <a href="{{ route('index') }}">
                 <img class="logo" src="{{ asset('assets/media/image/logo.png') }}" alt="logo">
                 <img class="logo-light" src="{{ asset('assets/media/image/logo-light.png') }}" alt="light logo">
             </a>

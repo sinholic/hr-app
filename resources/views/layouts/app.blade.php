@@ -50,17 +50,17 @@
                     ),
                     (object) array(
                         'label' => 'Form',
-                        'link' => 'dashboard',
+                        'link' => 'index',
                         'id'    => 'dashboard.hr'
                     ),
                     (object) array(
                         'label' => 'Chat',
-                        'link' => 'dashboard',
+                        'link' => 'index',
                         'id'    => 'dashboard.hr'
                     ),
                     (object) array(
                         'label' => 'Employee',
-                        'link' => 'dashboard',
+                        'link' => 'index',
                         'id'    => 'dashboard.hr'
                     )
                 ),
