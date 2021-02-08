@@ -40,7 +40,11 @@ Route::group(["middleware" => "auth", "namespace" => "Admin"], function () {
         Route::post('recruitments/{model}/candidates', 'CandidateController@store')->name('candidates.store');
         Route::put('recruitments/{model_url}/candidates/{model}', 'CandidateController@update')->name('candidates.update');
         Route::get('recruitments/{model_url}/candidates/{model}/edit', 'CandidateController@edit')->name('candidates.edit');
-        Route::get('recruitments/{model_url}/candidates/{model}/schedule', 'CandidateController@schedule_interview')->name('candidates.schedule_interview');
+        Route::get('recruitments/{model_url}/candidates/{model}/schedule', 'CandidateController@schedule')->name('candidates.schedule');
         Route::get('recruitments/{model_url}/candidates/{model}/result', 'CandidateController@result')->name('candidates.result');
+        Route::get('recruitments/{model_url}/candidates/{model}/not-suitable', 'CandidateController@not_suitable')->name('candidates.not_suitable');
+        Route::get('recruitments/{model_url}/candidates/{model}/send-offering', 'CandidateController@send_offering')->name('candidates.send_offering');
+        Route::get('recruitments/{model_url}/candidates/{model}/approve-join', 'CandidateController@approve_join')->name('candidates.approve_join');
+        Route::get('recruitments/{model_url}/candidates/{model}/cancel-join', 'CandidateController@send_offering')->name('candidates.cancel_join');
     });
 });

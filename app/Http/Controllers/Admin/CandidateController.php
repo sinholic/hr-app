@@ -78,7 +78,7 @@ class CandidateController extends Controller
                 ),
                 array(
                     'label'                 =>  'schedule interview',  // Button text to be shown in the HTML
-                    'action'                =>  'candidates.schedule_interview', // Routes to action, eg : dashboard.index, user.create
+                    'action'                =>  'candidates.schedule', // Routes to action, eg : dashboard.index, user.create
                     'params'                =>  ['model_url'   =>  $model->id],
                     'class'                 =>  'success',  // Default button class, leave it blank if you want the primary color
                     'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
@@ -97,8 +97,18 @@ class CandidateController extends Controller
                     'when_value'            =>  'WAITING FOR INTERVIEW WITH USER' // Value that right for the condition
                 ),
                 array(
+                    'label'                 =>  'not suitable',  // Button text to be shown in the HTML
+                    'action'                =>  'candidates.not_suitable', // Routes to action, eg : dashboard.index, user.create
+                    'params'                =>  ['model_url'   =>  $model->id],
+                    'class'                 =>  'danger',  // Default button class, leave it blank if you want the primary color
+                    'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
+                    'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
+                    'when_key'              =>  'name', // Only add this when we check on relationship value
+                    'when_value'            =>  'WAITING FOR CONFIRMATION FROM USER' // Value that right for the condition
+                ),
+                array(
                     'label'                 =>  'send offering',  // Button text to be shown in the HTML
-                    'action'                =>  'candidates.result', // Routes to action, eg : dashboard.index, user.create
+                    'action'                =>  'candidates.send_offering', // Routes to action, eg : dashboard.index, user.create
                     'params'                =>  ['model_url'   =>  $model->id],
                     'class'                 =>  'primary',  // Default button class, leave it blank if you want the primary color
                     'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
@@ -107,14 +117,24 @@ class CandidateController extends Controller
                     'when_value'            =>  'WAITING FOR CONFIRMATION FROM USER' // Value that right for the condition
                 ),
                 array(
-                    'label'                 =>  'not suitable',  // Button text to be shown in the HTML
-                    'action'                =>  'candidates.result', // Routes to action, eg : dashboard.index, user.create
+                    'label'                 =>  'approve join',  // Button text to be shown in the HTML
+                    'action'                =>  'candidates.send_offering', // Routes to action, eg : dashboard.index, user.create
+                    'params'                =>  ['model_url'   =>  $model->id],
+                    'class'                 =>  'success',  // Default button class, leave it blank if you want the primary color
+                    'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
+                    'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
+                    'when_key'              =>  'name', // Only add this when we check on relationship value
+                    'when_value'            =>  'OFFERING LETTER SENT' // Value that right for the condition
+                ),
+                array(
+                    'label'                 =>  'cancel join',  // Button text to be shown in the HTML
+                    'action'                =>  'candidates.send_offering', // Routes to action, eg : dashboard.index, user.create
                     'params'                =>  ['model_url'   =>  $model->id],
                     'class'                 =>  'danger',  // Default button class, leave it blank if you want the primary color
                     'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
                     'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
-                    'when_value'            =>  'WAITING FOR CONFIRMATION FROM USER' // Value that right for the condition
+                    'when_value'            =>  'OFFERING LETTER SENT' // Value that right for the condition
                 ),
             )
         );
@@ -293,7 +313,7 @@ class CandidateController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function schedule_interview(Recruitment $model_url, Candidate $model, Request $request)
+    public function schedule(Recruitment $model_url, Candidate $model, Request $request)
     {
         $candidateStatus      =   Option::firstWhere([
             'type'  =>  'CANDIDATE_STATUS',
@@ -343,6 +363,130 @@ class CandidateController extends Controller
                 'field'     =>  'test_result',
                 'type'      =>  'text'
             ),
+            array(
+                'field'     =>  'remark',
+                'type'      =>  'textarea'
+            ),
+            array(
+                'field'     =>  'candidate_status_id',
+                'type'      =>  'hidden',
+                'value'     =>  $candidateStatus
+            ),
+        );
+        return view('page.content.edit')
+        ->with('model_url', $model_url)
+        ->with('model', $model)
+        ->with('contents', $contents);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Recruitment  $model_url
+     * @param  \App\Candidate  $model
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function not_suitable(Recruitment $model_url, Candidate $model, Request $request)
+    {
+        $candidateStatus      =   Option::firstWhere([
+            'type'  =>  'CANDIDATE_STATUS',
+            'name'  =>  'NOT SUITABLE'
+        ])->id;
+        $contents   = array(
+            array(
+                'field'     =>  'remark',
+                'type'      =>  'textarea'
+            ),
+            array(
+                'field'     =>  'candidate_status_id',
+                'type'      =>  'hidden',
+                'value'     =>  $candidateStatus
+            ),
+        );
+        return view('page.content.edit')
+        ->with('model_url', $model_url)
+        ->with('model', $model)
+        ->with('contents', $contents);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Recruitment  $model_url
+     * @param  \App\Candidate  $model
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function send_offering(Recruitment $model_url, Candidate $model, Request $request)
+    {
+        $candidateStatus      =   Option::firstWhere([
+            'type'  =>  'CANDIDATE_STATUS',
+            'name'  =>  'OFFERING LETTER SENT'
+        ])->id;
+        $contents   = array(
+            array(
+                'field'     =>  'remark',
+                'type'      =>  'textarea'
+            ),
+            array(
+                'field'     =>  'candidate_status_id',
+                'type'      =>  'hidden',
+                'value'     =>  $candidateStatus
+            ),
+        );
+        return view('page.content.edit')
+        ->with('model_url', $model_url)
+        ->with('model', $model)
+        ->with('contents', $contents);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Recruitment  $model_url
+     * @param  \App\Candidate  $model
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function approve_join(Recruitment $model_url, Candidate $model, Request $request)
+    {
+        $candidateStatus      =   Option::firstWhere([
+            'type'  =>  'CANDIDATE_STATUS',
+            'name'  =>  'ON BOARDING'
+        ])->id;
+        $contents   = array(
+            array(
+                'field'     =>  'remark',
+                'type'      =>  'textarea'
+            ),
+            array(
+                'field'     =>  'candidate_status_id',
+                'type'      =>  'hidden',
+                'value'     =>  $candidateStatus
+            ),
+        );
+        return view('page.content.edit')
+        ->with('model_url', $model_url)
+        ->with('model', $model)
+        ->with('contents', $contents);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Recruitment  $model_url
+     * @param  \App\Candidate  $model
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function cancel_join(Recruitment $model_url, Candidate $model, Request $request)
+    {
+        $candidateStatus      =   Option::firstWhere([
+            'type'  =>  'CANDIDATE_STATUS',
+            'name'  =>  'CANCELED'
+        ])->id;
+        $contents   = array(
             array(
                 'field'     =>  'remark',
                 'type'      =>  'textarea'
