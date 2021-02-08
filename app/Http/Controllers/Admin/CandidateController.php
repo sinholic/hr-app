@@ -177,8 +177,6 @@ class CandidateController extends Controller
                 'email'                 =>  'required',
                 'phone'                 =>  'required',
                 'expected_sallary'      =>  'required',
-                'test_result'           =>  'required',
-                'interview_result'      =>  'required',
                 'curriculum_vitae'      =>  'required',
                 'candidate_status_id'   =>  'required',
                 'recruitment_id'        =>  'required',
