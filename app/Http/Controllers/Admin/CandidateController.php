@@ -70,7 +70,7 @@ class CandidateController extends Controller
                     'label'                 =>  'edit',  // Button text to be shown in the HTML
                     'action'                =>  'candidates.edit', // Routes to action, eg : dashboard.index, user.create
                     'params'                =>  ['model_url'   =>  $model->id],
-                    'class'                 =>  'warning',  // Default button class, leave it blank if you want the primary color
+                    'class'                 =>  'warning',  // Default button class, eg: primary, success, warning, danger, info
                     'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
                     'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
@@ -80,8 +80,28 @@ class CandidateController extends Controller
                     'label'                 =>  'schedule interview',  // Button text to be shown in the HTML
                     'action'                =>  'candidates.schedule', // Routes to action, eg : dashboard.index, user.create
                     'params'                =>  ['model_url'   =>  $model->id],
-                    'class'                 =>  'success',  // Default button class, leave it blank if you want the primary color
+                    'class'                 =>  'success',  // Default button class, eg: primary, success, warning, danger, info
                     'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
+                    'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
+                    'when_key'              =>  'name', // Only add this when we check on relationship value
+                    'when_value'            =>  'WAITING FOR CONFIRMATION FROM CANDIDATE' // Value that right for the condition
+                ),
+                array(
+                    'label'                 =>  'add remark',  // Button text to be shown in the HTML
+                    'action'                =>  'candidates.not_suitable', // Routes to action, eg : dashboard.index, user.create
+                    'params'                =>  ['model_url'   =>  $model->id],
+                    'class'                 =>  'primary',  // Default button class, eg: primary, success, warning, danger, info
+                    'roles'                 =>  ['Super Admin','Manager'], // Roles to be checked for the UI to be show
+                    'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
+                    'when_key'              =>  'name', // Only add this when we check on relationship value
+                    'when_value'            =>  'WAITING FOR CONFIRMATION FROM CANDIDATE' // Value that right for the condition
+                ),
+                array(
+                    'label'                 =>  'not suitable',  // Button text to be shown in the HTML
+                    'action'                =>  'candidates.not_suitable', // Routes to action, eg : dashboard.index, user.create
+                    'params'                =>  ['model_url'   =>  $model->id],
+                    'class'                 =>  'danger',  // Default button class, eg: primary, success, warning, danger, info
+                    'roles'                 =>  ['Super Admin','Manager'], // Roles to be checked for the UI to be show
                     'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
                     'when_value'            =>  'WAITING FOR CONFIRMATION FROM CANDIDATE' // Value that right for the condition
@@ -90,7 +110,7 @@ class CandidateController extends Controller
                     'label'                 =>  'add result',  // Button text to be shown in the HTML
                     'action'                =>  'candidates.result', // Routes to action, eg : dashboard.index, user.create
                     'params'                =>  ['model_url'   =>  $model->id],
-                    'class'                 =>  'primary',  // Default button class, leave it blank if you want the primary color
+                    'class'                 =>  'primary',  // Default button class, eg: primary, success, warning, danger, info
                     'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
                     'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
@@ -100,7 +120,7 @@ class CandidateController extends Controller
                     'label'                 =>  'not suitable',  // Button text to be shown in the HTML
                     'action'                =>  'candidates.not_suitable', // Routes to action, eg : dashboard.index, user.create
                     'params'                =>  ['model_url'   =>  $model->id],
-                    'class'                 =>  'danger',  // Default button class, leave it blank if you want the primary color
+                    'class'                 =>  'danger',  // Default button class, eg: primary, success, warning, danger, info
                     'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
                     'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
@@ -110,7 +130,7 @@ class CandidateController extends Controller
                     'label'                 =>  'send offering',  // Button text to be shown in the HTML
                     'action'                =>  'candidates.send_offering', // Routes to action, eg : dashboard.index, user.create
                     'params'                =>  ['model_url'   =>  $model->id],
-                    'class'                 =>  'primary',  // Default button class, leave it blank if you want the primary color
+                    'class'                 =>  'primary',  // Default button class, eg: primary, success, warning, danger, info
                     'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
                     'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
@@ -120,7 +140,7 @@ class CandidateController extends Controller
                     'label'                 =>  'approve join',  // Button text to be shown in the HTML
                     'action'                =>  'candidates.approve_join', // Routes to action, eg : dashboard.index, user.create
                     'params'                =>  ['model_url'   =>  $model->id],
-                    'class'                 =>  'success',  // Default button class, leave it blank if you want the primary color
+                    'class'                 =>  'success',  // Default button class, eg: primary, success, warning, danger, info
                     'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
                     'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
@@ -130,7 +150,7 @@ class CandidateController extends Controller
                     'label'                 =>  'cancel join',  // Button text to be shown in the HTML
                     'action'                =>  'candidates.cancel_join', // Routes to action, eg : dashboard.index, user.create
                     'params'                =>  ['model_url'   =>  $model->id],
-                    'class'                 =>  'danger',  // Default button class, leave it blank if you want the primary color
+                    'class'                 =>  'danger',  // Default button class, eg: primary, success, warning, danger, info
                     'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
                     'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
@@ -371,6 +391,28 @@ class CandidateController extends Controller
                 'field'     =>  'candidate_status_id',
                 'type'      =>  'hidden',
                 'value'     =>  $candidateStatus
+            ),
+        );
+        return view('page.content.edit')
+        ->with('model_url', $model_url)
+        ->with('model', $model)
+        ->with('contents', $contents);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Recruitment  $model_url
+     * @param  \App\Candidate  $model
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function add_remark(Recruitment $model_url, Candidate $model, Request $request)
+    {
+        $contents   = array(
+            array(
+                'field'     =>  'remark',
+                'type'      =>  'textarea'
             ),
         );
         return view('page.content.edit')

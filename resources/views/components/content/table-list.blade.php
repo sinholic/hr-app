@@ -49,7 +49,9 @@
                                             <td>{{ $data->$field()->count() }}</td>
                                         @elseif($content['type'] == 'link')
                                             <td>
-                                                <a href="{{ asset('storage/uploads/cv/'.$data->$field) }}" target="_blank">Click here to view</a>
+                                                <a href="{{ asset('storage/uploads/cv/'.$data->$field) }}" target="_blank">
+                                                    <i class="fa fa-download" aria-hidden="true"></i>
+                                                </a>
                                             </td>
                                         @endif
                                     @else
