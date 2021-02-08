@@ -1,5 +1,6 @@
 <div>
     <!-- Simplicity is an acquired taste. - Katharine Gerould -->
+    {{ Form::token() }}
     @foreach($contents as $content)
         <?php 
             $type   = $content['type'];
@@ -59,4 +60,6 @@
             {{ Form::hidden($content['field'], $content['value'], ['class' => 'form-control']) }}
         @endif
     @endforeach
+    {{ link_to(url()->previous(), 'Cancel', ['class' => 'btn btn-warning']) }}
+    {{ Form::submit('Submit', ['class' => 'btn btn-success', 'id' => 'submit']) }}
 </div>

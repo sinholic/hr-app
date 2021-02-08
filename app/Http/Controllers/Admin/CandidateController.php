@@ -12,8 +12,9 @@ use Ramsey\Uuid\Uuid;
 class CandidateController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
+     * Display a listing of the candidate from recruitment id.
+     * 
+     * @param  \App\Recruitment  $model
      * @return \Illuminate\Http\Response
      */
     public function index(Recruitment $model)
@@ -61,13 +62,44 @@ class CandidateController extends Controller
             'enable_action'             =>  true,
             'button_extends'            =>  array(
                 array(
-                    'label'                 =>  'send offering',  // Button text to be shown in the HTML
-                    'action'                =>  'recruitments.approve', // Routes to action, eg : dashboard.index, user.create
+                    'label'                 =>  'schedule interview',  // Button text to be shown in the HTML
+                    'action'                =>  'candidates.schedule_interview', // Routes to action, eg : dashboard.index, user.create
+                    'params'                =>  ['model_url'   =>  $model->id],
                     'class'                 =>  'success',  // Default button class, leave it blank if you want the primary color
                     'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
                     'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
-                    'when_value'            =>  'WAITING FOR CONFIRMATION' // Value that right for the condition
+                    'when_value'            =>  'WAITING FOR CONFIRMATION FROM CANDIDATE' // Value that right for the condition
+                ),
+                array(
+                    'label'                 =>  'add result',  // Button text to be shown in the HTML
+                    'action'                =>  'candidates.result', // Routes to action, eg : dashboard.index, user.create
+                    'params'                =>  ['model_url'   =>  $model->id],
+                    'class'                 =>  'primary',  // Default button class, leave it blank if you want the primary color
+                    'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
+                    'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
+                    'when_key'              =>  'name', // Only add this when we check on relationship value
+                    'when_value'            =>  'WAITING FOR INTERVIEW WITH USER' // Value that right for the condition
+                ),
+                array(
+                    'label'                 =>  'send offering',  // Button text to be shown in the HTML
+                    'action'                =>  'candidates.result', // Routes to action, eg : dashboard.index, user.create
+                    'params'                =>  ['model_url'   =>  $model->id],
+                    'class'                 =>  'primary',  // Default button class, leave it blank if you want the primary color
+                    'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
+                    'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
+                    'when_key'              =>  'name', // Only add this when we check on relationship value
+                    'when_value'            =>  'WAITING FOR CONFIRMATION FROM USER' // Value that right for the condition
+                ),
+                array(
+                    'label'                 =>  'not suitable',  // Button text to be shown in the HTML
+                    'action'                =>  'candidates.result', // Routes to action, eg : dashboard.index, user.create
+                    'params'                =>  ['model_url'   =>  $model->id],
+                    'class'                 =>  'danger',  // Default button class, leave it blank if you want the primary color
+                    'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
+                    'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
+                    'when_key'              =>  'name', // Only add this when we check on relationship value
+                    'when_value'            =>  'WAITING FOR CONFIRMATION FROM USER' // Value that right for the condition
                 ),
             )
         );
@@ -78,15 +110,16 @@ class CandidateController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
+     * Show the form for add a new candidate for recruitment id.
+     * 
+     * @param  \App\Recruitment  $model
      * @return \Illuminate\Http\Response
      */
     public function create(Recruitment $model)
     {
         $candidateStatus    =   Option::firstWhere([
             'type'  =>  'CANDIDATE_STATUS',
-            'name'  =>  'WAITING FOR CONFIRMATION'
+            'name'  =>  'WAITING FOR CONFIRMATION FROM CANDIDATE'
         ])->id;
         $contents   = array(
             array(
@@ -105,16 +138,6 @@ class CandidateController extends Controller
             array(
                 'field'     =>  'expected_sallary',
                 'type'      =>  'currency',
-            ),
-            array(
-                'field'     =>  'test_result',
-                'type'      =>  'text',
-                'label'     =>  'Result test'
-            ),
-            array(
-                'field'     =>  'interview_result',
-                'type'      =>  'text',
-                'label'     =>  'Result interview'
             ),
             array(
                 'field'     =>  'curriculum_vitae',
@@ -140,8 +163,9 @@ class CandidateController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
+     * Store a newly candidate for recruitment in storage.
+     * 
+     * @param  \App\Recruitment  $model
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -168,5 +192,110 @@ class CandidateController extends Controller
         }
         Candidate::create($data);
         return redirect()->route("candidates.view", $model->id)->withSuccess("Candidate has been Added Successfully");
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Recruitment  $model_url
+     * @param  \App\Candidate  $model
+     * @param  \Illuminate\Http\Request  $request     
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Recruitment $model_url, Candidate $model, Request $request)
+    {
+        if ($request->interview_date) {
+            $request->validate(
+                [
+                    'interview_date'        =>  'required',
+                ]
+            );
+        }elseif ($request->interview_result) {
+            $request->validate(
+                [
+                    'interview_result'      =>  'required',
+                    'test_result'           =>  'required'
+                ]
+            );
+        }
+        $data = $request->all();
+        $model->update($data);
+        
+
+        return redirect()->route("candidates.view", $model_url->id)->withSuccess("Candidate has been Updated Successfully");
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Recruitment  $model_url
+     * @param  \App\Candidate  $model
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function schedule_interview(Recruitment $model_url, Candidate $model, Request $request)
+    {
+        $candidateStatus      =   Option::firstWhere([
+            'type'  =>  'CANDIDATE_STATUS',
+            'name'  =>  'WAITING FOR INTERVIEW WITH USER'
+        ])->id;
+        $contents   = array(
+            array(
+                'field'     =>  'interview_date',
+                'type'      =>  'date'
+            ),
+            array(
+                'field'     =>  'remark',
+                'type'      =>  'textarea'
+            ),
+            array(
+                'field'     =>  'candidate_status_id',
+                'type'      =>  'hidden',
+                'value'     =>  $candidateStatus
+            ),
+        );
+        return view('page.content.edit')
+        ->with('model_url', $model_url)
+        ->with('model', $model)
+        ->with('contents', $contents);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Recruitment  $model_url
+     * @param  \App\Candidate  $model
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function result(Recruitment $model_url, Candidate $model, Request $request)
+    {
+        $candidateStatus      =   Option::firstWhere([
+            'type'  =>  'CANDIDATE_STATUS',
+            'name'  =>  'WAITING FOR CONFIRMATION FROM USER'
+        ])->id;
+        $contents   = array(
+            array(
+                'field'     =>  'interview_result',
+                'type'      =>  'text'
+            ),
+            array(
+                'field'     =>  'test_result',
+                'type'      =>  'text'
+            ),
+            array(
+                'field'     =>  'remark',
+                'type'      =>  'textarea'
+            ),
+            array(
+                'field'     =>  'candidate_status_id',
+                'type'      =>  'hidden',
+                'value'     =>  $candidateStatus
+            ),
+        );
+        return view('page.content.edit')
+        ->with('model_url', $model_url)
+        ->with('model', $model)
+        ->with('contents', $contents);
     }
 }

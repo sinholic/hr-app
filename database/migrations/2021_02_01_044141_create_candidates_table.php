@@ -20,8 +20,9 @@ class CreateCandidatesTable extends Migration
             $table->string('email');
             $table->string('phone');
             $table->string('expected_sallary');
-            $table->string('test_result');
-            $table->string('interview_result');
+            $table->date('interview_date')->nullable();
+            $table->string('test_result')->nullable();
+            $table->string('interview_result')->nullable();
             $table->string('curriculum_vitae');
             $table->text('remark')->nullable();
             $table->uuid('candidate_status_id');

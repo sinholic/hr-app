@@ -73,6 +73,7 @@
                                             $when_value     = $button_extend['when_value'] ?? '';
                                             $skip_when      = true;
                                             $state_show     = false;
+                                            $route_button   = null
                                             // dd($data->$when->$when_key == $when_value ? 'YES' : 'NO');
                                         ?>
                                         @if(isset($button_extend['roles']))
@@ -88,7 +89,17 @@
                                             @endif
                                         @endif
                                         @if($state_show)
-                                            <a href="{{ route($button_extend['action'], $data->$params) }}" class="btn btn-{{ $button_extend['class'] ?? 'primary' }}">{{ ucwords($button_extend['label']) }}</a>
+                                            @if(is_array($params))
+                                                <?php 
+                                                    $params['model']    = $data->id;
+                                                    $route_button       = route($button_extend['action'], $params)
+                                                ?>
+                                            @else
+                                                <?php
+                                                    $route_button       = route($button_extend['action'], $data->$params);
+                                                ?>
+                                            @endif
+                                            <a href="{{ $route_button }}" class="btn btn-{{ $button_extend['class'] ?? 'primary' }}">{{ ucwords($button_extend['label']) }}</a>
                                         @endif
                                     @endforeach
                                 @endif
