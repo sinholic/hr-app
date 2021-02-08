@@ -118,7 +118,7 @@ class CandidateController extends Controller
                 ),
                 array(
                     'label'                 =>  'approve join',  // Button text to be shown in the HTML
-                    'action'                =>  'candidates.send_offering', // Routes to action, eg : dashboard.index, user.create
+                    'action'                =>  'candidates.approve_join', // Routes to action, eg : dashboard.index, user.create
                     'params'                =>  ['model_url'   =>  $model->id],
                     'class'                 =>  'success',  // Default button class, leave it blank if you want the primary color
                     'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
@@ -128,7 +128,7 @@ class CandidateController extends Controller
                 ),
                 array(
                     'label'                 =>  'cancel join',  // Button text to be shown in the HTML
-                    'action'                =>  'candidates.send_offering', // Routes to action, eg : dashboard.index, user.create
+                    'action'                =>  'candidates.cancel_join', // Routes to action, eg : dashboard.index, user.create
                     'params'                =>  ['model_url'   =>  $model->id],
                     'class'                 =>  'danger',  // Default button class, leave it blank if you want the primary color
                     'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
