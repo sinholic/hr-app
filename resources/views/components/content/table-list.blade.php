@@ -47,6 +47,10 @@
                                     @if(isset($content['type']))
                                         @if($content['type'] == 'count' )
                                             <td>{{ $data->$field()->count() }}</td>
+                                        @elseif($content['type'] == 'link')
+                                            <td>
+                                                <a href="{{ asset('storage/uploads/cv/'.$data->$field) }}" target="_blank">Click here to view</a>
+                                            </td>
                                         @endif
                                     @else
                                         <td>{{ $data->$field }}</td>
@@ -59,10 +63,10 @@
                         @if(!isset($options['enable_action']) || $options['enable_action'])
                             <td>
                                 @if(!isset($options['enable_edit']) || $options['enable_edit'])
-                                    <a href="{{ route($route_as_name.'.edit', $data->id) }}" class="btn btn-warning">Edit</a>
+                                    <a href="{{ route($route_as_name.'.edit', $data->id) }}" class="btn btn-block btn-warning">Edit</a>
                                 @endif
                                 @if(!isset($options['enable_delete']) || $options['enable_delete'])
-                                    <a href="{{ route($route_as_name.'.destroy', $data->id) }}" class="btn btn-danger">Delete</a>
+                                    <a href="{{ route($route_as_name.'.destroy', $data->id) }}" class="btn btn-block btn-danger">Delete</a>
                                 @endif
                                 @if(isset($options['button_extends']))
                                     @foreach($options['button_extends'] as $button_extend)
@@ -74,7 +78,6 @@
                                             $skip_when      = true;
                                             $state_show     = false;
                                             $route_button   = null
-                                            // dd($data->$when->$when_key == $when_value ? 'YES' : 'NO');
                                         ?>
                                         @if(isset($button_extend['roles']))
                                             @hasanyrole($button_extend['roles'])
@@ -99,7 +102,7 @@
                                                     $route_button       = route($button_extend['action'], $data->$params);
                                                 ?>
                                             @endif
-                                            <a href="{{ $route_button }}" class="btn btn-{{ $button_extend['class'] ?? 'primary' }}">{{ ucwords($button_extend['label']) }}</a>
+                                            <a href="{{ $route_button }}" class="btn btn-block btn-{{ $button_extend['class'] ?? 'primary' }}">{{ ucwords($button_extend['label']) }}</a>
                                         @endif
                                     @endforeach
                                 @endif

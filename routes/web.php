@@ -39,6 +39,7 @@ Route::group(["middleware" => "auth", "namespace" => "Admin"], function () {
         Route::get('recruitments/{model}/candidates/create', 'CandidateController@create')->name('candidates.create');
         Route::post('recruitments/{model}/candidates', 'CandidateController@store')->name('candidates.store');
         Route::put('recruitments/{model_url}/candidates/{model}', 'CandidateController@update')->name('candidates.update');
+        Route::get('recruitments/{model_url}/candidates/{model}/edit', 'CandidateController@edit')->name('candidates.edit');
         Route::get('recruitments/{model_url}/candidates/{model}/schedule', 'CandidateController@schedule_interview')->name('candidates.schedule_interview');
         Route::get('recruitments/{model_url}/candidates/{model}/result', 'CandidateController@result')->name('candidates.result');
     });
