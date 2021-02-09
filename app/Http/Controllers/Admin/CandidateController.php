@@ -230,8 +230,8 @@ class CandidateController extends Controller
             [
                 'name'                  =>  'required',
                 'email'                 =>  'required|email',
-                'phone'                 =>  'required|integer',
-                'expected_sallary'      =>  'required|integer',
+                'phone'                 =>  'required',
+                'expected_sallary'      =>  'required',
                 'curriculum_vitae'      =>  'required',
                 'candidate_status_id'   =>  'required',
                 'recruitment_id'        =>  'required',
