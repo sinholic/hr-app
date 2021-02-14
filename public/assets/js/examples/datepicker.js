@@ -9,6 +9,16 @@ $(document).ready(function () {
         }
     });
 
+    $('.single-datetime-picker').daterangepicker({
+        singleDatePicker: true,
+        timePicker: true,
+        timePicker24Hour: true,
+        showDropdowns: true,
+        locale: {
+            format: 'YYYY-MM-DD HH:mm:ss'
+        }
+    });
+
     $('input[name="single-date-picker"]').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true

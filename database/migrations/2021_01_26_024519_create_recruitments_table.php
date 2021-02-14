@@ -28,6 +28,8 @@ class CreateRecruitmentsTable extends Migration
             $table->uuid('requested_by_user');
             $table->uuid('change_request_status_by_user')->nullable();
             $table->uuid('process_status_id');
+            $table->date('start_process')->nullable();
+            $table->date('end_process')->nullable();
             $table->uuid('processed_by_user')->nullable();
             $table->text('remark')->nullable();
             $table->timestamps();

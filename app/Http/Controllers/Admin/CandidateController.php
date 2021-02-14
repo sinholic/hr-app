@@ -14,15 +14,15 @@ class CandidateController extends Controller
     /**
      * Display a listing of the candidate from recruitment id.
      * 
-     * @param  \App\Recruitment  $model
+     * @param  \App\Recruitment  $model_url
      * @return \Illuminate\Http\Response
      */
-    public function index(Recruitment $model)
+    public function index(Recruitment $model_url)
     {
         $datas = Candidate::with([
             'candidate_status',
         ])
-        ->where('recruitment_id', $model->id)
+        ->where('recruitment_id', $model_url->id)
         ->orderBy('created_at','DESC')
         ->get();
         $contents = array(
@@ -34,8 +34,8 @@ class CandidateController extends Controller
                 'label'     =>  'E-Mail'
             ),
             array(
-                'field'     =>  'expected_sallary',
-                'label'     =>  'Expected sallary'
+                'field'     =>  'expected_salary',
+                'label'     =>  'Expected salary'
             ),
             array(
                 'field'     =>  'test_result',
@@ -46,13 +46,16 @@ class CandidateController extends Controller
                 'label'     =>  'Result interview'
             ),
             array(
+                'field'     =>  'interview_date',
+            ),
+            array(
                 'field'     =>  'candidate_status',
                 'key'       =>  'name'
             ),
             array(
                 'field'     =>  'curriculum_vitae',
-                'label'     =>  'View or Download CV',
-                'type'      =>  'link'
+                'label'     =>  'Download CV',
+                'type'      =>  'download'
             ),
         );
         $view_options = array(
@@ -60,96 +63,106 @@ class CandidateController extends Controller
             'enable_add'                =>  array(
                 'state'                 =>  true,
                 'action'                =>  'candidates.create',
-                'params'                =>  $model->id
+                'params'                =>  $model_url->id,
+                'roles'                 =>  ['Super Admin','HR Manager'],
             ),
             'enable_delete'             =>  false,
             'enable_edit'               =>  false,
             'enable_action'             =>  true,
             'button_extends'            =>  array(
+                // Edit
                 array(
                     'label'                 =>  'edit',  // Button text to be shown in the HTML
                     'action'                =>  'candidates.edit', // Routes to action, eg : dashboard.index, user.create
-                    'params'                =>  ['model_url'   =>  $model->id],
+                    'params'                =>  ['model_url'   =>  $model_url->id],
                     'class'                 =>  'warning',  // Default button class, eg: primary, success, warning, danger, info
                     'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
                     'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
                     'when_value'            =>  'WAITING FOR CONFIRMATION FROM CANDIDATE' // Value that right for the condition
                 ),
+                // Schedule Interview
                 array(
                     'label'                 =>  'schedule interview',  // Button text to be shown in the HTML
                     'action'                =>  'candidates.schedule', // Routes to action, eg : dashboard.index, user.create
-                    'params'                =>  ['model_url'   =>  $model->id],
+                    'params'                =>  ['model_url'   =>  $model_url->id],
                     'class'                 =>  'success',  // Default button class, eg: primary, success, warning, danger, info
                     'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
                     'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
-                    'when_value'            =>  'WAITING FOR CONFIRMATION FROM CANDIDATE' // Value that right for the condition
+                    'when_value'            =>  'SUITABLE' // Value that right for the condition
                 ),
+                // Suitable
                 array(
-                    'label'                 =>  'add remark',  // Button text to be shown in the HTML
-                    'action'                =>  'candidates.not_suitable', // Routes to action, eg : dashboard.index, user.create
-                    'params'                =>  ['model_url'   =>  $model->id],
+                    'label'                 =>  'suitable',  // Button text to be shown in the HTML
+                    'action'                =>  'candidates.suitable', // Routes to action, eg : dashboard.index, user.create
+                    'params'                =>  ['model_url'   =>  $model_url->id],
                     'class'                 =>  'primary',  // Default button class, eg: primary, success, warning, danger, info
                     'roles'                 =>  ['Super Admin','Manager'], // Roles to be checked for the UI to be show
                     'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
                     'when_value'            =>  'WAITING FOR CONFIRMATION FROM CANDIDATE' // Value that right for the condition
                 ),
+                // Not Suitable
                 array(
                     'label'                 =>  'not suitable',  // Button text to be shown in the HTML
                     'action'                =>  'candidates.not_suitable', // Routes to action, eg : dashboard.index, user.create
-                    'params'                =>  ['model_url'   =>  $model->id],
+                    'params'                =>  ['model_url'   =>  $model_url->id],
                     'class'                 =>  'danger',  // Default button class, eg: primary, success, warning, danger, info
                     'roles'                 =>  ['Super Admin','Manager'], // Roles to be checked for the UI to be show
                     'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
                     'when_value'            =>  'WAITING FOR CONFIRMATION FROM CANDIDATE' // Value that right for the condition
                 ),
+                // Add Result test and interview
                 array(
                     'label'                 =>  'add result',  // Button text to be shown in the HTML
                     'action'                =>  'candidates.result', // Routes to action, eg : dashboard.index, user.create
-                    'params'                =>  ['model_url'   =>  $model->id],
+                    'params'                =>  ['model_url'   =>  $model_url->id],
                     'class'                 =>  'primary',  // Default button class, eg: primary, success, warning, danger, info
                     'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
                     'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
                     'when_value'            =>  'WAITING FOR INTERVIEW WITH USER' // Value that right for the condition
                 ),
+                // Not Suitable
                 array(
                     'label'                 =>  'not suitable',  // Button text to be shown in the HTML
                     'action'                =>  'candidates.not_suitable', // Routes to action, eg : dashboard.index, user.create
-                    'params'                =>  ['model_url'   =>  $model->id],
+                    'params'                =>  ['model_url'   =>  $model_url->id],
                     'class'                 =>  'danger',  // Default button class, eg: primary, success, warning, danger, info
                     'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
                     'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
                     'when_value'            =>  'WAITING FOR CONFIRMATION FROM USER' // Value that right for the condition
                 ),
+                // Send Offer
                 array(
                     'label'                 =>  'send offering',  // Button text to be shown in the HTML
                     'action'                =>  'candidates.send_offering', // Routes to action, eg : dashboard.index, user.create
-                    'params'                =>  ['model_url'   =>  $model->id],
+                    'params'                =>  ['model_url'   =>  $model_url->id],
                     'class'                 =>  'primary',  // Default button class, eg: primary, success, warning, danger, info
                     'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
                     'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
                     'when_value'            =>  'WAITING FOR CONFIRMATION FROM USER' // Value that right for the condition
                 ),
+                // Approve Join
                 array(
                     'label'                 =>  'approve join',  // Button text to be shown in the HTML
                     'action'                =>  'candidates.approve_join', // Routes to action, eg : dashboard.index, user.create
-                    'params'                =>  ['model_url'   =>  $model->id],
+                    'params'                =>  ['model_url'   =>  $model_url->id],
                     'class'                 =>  'success',  // Default button class, eg: primary, success, warning, danger, info
                     'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
                     'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
                     'when_value'            =>  'OFFERING LETTER SENT' // Value that right for the condition
                 ),
+                // Cancel Join
                 array(
                     'label'                 =>  'cancel join',  // Button text to be shown in the HTML
                     'action'                =>  'candidates.cancel_join', // Routes to action, eg : dashboard.index, user.create
-                    'params'                =>  ['model_url'   =>  $model->id],
+                    'params'                =>  ['model_url'   =>  $model_url->id],
                     'class'                 =>  'danger',  // Default button class, eg: primary, success, warning, danger, info
                     'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
                     'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
@@ -167,10 +180,10 @@ class CandidateController extends Controller
     /**
      * Show the form for add a new candidate for recruitment id.
      * 
-     * @param  \App\Recruitment  $model
+     * @param  \App\Recruitment  $model_url
      * @return \Illuminate\Http\Response
      */
-    public function create(Recruitment $model)
+    public function create(Recruitment $model_url)
     {
         $candidateStatus    =   Option::firstWhere([
             'type'  =>  'CANDIDATE_STATUS',
@@ -191,7 +204,7 @@ class CandidateController extends Controller
                 'type'      =>  'text',
             ),
             array(
-                'field'     =>  'expected_sallary',
+                'field'     =>  'expected_salary',
                 'type'      =>  'currency',
             ),
             array(
@@ -210,7 +223,7 @@ class CandidateController extends Controller
             array(
                 'field'     =>  'recruitment_id',
                 'type'      =>  'hidden',
-                'value'     =>  $model->id
+                'value'     =>  $model_url->id
             )
         );
         return view('page.content.add')
@@ -220,18 +233,18 @@ class CandidateController extends Controller
     /**
      * Store a newly candidate for recruitment in storage.
      * 
-     * @param  \App\Recruitment  $model
+     * @param  \App\Recruitment  $model_url
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Recruitment $model, Request $request)
+    public function store(Recruitment $model_url, Request $request)
     {
         $request->validate(
             [
                 'name'                  =>  'required',
                 'email'                 =>  'required|email',
                 'phone'                 =>  'required',
-                'expected_sallary'      =>  'required',
+                'expected_salary'       =>  'required',
                 'curriculum_vitae'      =>  'required',
                 'candidate_status_id'   =>  'required',
                 'recruitment_id'        =>  'required',
@@ -244,7 +257,7 @@ class CandidateController extends Controller
             $data['curriculum_vitae'] = $fileName;
         }
         Candidate::create($data);
-        return redirect()->route("candidates.view", $model->id)->withSuccess("Candidate has been Added Successfully");
+        return redirect()->route("candidates.view", $model_url->id)->withSuccess("Candidate has been Added Successfully");
     }
 
     /**
@@ -307,7 +320,7 @@ class CandidateController extends Controller
                 'type'      =>  'text',
             ),
             array(
-                'field'     =>  'expected_sallary',
+                'field'     =>  'expected_salary',
                 'type'      =>  'currency',
             ),
             array(
@@ -342,7 +355,7 @@ class CandidateController extends Controller
         $contents   = array(
             array(
                 'field'     =>  'interview_date',
-                'type'      =>  'date'
+                'type'      =>  'datetime'
             ),
             array(
                 'field'     =>  'remark',
@@ -407,12 +420,21 @@ class CandidateController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function add_remark(Recruitment $model_url, Candidate $model, Request $request)
+    public function suitable(Recruitment $model_url, Candidate $model, Request $request)
     {
+        $candidateStatus      =   Option::firstWhere([
+            'type'  =>  'CANDIDATE_STATUS',
+            'name'  =>  'SUITABLE'
+        ])->id;
         $contents   = array(
             array(
                 'field'     =>  'remark',
                 'type'      =>  'textarea'
+            ),
+            array(
+                'field'     =>  'candidate_status_id',
+                'type'      =>  'hidden',
+                'value'     =>  $candidateStatus
             ),
         );
         return view('page.content.edit')
@@ -467,6 +489,24 @@ class CandidateController extends Controller
             'name'  =>  'OFFERING LETTER SENT'
         ])->id;
         $contents   = array(
+            array(
+                'field'     =>  'name',
+                'type'      =>  'text',
+                'state'     =>  'readonly'
+            ),
+            array(
+                'field'     =>  'address',
+                'type'      =>  'textarea'
+            ),
+            array(
+                'field'     =>  'phone',
+                'type'      =>  'text',
+                'state'     =>  'readonly'
+            ),
+            array(
+                'field'     =>  'proposed_salary',
+                'type'      =>  'currency',
+            ),
             array(
                 'field'     =>  'remark',
                 'type'      =>  'textarea'

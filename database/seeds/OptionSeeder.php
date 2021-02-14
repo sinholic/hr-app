@@ -109,6 +109,10 @@ class OptionSeeder extends Seeder
                 'type'  =>  'CANDIDATE_STATUS',
                 'name'  =>  'NOT SUITABLE'
             ),
+            array(
+                'type'  =>  'CANDIDATE_STATUS',
+                'name'  =>  'SUITABLE'
+            ),
         );
 
         foreach ($options as $key => $option) {

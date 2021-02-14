@@ -1,10 +1,15 @@
 <div>
     <?php 
         $params = null;
-        if (Route::current()->parameters) {
-            $params = Route::current()->parameters['model']->id;
+        if (isset(Route::current()->parameters['model_url'])) {
+            $params = Route::current()->parameters['model_url']->id;
         }
     ?>
+    <div class="row mb-3">
+        <div class="col-md-12">
+            {{ link_to(url()->previous(), 'Back', ['class' => 'btn btn-warning']) }}
+        </div>
+    </div>
     <!-- The whole future lies in uncertainty: live immediately. - Seneca -->
     <div class="row">
         <div class="col-md-12">

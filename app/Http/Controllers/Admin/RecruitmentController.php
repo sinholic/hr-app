@@ -109,21 +109,48 @@ class RecruitmentController extends Controller
                     'when_value'            =>  'WAITING FOR APPROVAL' // Value that right for the condition
                 ),
                 array(
+                    'label'                 =>  'start recruitment',   // Button text to be shown in the HTML
+                    'action'                =>  'recruitments.start', // Routes to action, eg : dashboard.index, user.create
+                    'class'                 =>  'success',  // Default button class, leave it blank if you want the primary color
+                    'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
+                    'when'                  =>  array(
+                        'request_status',
+                        'process_status'
+                    ), // Field or relation you want to check to show the button
+                    'when_key'              =>  array(
+                        'name',
+                        'name'
+                    ), // Only add this when we check on relationship value
+                    'when_value'            =>  array(
+                        'APPROVED',
+                        'NOT YET PROCESSED'
+                    ) // Value that right for the condition
+                ),
+                array(
+                    'label'                 =>  'end recruitment',   // Button text to be shown in the HTML
+                    'action'                =>  'recruitments.end', // Routes to action, eg : dashboard.index, user.create
+                    'class'                 =>  'danger',  // Default button class, leave it blank if you want the primary color
+                    'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
+                    'when'                  =>  'process_status', // Field or relation you want to check to show the button
+                    'when_key'              =>  'name', // Only add this when we check on relationship value
+                    'when_value'            =>  'ON PROGRESS' // Value that right for the condition
+                ),
+                array(
                     'label'                 =>  'add candidate',    // Button text to be shown in the HTML
                     'action'                =>  'candidates.create', // Routes to action, eg : dashboard.index, user.create
                     'class'                 =>  'warning',  // Default button class, leave it blank if you want the primary color
                     'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
-                    'when'                  =>  'request_status', // Field or relation you want to check to show the button
+                    'when'                  =>  'process_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
-                    'when_value'            =>  'APPROVED' // Value that right for the condition
+                    'when_value'            =>  'ON PROGRESS' // Value that right for the condition
                 ),
                 array(
                     'label'                 =>  'view candidates',  // Button text to be shown in the HTML
                     'roles'                 =>  ['Super Admin','HR Manager', 'Manager', 'Team Lead'], // Roles to be checked for the UI to be show
                     'action'                =>  'candidates.view', // Routes to action, eg : dashboard.index, user.create
-                    'when'                  =>  'request_status', // Field or relation you want to check to show the button
+                    'when'                  =>  'process_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
-                    'when_value'            =>  'APPROVED' // Value that right for the condition
+                    'when_value'            =>  'ON PROGRESS' // Value that right for the condition
                 )
             )
         );
@@ -372,6 +399,82 @@ class RecruitmentController extends Controller
             ),
             array(
                 'field'     =>  'change_request_status_by_user',
+                'type'      =>  'hidden',
+                'value'     =>  \Auth::user()->id
+            ),
+        );
+        return view('page.content.edit')
+        ->with('model', $model)
+        ->with('contents', $contents);
+    }
+
+    /**
+     * Show the form for reject the recruitment.
+     *
+     * @param  \App\Recruitment  $model
+     * @return \Illuminate\Http\Response
+     */
+    public function start(Recruitment $model)
+    {
+        $processStatus      =   Option::firstWhere([
+            'type'  =>  'PROCESS_STATUS',
+            'name'  =>  'ON PROGRESS'
+        ])->id;
+        $contents   = array(
+            array(
+                'label'     =>  'Start date',
+                'field'     =>  'start_process',
+                'type'      =>  'date'
+            ),
+            array(
+                'field'     =>  'remark',
+                'type'      =>  'textarea'
+            ),
+            array(
+                'field'     =>  'process_status_id',
+                'type'      =>  'hidden',
+                'value'     =>  $processStatus
+            ),
+            array(
+                'field'     =>  'processed_by_user',
+                'type'      =>  'hidden',
+                'value'     =>  \Auth::user()->id
+            ),
+        );
+        return view('page.content.edit')
+        ->with('model', $model)
+        ->with('contents', $contents);
+    }
+
+    /**
+     * Show the form for reject the recruitment.
+     *
+     * @param  \App\Recruitment  $model
+     * @return \Illuminate\Http\Response
+     */
+    public function end(Recruitment $model)
+    {
+        $processStatus      =   Option::firstWhere([
+            'type'  =>  'PROCESS_STATUS',
+            'name'  =>  'DONE'
+        ])->id;
+        $contents   = array(
+            array(
+                'label'     =>  'Start date',
+                'field'     =>  'end_process',
+                'type'      =>  'date'
+            ),
+            array(
+                'field'     =>  'remark',
+                'type'      =>  'textarea'
+            ),
+            array(
+                'field'     =>  'process_status_id',
+                'type'      =>  'hidden',
+                'value'     =>  $processStatus
+            ),
+            array(
+                'field'     =>  'processed_by_user',
                 'type'      =>  'hidden',
                 'value'     =>  \Auth::user()->id
             ),

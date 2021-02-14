@@ -12,8 +12,6 @@
 @endsection
 
 @section('js-footer')
-<!-- Circle progress -->
-<script src="{{ asset('vendors/circle-progress/circle-progress.min.js') }}"></script>
 <!-- Javascript -->
 <script src="{{ asset('vendors/select2/js/select2.min.js') }}"></script>
 <script src="{{ asset('vendors/datepicker/daterangepicker.js') }}"></script>
@@ -22,6 +20,4 @@
 <script src="{{ asset('assets/js/examples/select2.js') }}"></script>
 <script src="{{ asset('assets/js/examples/datepicker.js') }}"></script>
 <!-- <script src="{{ asset('assets/js/examples/input-mask.js') }}"></script> -->
-<!-- App scripts -->
-<script src="{{ asset('assets/js/app.js') }}"></script>
 @endsection

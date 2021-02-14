@@ -6,6 +6,11 @@
         }
     ?>
     <!-- The only way to do great work is to love what you do. - Steve Jobs -->
+    <div class="row mb-3">
+        <div class="col-md-12">
+            {{ link_to(url()->previous(), 'Back', ['class' => 'btn btn-warning']) }}
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-12">
             {!! Form::model($model, ['route' => [$route_as_name.'.update', $params], 'method' => 'PUT', 'files' => true]) !!}

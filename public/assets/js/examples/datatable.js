@@ -1,6 +1,10 @@
 'use strict';
 $(document).ready(function () {
 
+    $('#myTable').DataTable({
+        responsive: true
+    });
+
     $('#example1').DataTable({
         responsive: true
     });

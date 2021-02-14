@@ -52,6 +52,11 @@
                     @case('date')
                         {{ Form::text($content['field'], null, ['class' => 'form-control single-date-picker', $state]) }}
                         @break
+
+                    @case('datetime')
+                        {{ Form::text($content['field'], null, ['class' => 'form-control single-datetime-picker', $state]) }}
+                        @break
+                    
                     @default
                 @endswitch
                 @error($content['field'])<p class="form-text text-danger">{{ $message }}</p>@enderror

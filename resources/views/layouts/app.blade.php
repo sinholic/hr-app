@@ -103,7 +103,10 @@
     </div>
     <!-- Plugin scripts -->
     <script src="{{ asset('vendors/bundle.js') }}"></script>
-
+    <!-- Circle progress -->
+    <script src="{{ asset('vendors/circle-progress/circle-progress.min.js') }}"></script>
+    <!-- App scripts -->
+    <script src="{{ asset('assets/js/app.js') }}"></script>
     @yield('js-footer')
 </body>
 </html>
