@@ -17,14 +17,7 @@ class Recruitment extends Model
             'type' => 'DEPARTMENT',
         ]);
     }
-
-    public function job_position()
-    {
-        return $this->belongsTo('App\Models\Option', 'jobposition_id', 'id')->withDefault([
-            'type' => 'JOB_POSITION',
-        ]);
-    }
-
+    
     public function user_requested()
     {
         return $this->belongsTo('App\Models\User', 'requested_by_user', 'id');

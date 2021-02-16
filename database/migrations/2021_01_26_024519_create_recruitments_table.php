@@ -16,7 +16,7 @@ class CreateRecruitmentsTable extends Migration
         Schema::create('recruitments', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('department_id');
-            $table->uuid('jobposition_id');
+            $table->string('job_position');
             $table->integer('number_of_people_requested');
             $table->integer('number_of_people_approved')->nullable();
             $table->text('requirements');

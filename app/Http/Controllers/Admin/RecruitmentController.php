@@ -36,8 +36,7 @@ class RecruitmentController extends Controller
             ),
             array(
                 'field'     =>  'job_position',
-                'key'       =>  'name',
-                'label'     =>  'Position'
+                'key'       =>  'text'
             ),
             array(
                 'field'     =>  'number_of_people_requested',
@@ -168,7 +167,6 @@ class RecruitmentController extends Controller
     public function create()
     {
         $departments        =   Option::where('type', 'DEPARTMENT')->pluck('name', 'id');
-        $jobpositions       =   Option::where('type', 'JOB_POSITION')->pluck('name', 'id');
         $priorities         =   Option::where('type', 'PRIORITY')->pluck('name', 'id');
         $requestStatus      =   Option::firstWhere([
             'type'  =>  'REQUEST_STATUS',
@@ -185,9 +183,8 @@ class RecruitmentController extends Controller
                 'data'      =>  $departments
             ),
             array(
-                'field'     =>  'jobposition_id',
-                'type'      =>  'select2',
-                'data'      =>  $jobpositions
+                'field'     =>  'job_position',
+                'type'      =>  'text'
             ),
             array(
                 'field'     =>  'number_of_people_requested',
@@ -245,7 +242,7 @@ class RecruitmentController extends Controller
         $request->validate(
             [
                 'department_id'                 =>  'required',
-                'jobposition_id'                =>  'required',
+                'job_position'                =>  'required',
                 'number_of_people_requested'    =>  'required',
                 'requirements'                  =>  'required',
                 'deadline'                      =>  'required',

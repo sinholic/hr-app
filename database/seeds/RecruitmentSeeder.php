@@ -17,7 +17,6 @@ class RecruitmentSeeder extends Seeder
     {
         $users              =   User::all();
         $departments        =   Option::where('type', 'DEPARTMENT')->get();
-        $jobpositions       =   Option::where('type', 'JOB_POSITION')->get();
         $priorities         =   Option::where('type', 'PRIORITY')->get();
         $requestStatus      =   Option::firstWhere([
             'type'  =>  'REQUEST_STATUS',
@@ -29,7 +28,7 @@ class RecruitmentSeeder extends Seeder
         ])->id;
         $data = [
             'department_id' => $departments[0]->id,
-            'jobposition_id' => $jobpositions[0]->id,
+            'job_position' => 'Example',
             'number_of_people_requested' => 10,
             'requirements' => 'DevOps engineers build, test and maintain the infrastructure and tools to allow for the speedy development and release of software. DevOps practices aim to simplify the development process of software.',
             'deadline' => '2021-05-01',

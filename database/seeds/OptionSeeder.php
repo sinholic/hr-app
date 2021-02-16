@@ -34,18 +34,6 @@ class OptionSeeder extends Seeder
                 'name'  =>  'HUMAN RESOURCE'
             ),
             array(
-                'type'  =>  'JOB_POSITION',
-                'name'  =>  'FRONT-END DEVELOPER'
-            ),
-            array(
-                'type'  =>  'JOB_POSITION',
-                'name'  =>  'BACK-END DEVELOPER'
-            ),
-            array(
-                'type'  =>  'JOB_POSITION',
-                'name'  =>  'DEVOPS'
-            ),
-            array(
                 'type'  =>  'PRIORITY',
                 'name'  =>  'LOW'
             ),
