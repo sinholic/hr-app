@@ -18,7 +18,6 @@ class RecruitmentController extends Controller
     {
         $datas = Recruitment::with([
             'department',
-            'job_position',
             'user_requested',
             'user_change_status',
             'user_processed',
@@ -35,8 +34,7 @@ class RecruitmentController extends Controller
                 'key'       =>  'name'
             ),
             array(
-                'field'     =>  'job_position',
-                'key'       =>  'text'
+                'field'     =>  'job_position'
             ),
             array(
                 'field'     =>  'number_of_people_requested',
