@@ -240,7 +240,7 @@ class RecruitmentController extends Controller
         $request->validate(
             [
                 'department_id'                 =>  'required',
-                'job_position'                =>  'required',
+                'job_position'                  =>  'required',
                 'number_of_people_requested'    =>  'required',
                 'requirements'                  =>  'required',
                 'deadline'                      =>  'required',
@@ -251,7 +251,9 @@ class RecruitmentController extends Controller
                 'process_status_id'             =>  'required',
             ]
         );
-        Recruitment::create($request->all());
+        $data = $request->all();
+        $data['job_position']                   =   strtoupper($request->job_position);
+        Recruitment::create($data);
 
         return redirect()->route("recruitments.index")->withSuccess("Recruitment has been Added Successfully");
 
