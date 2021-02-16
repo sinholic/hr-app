@@ -2,7 +2,7 @@
 $(document).ready(function () {
 
     $('#myTable').DataTable({
-        responsive: true
+        // responsive: true
     });
 
     $('#example1').DataTable({

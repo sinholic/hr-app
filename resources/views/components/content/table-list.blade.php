@@ -77,7 +77,7 @@
                             @endif
                         @endforeach
                         @if(!isset($options['enable_action']) || $options['enable_action'])
-                            <td>
+                            <td style="width:150px">
                                 @if(!isset($options['enable_edit']) || $options['enable_edit'])
                                     <a href="{{ route($route_as_name.'.edit', $data->id) }}" class="btn btn-block btn-sm btn-warning">Edit</a>
                                 @endif

@@ -257,7 +257,7 @@ class CandidateController extends Controller
             $data['curriculum_vitae'] = $fileName;
         }
         Candidate::create($data);
-        return redirect()->route("candidates.view", $model_url->id)->withSuccess("Candidate has been Added Successfully");
+        return redirect()->route("candidates.index", $model_url->id)->withSuccess("Candidate has been Added Successfully");
     }
 
     /**
@@ -292,7 +292,7 @@ class CandidateController extends Controller
         $model->update($data);
         
 
-        return redirect()->route("candidates.view", $model_url->id)->withSuccess("Candidate has been Updated Successfully");
+        return redirect()->route("candidates.index", $model_url->id)->withSuccess("Candidate has been Updated Successfully");
     }
 
     /**
