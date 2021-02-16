@@ -145,9 +145,18 @@ class RecruitmentController extends Controller
                     'label'                 =>  'view candidates',  // Button text to be shown in the HTML
                     'roles'                 =>  ['Super Admin','HR Manager', 'Manager', 'Team Lead'], // Roles to be checked for the UI to be show
                     'action'                =>  'candidates.index', // Routes to action, eg : dashboard.index, user.create
-                    'when'                  =>  'process_status', // Field or relation you want to check to show the button
-                    'when_key'              =>  'name', // Only add this when we check on relationship value
-                    'when_value'            =>  'ON PROGRESS' // Value that right for the condition
+                    'when'                  =>  array(
+                        'process_status', 
+                        'candidates'
+                    ),// Field or relation you want to check to show the button
+                    'when_key'              =>  array(
+                        'name',
+                        'count_more'
+                    ), // Only add this when we check on relationship value
+                    'when_value'            =>  array(
+                        'ON PROGRESS',
+                        '> 0'
+                    ) // Value that right for the condition
                 )
             )
         );

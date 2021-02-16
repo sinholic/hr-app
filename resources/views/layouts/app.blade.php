@@ -81,7 +81,9 @@
         <main class="main-content">
             <x-page.PageHeader :title=$title :sub-title=$subTitle :breadcrumbs=$breadcrumbs />
             <x-page.PageAlert />
-            @yield('content')
+            <div class="container-fluid">
+                @yield('content')
+            </div>
             <!-- begin::footer -->
             <footer>
                 <div class="container-fluid">

@@ -106,9 +106,17 @@
                                                     <?php $state_true = true; ?>
                                                     @foreach($when as $key => $value)
                                                         <?php 
-                                                            $check_key      = $when_key[$key]; 
-                                                            $check_value    = $when_value[$key];
-                                                            $state_show     = $data->$value->$check_key == $check_value ? true : false;
+                                                            $check_key          = $when_key[$key]; 
+                                                            $check_value        = $when_value[$key];
+                                                            if ($check_key == 'count_more') {
+                                                                $state_show     = $data->$value->count() > $check_value ? true : false;
+                                                            }elseif ($check_key == 'count_less') {
+                                                                $state_show     = $data->$value->count() < $check_value ? true : false;
+                                                            }elseif ($check_key == 'count_equal') {
+                                                                $state_show     = $data->$value->count() == $check_value ? true : false;
+                                                            }else {
+                                                                $state_show     = $data->$value->$check_key == $check_value ? true : false;
+                                                            }
                                                             if ($state_true && $state_show) {
                                                                 $state_true = $state_show;
                                                                 $state_show = true;

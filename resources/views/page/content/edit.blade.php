@@ -6,9 +6,7 @@
 <link rel="stylesheet" href="{{ asset('vendors/datepicker/daterangepicker.css') }}" type="text/css">
 @endsection
 @section('content')
-<div class="container-fluid">
     <x-content.FormUpdate :contents=$contents :model=$model />
-</div>
 @endsection
 
 @section('js-footer')

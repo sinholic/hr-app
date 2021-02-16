@@ -6,9 +6,7 @@
 @endsection
 
 @section('content')
-<div class="container-fluid">
     <x-content.TableList :options=$view_options :contents="$contents" :datas="$datas" />
-</div>
 @endsection
 
 @section('js-footer')
