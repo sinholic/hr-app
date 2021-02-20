@@ -13,49 +13,41 @@ class Recruitment extends Model
 
     public function department()
     {
-        return $this->belongsTo('App\Models\Option', 'department_id', 'id')->withDefault([
-            'type' => 'DEPARTMENT',
-        ]);
+        return $this->belongsTo(Option::class, 'department_id', 'id');
     }
     
     public function user_requested()
     {
-        return $this->belongsTo('App\Models\User', 'requested_by_user', 'id');
+        return $this->belongsTo(User::class, 'requested_by_user', 'id');
     }
 
     public function user_change_status()
     {
-        return $this->belongsTo('App\Models\User', 'change_request_status_by_user', 'id');
+        return $this->belongsTo(User::class, 'change_request_status_by_user', 'id');
     }
 
     public function user_processed()
     {
-        return $this->belongsTo('App\Models\User', 'processed_by_user', 'id');
+        return $this->belongsTo(User::class, 'processed_by_user', 'id');
     }
 
     public function priority()
     {
-        return $this->belongsTo('App\Models\Option', 'priority_id', 'id')->withDefault([
-            'type' => 'PRIORITY',
-        ]);
+        return $this->belongsTo(Option::class, 'priority_id', 'id');
     }
 
     public function request_status()
     {
-        return $this->belongsTo('App\Models\Option', 'request_status_id', 'id')->withDefault([
-            'type' => 'REQUEST_STATUS',
-        ]);
+        return $this->belongsTo(Option::class, 'request_status_id', 'id');
     }
 
     public function process_status()
     {
-        return $this->belongsTo('App\Models\Option', 'process_status_id', 'id')->withDefault([
-            'type' => 'PROCESS_STATUS',
-        ]);
+        return $this->belongsTo(Option::class, 'process_status_id', 'id');
     }
 
     public function candidates()
     {
-        return $this->hasMany('App\Models\Candidate', 'recruitment_id', 'id');
+        return $this->hasMany(Candidate::class, 'recruitment_id', 'id');
     }
 }

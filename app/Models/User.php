@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password'
+        'name', 'email', 'password', 'department_id'
     ];
 
     /**
@@ -41,11 +41,21 @@ class User extends Authenticatable
 
     public function recruitment_requests()
     {
-        return $this->hasMany('App\Models\Recruitment', 'requested_by_user', 'id');
+        return $this->hasMany(Recruitment::class, 'requested_by_user', 'id');
     }
 
     public function recruitment_change_approvals()
     {
-        return $this->hasMany('App\Models\Recruitment', 'requested_by_user', 'id');
+        return $this->hasMany(Recruitment::class, 'requested_by_user', 'id');
+    }
+
+    /**
+     * Get the department that owns the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function department()
+    {
+        return $this->belongsTo(Option::class, 'department_id', 'id');
     }
 }

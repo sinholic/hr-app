@@ -18,7 +18,9 @@
             <ul>
                 <li class="navigation-divider">{{ $menu->menu_tab_label }}</li>
                 @foreach($menu->child_menus as $child_menu)
-                    <li><a class="{{ request()->is($menu->menu_tab_id.'/'.$child_menu->id.'*') ? 'active' : '' }}" href="{{ route($child_menu->link) }}">{{ $child_menu->label }}</a></li>
+                    @hasanyrole($child_menu->roles ?? \App\Models\Role::select('name')->get()->toArray())
+                        <li><a class="{{ request()->is($menu->menu_tab_id.'/'.$child_menu->id.'*') ? 'active' : '' }}" href="{{ route($child_menu->link) }}">{{ $child_menu->label }}</a></li>
+                    @endhasanyrole
                 @endforeach
             </ul>
         </div>

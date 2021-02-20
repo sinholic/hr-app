@@ -135,7 +135,6 @@ class RecruitmentController extends Controller
                 array(
                     'label'                 =>  'add candidate',    // Button text to be shown in the HTML
                     'action'                =>  'candidates.create', // Routes to action, eg : dashboard.index, user.create
-                    'class'                 =>  'warning',  // Default button class, leave it blank if you want the primary color
                     'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
                     'when'                  =>  'process_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value

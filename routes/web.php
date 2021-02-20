@@ -23,9 +23,11 @@ Route::group(["middleware" => "auth", "namespace" => "Admin"], function () {
     Route::group([
         "prefix" => "application"
     ], function () {
-        // Route::resources([
-        //     'recruitments' => 'RecruitmentController'
-        // ]);
+        /**
+         * 
+         * Custom Routes for recruitments and candidates
+         * 
+         */
         // Recruitments
         Route::get('recruitments', 'RecruitmentController@index')->name('recruitments.index');
         Route::get('recruitments/create', 'RecruitmentController@create')->name('recruitments.create');
@@ -36,6 +38,7 @@ Route::group(["middleware" => "auth", "namespace" => "Admin"], function () {
         Route::get('recruitments/reject/{model}', 'RecruitmentController@reject')->name('recruitments.reject');
         Route::get('recruitments/start/{model}', 'RecruitmentController@start')->name('recruitments.start');
         Route::get('recruitments/end/{model}', 'RecruitmentController@end')->name('recruitments.end');
+
         // Recruitments - Candidate
         Route::get('recruitments/{model_url}/candidates', 'CandidateController@index')->name('candidates.index');
         Route::get('recruitments/{model_url}/candidates/create', 'CandidateController@create')->name('candidates.create');
@@ -49,5 +52,12 @@ Route::group(["middleware" => "auth", "namespace" => "Admin"], function () {
         Route::get('recruitments/{model_url}/candidates/send-offering/{model}', 'CandidateController@send_offering')->name('candidates.send_offering');
         Route::get('recruitments/{model_url}/candidates/approve-join/{model}', 'CandidateController@approve_join')->name('candidates.approve_join');
         Route::get('recruitments/{model_url}/candidates/cancel-join/{model}', 'CandidateController@send_offering')->name('candidates.cancel_join');
+        
+        // Users
+        Route::get('users', 'UserController@index')->name('users.index');
+        Route::get('users/create', 'UserController@create')->name('users.create');
+        Route::get('users/edit/{model}',  'UserController@edit')->name('users.edit');
+        Route::post('users', 'UserController@store')->name('users.store');
+        Route::put('users/{model}', 'UserController@update')->name('users.update');
     });
 });

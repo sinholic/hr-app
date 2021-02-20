@@ -40,20 +40,21 @@
             //     ),
             // ),
             (object) array(
-                'menu_tab_id' => 'application',
-                'menu_tab_label' => 'Apps',
-                'menu_tab_icon' => 'command',
-                'child_menus' => array(
+                'menu_tab_id'       => 'application',
+                'menu_tab_label'    => 'Apps',
+                'menu_tab_icon'     => 'command',
+                'child_menus'       => array(
                     (object) array(
-                        'label' => 'Recruitment',
-                        'link' => 'recruitments.index',
-                        'id'    => 'recruitments'
+                        'label'     => 'Recruitment',
+                        'link'      => 'recruitments.index',
+                        'id'        => 'recruitments',
+                        // 'roles'     =>  ['Super Admin', 'HR Manager', 'Management']
                     ),
-                    // (object) array(
-                    //     'label' => 'Form',
-                    //     'link' => 'index',
-                    //     'id'    => 'dashboard.hr'
-                    // ),
+                    (object) array(
+                        'label'     => 'Users',
+                        'link'      => 'users.index',
+                        'id'        => 'users'
+                    ),
                     // (object) array(
                     //     'label' => 'Chat',
                     //     'link' => 'index',
@@ -64,6 +65,23 @@
                     //     'link' => 'index',
                     //     'id'    => 'dashboard.hr'
                     // )
+                ),
+            ),
+            (object) array(
+                'menu_tab_id'       => 'settings',
+                'menu_tab_label'    => 'Settings',
+                'menu_tab_icon'     => 'sliders',
+                'child_menus'       => array(
+                    (object) array(
+                        'label'     => 'Departments',
+                        'link'      => 'dashboard.hr',
+                        'id'        => 'departments'
+                    ),
+                    (object) array(
+                        'label'     => 'Roles',
+                        'link'      => 'dashboard.hr',
+                        'id'        => 'roles'
+                    ),
                 ),
             ),
         );
@@ -80,8 +98,8 @@
         <!-- begin::main content -->
         <main class="main-content">
             <x-page.PageHeader :title=$title :sub-title=$subTitle :breadcrumbs=$breadcrumbs />
-            <x-page.PageAlert />
             <div class="container-fluid">
+                <x-page.PageAlert />
                 @yield('content')
             </div>
             <!-- begin::footer -->

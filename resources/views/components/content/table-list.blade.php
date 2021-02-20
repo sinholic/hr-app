@@ -59,15 +59,23 @@
                                     <td>{{ $data->$field->$key ?? '' }}</td>
                                 @else
                                     @if(isset($content['type']))
-                                        @if($content['type'] == 'count' )
-                                            <td>{{ $data->$field()->count() }}</td>
-                                        @elseif($content['type'] == 'download')
-                                            <td>
-                                                <a href="{{ asset('storage/uploads/cv/'.$data->$field) }}" target="_blank">
-                                                    <i class="fa fa-download" aria-hidden="true"></i>
-                                                </a>
-                                            </td>
-                                        @endif
+                                        @switch($content['type'])
+                                            @case('count')
+                                                <td>{{ $data->$field()->count() }}</td>
+                                                @break
+
+                                            @case('download')
+                                                <td>
+                                                    <a href="{{ asset('storage/uploads/cv/'.$data->$field) }}" target="_blank">
+                                                        <i class="fa fa-download" aria-hidden="true"></i>
+                                                    </a>
+                                                </td>
+                                                @break
+
+                                            @case('roles_name')
+                                                <td>{{ $data->getRoleNames() }}</td>
+                                                @break
+                                        @endswitch
                                     @else
                                         <td>{{ $data->$field ?? '' }}</td>
                                     @endif
@@ -92,18 +100,18 @@
                                             $when_key       = $button_extend['when_key'] ?? '';
                                             $when_value     = $button_extend['when_value'] ?? '';
                                             $skip_when      = true;
-                                            $state_show     = false;
+                                            $state_show     = true;
                                             $route_button   = null
                                         ?>
                                         @if(isset($button_extend['roles']))
                                             @hasanyrole($button_extend['roles'])
-                                                <?php $state_show = false; $skip_when = ($when == '' ? true : false); ?>
+                                                <?php $state_show = true; $skip_when = ($when == '' ? true : false); ?>
                                             @endhasanyrole
                                         @endif
                                         @if($when != ''  && !$skip_when)
                                             @if($when_key != '')
                                                 @if(is_array($when))
-                                                    <?php $state_true = true; ?>
+                                                    <?php $state_true = false; ?>
                                                     @foreach($when as $key => $value)
                                                         <?php 
                                                             $check_key          = $when_key[$key]; 
