@@ -308,9 +308,28 @@ class RecruitmentController extends Controller
         ])->id;
         $contents   = array(
             array(
+                'field'     =>  'sallary_adjusted',
+                'label'     =>  'Salary',
+                'type'      =>  'currency',
+                'state'     =>  'readonly',
+                'value'     =>  $model->sallary_proposed
+            ),
+            array(
+                'field'     =>  'number_of_people_approved',
+                'label'     =>  'Number of people',
+                'type'      =>  'number',
+                'state'     =>  'readonly',
+                'value'     =>  $model->number_of_people_requested
+            ),
+            array(
                 'label'     =>  'Remark for approval',
                 'field'     =>  'remark',
                 'type'      =>  'textarea'
+            ),
+            array(
+                'field'     =>  'request_status_id',
+                'type'      =>  'hidden',
+                'value'     =>  $requestStatus
             ),
             array(
                 'field'     =>  'request_status_id',

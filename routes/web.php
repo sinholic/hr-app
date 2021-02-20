@@ -52,12 +52,23 @@ Route::group(["middleware" => "auth", "namespace" => "Admin"], function () {
         Route::get('recruitments/{model_url}/candidates/send-offering/{model}', 'CandidateController@send_offering')->name('candidates.send_offering');
         Route::get('recruitments/{model_url}/candidates/approve-join/{model}', 'CandidateController@approve_join')->name('candidates.approve_join');
         Route::get('recruitments/{model_url}/candidates/cancel-join/{model}', 'CandidateController@send_offering')->name('candidates.cancel_join');
-        
+    });
+
+    Route::group([
+        "prefix" => "settings"
+    ], function () {
         // Users
         Route::get('users', 'UserController@index')->name('users.index');
         Route::get('users/create', 'UserController@create')->name('users.create');
         Route::get('users/edit/{model}',  'UserController@edit')->name('users.edit');
         Route::post('users', 'UserController@store')->name('users.store');
         Route::put('users/{model}', 'UserController@update')->name('users.update');
+
+        // Departments
+        Route::get('departments', 'DepartmentController@index')->name('departments.index');
+        Route::get('departments/create', 'DepartmentController@create')->name('departments.create');
+        Route::get('departments/edit/{model}',  'DepartmentController@edit')->name('departments.edit');
+        Route::post('departments', 'DepartmentController@store')->name('departments.store');
+        Route::put('departments/{model}', 'DepartmentController@update')->name('departments.update');
     });
 });

@@ -3,7 +3,7 @@
         $back_button = isset(Route::current()->parameters['model_url']) ? true : false;
     ?>
     <!-- Simplicity is the ultimate sophistication. - Leonardo da Vinci -->
-    @if(!isset($options['enable_add']) || $options['enable_add'])
+    @if(isset($options['enable_add']) && $options['enable_add'])
         <div class="row mb-3">
             <div class="col-md-12">
                 @if($back_button)
@@ -42,7 +42,7 @@
                                 <th>{{ ucfirst($content) }}</th>
                             @endif
                         @endforeach
-                        @if(!isset($options['enable_action']) || $options['enable_action'])
+                        @if(isset($options['enable_action']) && $options['enable_action'])
                         <th>Action</th>
                         @endif
                     </tr>
@@ -84,12 +84,12 @@
                                 <td>{{ $data->$content ?? '' }}</td>
                             @endif
                         @endforeach
-                        @if(!isset($options['enable_action']) || $options['enable_action'])
+                        @if(isset($options['enable_action']) && $options['enable_action'])
                             <td style="width:150px">
-                                @if(!isset($options['enable_edit']) || $options['enable_edit'])
+                                @if(isset($options['enable_edit']) && $options['enable_edit'])
                                     <a href="{{ route($route_as_name.'.edit', $data->id) }}" class="btn btn-block btn-sm btn-warning">Edit</a>
                                 @endif
-                                @if(!isset($options['enable_delete']) || $options['enable_delete'])
+                                @if(isset($options['enable_delete']) && $options['enable_delete'])
                                     <a href="{{ route($route_as_name.'.destroy', $data->id) }}" class="btn btn-block btn-sm btn-danger">Delete</a>
                                 @endif
                                 @if(isset($options['button_extends']))
@@ -100,14 +100,13 @@
                                             $when_key       = $button_extend['when_key'] ?? '';
                                             $when_value     = $button_extend['when_value'] ?? '';
                                             $skip_when      = true;
-                                            $state_show     = true;
-                                            $route_button   = null
+                                            $state_show     = false;
+                                            $route_button   = null;
+                                            $roles          = $button_extend['roles'] ?? \App\Models\Role::select('name')->get()->toArray();
                                         ?>
-                                        @if(isset($button_extend['roles']))
-                                            @hasanyrole($button_extend['roles'])
-                                                <?php $state_show = true; $skip_when = ($when == '' ? true : false); ?>
-                                            @endhasanyrole
-                                        @endif
+                                        @hasanyrole($roles)
+                                            <?php $state_show = true; $skip_when = ($when == '' ? true : false); ?>
+                                        @endhasanyrole
                                         @if($when != ''  && !$skip_when)
                                             @if($when_key != '')
                                                 @if(is_array($when))
@@ -116,7 +115,7 @@
                                                         <?php 
                                                             $check_key          = $when_key[$key]; 
                                                             $check_value        = $when_value[$key];
-                                                            if ($check_key == 'count_more') {
+                                                            if ($check_key      == 'count_more') {
                                                                 $state_show     = $data->$value->count() > $check_value ? true : false;
                                                             }elseif ($check_key == 'count_less') {
                                                                 $state_show     = $data->$value->count() < $check_value ? true : false;

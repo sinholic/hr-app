@@ -27,18 +27,18 @@
     <!-- end::preloader -->
     <?php
         $menus = array(
-            // (object) array(
-            //     'menu_tab_id' => 'dashboard',
-            //     'menu_tab_label' => 'Dashboards',
-            //     'menu_tab_icon' => 'bar-chart-2',
-            //     'child_menus' => array(
-            //         (object) array(
-            //             'label' => 'HR System',
-            //             'link' => 'dashboard.hr',
-            //             'id'    => 'hr'
-            //         ),
-            //     ),
-            // ),
+            (object) array(
+                'menu_tab_id' => 'dashboard',
+                'menu_tab_label' => 'Dashboards',
+                'menu_tab_icon' => 'bar-chart-2',
+                'child_menus' => array(
+                    (object) array(
+                        'label' => 'HR System',
+                        'link' => 'dashboard.hr',
+                        'id'    => 'hr'
+                    ),
+                ),
+            ),
             (object) array(
                 'menu_tab_id'       => 'application',
                 'menu_tab_label'    => 'Apps',
@@ -50,21 +50,6 @@
                         'id'        => 'recruitments',
                         // 'roles'     =>  ['Super Admin', 'HR Manager', 'Management']
                     ),
-                    (object) array(
-                        'label'     => 'Users',
-                        'link'      => 'users.index',
-                        'id'        => 'users'
-                    ),
-                    // (object) array(
-                    //     'label' => 'Chat',
-                    //     'link' => 'index',
-                    //     'id'    => 'dashboard.hr'
-                    // ),
-                    // (object) array(
-                    //     'label' => 'Employee',
-                    //     'link' => 'index',
-                    //     'id'    => 'dashboard.hr'
-                    // )
                 ),
             ),
             (object) array(
@@ -74,13 +59,13 @@
                 'child_menus'       => array(
                     (object) array(
                         'label'     => 'Departments',
-                        'link'      => 'dashboard.hr',
+                        'link'      => 'departments.index',
                         'id'        => 'departments'
                     ),
                     (object) array(
-                        'label'     => 'Roles',
-                        'link'      => 'dashboard.hr',
-                        'id'        => 'roles'
+                        'label'     => 'Users',
+                        'link'      => 'users.index',
+                        'id'        => 'users'
                     ),
                 ),
             ),
