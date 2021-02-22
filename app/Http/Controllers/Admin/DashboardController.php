@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Recruitment;
+use App\Models\Option;
 
 class DashboardController extends Controller
 {
@@ -25,14 +26,12 @@ class DashboardController extends Controller
      */
     public function humanResource()
     {
-        // - Dept
-        // - Requestor
-        // - Approved by
-        // - Action by
-        // - Proposed
-        // - Approved
-        // - Actual
-        $datas = Recruitment::with([
+        $departments    = Option::where('type', 'DEPARTMENT')->pluck('id');
+        $roles          = \Auth::user()->getRoleNames()->toArray();
+        if (in_array('Manager', $roles)) {
+            $departments    =   [\Auth::user()->department_id];
+        }
+        $datas          = Recruitment::with([
             'department',
             'user_requested',
             'user_change_status',
@@ -42,6 +41,7 @@ class DashboardController extends Controller
             'process_status',
             'candidates',
         ])
+        ->whereIn('department_id', $departments)
         ->orderBy('created_at','DESC')
         ->get();
         $contents = array(
