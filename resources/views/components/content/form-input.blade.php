@@ -54,8 +54,16 @@
                         {{ Form::file($content['field'], ['placeholder'=> $label, 'class' => 'form-control-file', $state]) }}
                         @break
 
+                    @case('selectMonth')
+                        {{ Form::selectMonth($content['field'], $content['value'] ?? NULL, ['placeholder'=> $label, 'class' => 'form-control date-range-picker', $state]) }}
+                        @break
+
                     @case('date')
                         {{ Form::text($content['field'], $content['value'] ?? NULL, ['placeholder'=> $label, 'class' => 'form-control single-date-picker', $state]) }}
+                        @break
+
+                    @case('daterange')
+                        {{ Form::text($content['field'], $content['value'] ?? NULL, ['placeholder'=> $label, 'class' => 'form-control date-range-picker', $state]) }}
                         @break
 
                     @case('datetime')

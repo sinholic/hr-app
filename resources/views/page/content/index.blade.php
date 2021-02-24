@@ -6,6 +6,9 @@
 @endsection
 
 @section('content')
+    @if(isset($filters))
+        <x-content.DataFilter :filters=$filters />
+    @endif
     <x-content.TableList :options=$view_options :contents="$contents" :datas="$datas" />
 @endsection
 

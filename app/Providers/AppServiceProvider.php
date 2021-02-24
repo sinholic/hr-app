@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
             $route_prefix   = ucfirst(str_replace("/", "", $route->action['prefix']));
             $breadcrumbs    = [$route_prefix, $title, $subTitle];
             $view->with([
-                'route'         => $route,
+                'route'         =>  $route,
                 'route_as'      =>  $route_as,
                 'route_as_name' =>  $route_as_name,
                 'title'         =>  $title,
