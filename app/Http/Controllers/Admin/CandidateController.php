@@ -47,6 +47,15 @@ class CandidateController extends Controller
             ),
             array(
                 'field'     =>  'interview_date',
+                'label'     =>  'Join date',
+                'type'      =>  'date',
+                'format'    =>  'F j, Y, g:i a'
+            ),
+            array(
+                'field'     =>  'joindate',
+                'label'     =>  'Join date',
+                'type'      =>  'date',
+                'format'    =>  'F j, Y'
             ),
             array(
                 'field'     =>  'candidate_status',
@@ -538,6 +547,11 @@ class CandidateController extends Controller
             'name'  =>  'ON BOARDING'
         ])->id;
         $contents   = array(
+            array(
+                'field'     =>  'joindate',
+                'type'      =>  'date',
+                'label'     =>  'Join date'
+            ),
             array(
                 'field'     =>  'remark',
                 'type'      =>  'textarea'
