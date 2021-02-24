@@ -47,15 +47,15 @@ class CandidateController extends Controller
             ),
             array(
                 'field'     =>  'interview_date',
-                'label'     =>  'Join date',
-                'type'      =>  'date',
-                'format'    =>  'F j, Y, g:i a'
+                // 'label'     =>  'Join date',
+                // 'type'      =>  'date',
+                // 'format'    =>  'F j, Y, g:i a'
             ),
             array(
                 'field'     =>  'joindate',
                 'label'     =>  'Join date',
-                'type'      =>  'date',
-                'format'    =>  'F j, Y'
+                // 'type'      =>  'date',
+                // 'format'    =>  'F j, Y'
             ),
             array(
                 'field'     =>  'candidate_status',
