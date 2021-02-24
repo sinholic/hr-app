@@ -277,7 +277,7 @@ class CandidateController extends Controller
                     'interview_date'        =>  'required',
                 ]
             );
-        }elseif ($request->interview_result) {
+        }elseif ($request->interview_result || $request->test_result) {
             $request->validate(
                 [
                     'interview_result'      =>  'required',
