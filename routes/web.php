@@ -51,7 +51,7 @@ Route::group(["middleware" => "auth", "namespace" => "Admin"], function () {
         Route::get('recruitments/{model_url}/candidates/not-suitable/{model}', 'CandidateController@not_suitable')->name('candidates.not_suitable');
         Route::get('recruitments/{model_url}/candidates/send-offering/{model}', 'CandidateController@send_offering')->name('candidates.send_offering');
         Route::get('recruitments/{model_url}/candidates/approve-join/{model}', 'CandidateController@approve_join')->name('candidates.approve_join');
-        Route::get('recruitments/{model_url}/candidates/cancel-join/{model}', 'CandidateController@send_offering')->name('candidates.cancel_join');
+        Route::get('recruitments/{model_url}/candidates/cancel-join/{model}', 'CandidateController@cancel_join')->name('candidates.cancel_join');
     });
 
     Route::group([
