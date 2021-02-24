@@ -19,4 +19,9 @@
 <script src="{{ asset('vendors/dataTable/dataTables.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('vendors/dataTable/dataTables.responsive.min.js') }}"></script>
 <script src="{{ asset('assets/js/examples/datatable.js') }}"></script>
+<script>
+    setInterval(function() {
+        window.location.reload();
+    }, 60000 ); 
+</script>
 @endsection
