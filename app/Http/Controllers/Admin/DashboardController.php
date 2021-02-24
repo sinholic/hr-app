@@ -26,31 +26,11 @@ class DashboardController extends Controller
      */
     public function humanResource(Request $request)
     {
-        $current_year = date('Y');
-        $months = array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
-        $month_names = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
-
-        // Loop through all the months and create an array up to and including the current month
-
-        for ($month=1;$month<=date('m');$month++)
-        {
-            $years[$current_year][$current_year.'-'.$month] = $month_names[$month-1];
-        }
-
-        // Previous years
-        // $years_to_create = $current_year - ($current_year);
-        // if (!empty($years_to_create))
-        // {
-        //     for ($i = 1; $i <= $years_to_create; $i++)
-        //     {
-        //         $years[$current_year - $i] = $month_names;
-        //     }
-        // }
-
-        // dd($years);
         $departments        =   Option::where('type', 'DEPARTMENT')->pluck('id');
         $roles              =   \Auth::user()->getRoleNames()->toArray();
-        if (in_array('Manager', $roles)) {
+        if (in_array('Manager', $roles)||
+            in_array('Team Lead', $roles)||
+            in_array('Employee', $roles)) {
             $departments    =   [\Auth::user()->department_id];
         }
         $datas              =   Recruitment::with([
@@ -64,15 +44,21 @@ class DashboardController extends Controller
             'candidates',
         ])
         ->whereIn('department_id', $departments);
-        if ($request->created_at) {
+        if ($request->created_at != '' && $request->created_at != 'All') {
             $created_at     =   explode("-",$request->created_at);
             $datas          =   $datas->whereYear('created_at', $created_at[0])
             ->whereMonth('created_at', $created_at[1]);
         }
         $datas              =   $datas->orderBy('created_at','DESC')
         ->get();
-        // dd($datas);
+
         $contents           =   array(
+            array(
+                'field'     =>  'created_at',
+                'label'     =>  'Requested at',
+                'type'      =>  'date',
+                'format'    =>  'F j, Y'
+            ),
             array(
                 'field'     =>  'department',
                 'key'       =>  'name'
@@ -104,6 +90,14 @@ class DashboardController extends Controller
                 'label'     =>  'Approved'
             ),
             array(
+                'field'     =>  'request_status',
+                'key'       =>  'name'
+            ),
+            array(
+                'field'     =>  'process_status',
+                'key'       =>  'name'
+            ),
+            array(
                 'field'     =>  'candidates',
                 'label'     =>  'Actual',
                 'type'      =>  'count'
@@ -116,8 +110,7 @@ class DashboardController extends Controller
             array(
                 'field'     =>  'created_at',
                 'label'     =>  'Requested at',
-                'type'      =>  'select2',
-                'data'      =>  $years,
+                'type'      =>  'filter_month_year',
                 'value'     =>  $request->created_at
             )
         );

@@ -56,6 +56,7 @@
                 'menu_tab_id'       => 'settings',
                 'menu_tab_label'    => 'Settings',
                 'menu_tab_icon'     => 'sliders',
+                'roles'             =>  ['Super Admin', 'HR Manager', 'Management'],
                 'child_menus'       => array(
                     (object) array(
                         'label'     => 'Departments',

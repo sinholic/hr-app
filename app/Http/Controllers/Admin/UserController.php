@@ -127,7 +127,7 @@ class UserController extends Controller
             [
                 'field'     =>  'role_id',
                 'label'     =>  'Role',
-                'type'      =>  'role_select2',
+                'type'      =>  'select2',
                 'data'      =>  $roles,
                 'value'     =>  $model->roles[0]->id ?? NULL
             ]

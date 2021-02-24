@@ -33,12 +33,14 @@
     <div class="flex-grow-1">
         <ul>
             @foreach($menus as $menu)
-            <li>
-                <a class="{{ request()->is($menu->menu_tab_id.'*') ? 'active' : '' }}" href="#" data-toggle="tooltip" data-placement="right" title="{{$menu->menu_tab_label}}"
-                data-nav-target="#{{$menu->menu_tab_id}}">
-                    <i data-feather="{{$menu->menu_tab_icon}}"></i>
-                </a>
-            </li>
+                @hasanyrole($menu->roles ?? \App\Models\Role::select('name')->get()->toArray())
+                <li>
+                    <a class="{{ request()->is($menu->menu_tab_id.'*') ? 'active' : '' }}" href="#" data-toggle="tooltip" data-placement="right" title="{{$menu->menu_tab_label}}"
+                    data-nav-target="#{{$menu->menu_tab_id}}">
+                        <i data-feather="{{$menu->menu_tab_icon}}"></i>
+                    </a>
+                </li>
+                @endhasanyrole
             @endforeach
         </ul>
     </div>

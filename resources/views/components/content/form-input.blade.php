@@ -1,4 +1,16 @@
 <div>
+    <?php
+        $current_year = date('Y');
+        $months = array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+        $month_names = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+
+        // Loop through all the months and create an array up to and including the current month
+        $years['Filter All']['All'] =   'All';
+        for ($month=1;$month<=date('m');$month++)
+        {
+            $years[$current_year][$current_year.'-'.$month] = $month_names[$month-1];
+        }
+    ?>
     <!-- Simplicity is an acquired taste. - Katharine Gerould -->
     {{ Form::token() }}
     @foreach($contents as $content)
@@ -13,10 +25,10 @@
                     {{ $label }}
                 </label>
                 @switch($type)
-                    @case('role_select2')
-                        {{ Form::select($content['field'], $content['data'], $content['value'] ?? NULL, ['placeholder'=> $label, 'class' => 'form-control js-example-basic-single', $state]) }}
+                    @case('filter_month_year')
+                        {{ Form::select($content['field'], $years, $content['value'] ?? NULL, ['class' => 'form-control js-example-basic-single', $state]) }}
                         @break
-
+                        
                     @case('select2')
                         {{ Form::select($content['field'], $content['data'], $content['value'] ?? NULL, ['placeholder'=> $label, 'class' => 'form-control js-example-basic-single', $state]) }}
                         @break

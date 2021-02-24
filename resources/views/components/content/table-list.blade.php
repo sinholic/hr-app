@@ -75,6 +75,10 @@
                                             @case('roles_name')
                                                 <td>{{ $data->getRoleNames() }}</td>
                                                 @break
+
+                                            @case('date')
+                                                <td>{{ $data->$field->format($content['format']) }}</td>
+                                                @break
                                         @endswitch
                                     @else
                                         <td>{{ $data->$field ?? '' }}</td>

@@ -14,16 +14,18 @@
 
     <div class="navigation-menu-group">
         @foreach($menus as $menu)
-        <div class="{{ request()->is($menu->menu_tab_id.'*') ? 'open' : '' }}" id="{{ $menu->menu_tab_id }}">
-            <ul>
-                <li class="navigation-divider">{{ $menu->menu_tab_label }}</li>
-                @foreach($menu->child_menus as $child_menu)
-                    @hasanyrole($child_menu->roles ?? \App\Models\Role::select('name')->get()->toArray())
-                        <li><a class="{{ request()->is($menu->menu_tab_id.'/'.$child_menu->id.'*') ? 'active' : '' }}" href="{{ route($child_menu->link) }}">{{ $child_menu->label }}</a></li>
-                    @endhasanyrole
-                @endforeach
-            </ul>
-        </div>
+            @hasanyrole($menu->roles ?? \App\Models\Role::select('name')->get()->toArray())
+            <div class="{{ request()->is($menu->menu_tab_id.'*') ? 'open' : '' }}" id="{{ $menu->menu_tab_id }}">
+                <ul>
+                    <li class="navigation-divider">{{ $menu->menu_tab_label }}</li>
+                    @foreach($menu->child_menus as $child_menu)
+                        @hasanyrole($child_menu->roles ?? \App\Models\Role::select('name')->get()->toArray())
+                            <li><a class="{{ request()->is($menu->menu_tab_id.'/'.$child_menu->id.'*') ? 'active' : '' }}" href="{{ route($child_menu->link) }}">{{ $child_menu->label }}</a></li>
+                        @endhasanyrole
+                    @endforeach
+                </ul>
+            </div>
+            @endhasanyrole
         @endforeach
     </div>
 </div>
