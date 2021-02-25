@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Recruitment;
 use App\Models\Option;
+use App\Models\Log as LogDB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class RecruitmentController extends Controller
 {
+    private $name           =   'Recruitment';
+    private $log_model      =   'App\Models\Recruitment';
     /**
      * Display a listing of the resource.
      *
@@ -261,9 +264,15 @@ class RecruitmentController extends Controller
         );
         $data = $request->all();
         $data['job_position']                   =   strtoupper($request->job_position);
-        Recruitment::create($data);
+        $recruitment                            =   Recruitment::create($data);
+        LogDB::create([
+            'field'                             =>  'remark',
+            'model'                             =>  $this->log_model,
+            'model_id'  	                    =>  $recruitment->id,
+            'value'                             =>  \Auth::user()->name.' : '.($request->remark ?? 'No remark').' \n On : '.\Carbon\Carbon::now().'\n\n'
+        ]);
 
-        return redirect()->route("recruitments.index")->withSuccess("Recruitment has been Added Successfully");
+        return redirect()->route("recruitments.index")->withSuccess("$this->name has been Added Successfully");
 
     }
 
@@ -289,9 +298,14 @@ class RecruitmentController extends Controller
             $data['sallary_adjusted'] = $data['sallary_proposed'];
         }
         $model->update($data);
-        
+        LogDB::create([
+            'field'                             =>  'remark',
+            'model'                             =>  $this->log_model,
+            'model_id'  	                    =>  $model->id,
+            'value'                             =>  \Auth::user()->name.' : '.($request->remark ?? 'No remark').' \n On : '.\Carbon\Carbon::now().'\n\n'
+        ]);
 
-        return redirect()->route("recruitments.index")->withSuccess("Recruitment has been Updated Successfully");
+        return redirect()->route("recruitments.index")->withSuccess("$this->name has been Updated Successfully");
     }
 
     /**
@@ -306,7 +320,12 @@ class RecruitmentController extends Controller
             'type'  =>  'REQUEST_STATUS',
             'name'  =>  'APPROVED'
         ])->id;
-        $contents   = array(
+        $logs               =   LogDB::where('model', $this->log_model)
+        ->where('model_id',$model->id)
+        ->orderBy('created_at', 'DESC')
+        ->get();
+        
+        $contents           =   array(
             array(
                 'field'     =>  'sallary_adjusted',
                 'label'     =>  'Salary',
@@ -319,11 +338,12 @@ class RecruitmentController extends Controller
                 'label'     =>  'Number of people',
                 'type'      =>  'number',
                 'state'     =>  'readonly',
-                'value'     =>  $model->number_of_people_requested
+                'value'     =>  $model->number_of_people_requested,
             ),
             array(
                 'label'     =>  'Remark for approval',
                 'field'     =>  'remark',
+                'has_logs'  =>  $logs->contains('field', 'remark'),
                 'type'      =>  'textarea'
             ),
             array(
@@ -344,6 +364,7 @@ class RecruitmentController extends Controller
         );
         return view('page.content.edit')
         ->with('model', $model)
+        ->with('logs',$logs)
         ->with('contents', $contents);
     }
 
@@ -359,6 +380,10 @@ class RecruitmentController extends Controller
             'type'  =>  'REQUEST_STATUS',
             'name'  =>  'APPROVED'
         ])->id;
+        $logs               =   LogDB::where('model', $this->log_model)
+        ->where('model_id',$model->id)
+        ->orderBy('created_at', 'DESC')
+        ->get();
         $contents   = array(
             array(
                 'field'     =>  'number_of_people_requested',
@@ -380,6 +405,7 @@ class RecruitmentController extends Controller
             ),
             array(
                 'field'     =>  'remark',
+                'has_logs'  =>  $logs->contains('field', 'remark'),
                 'type'      =>  'textarea'
             ),
             array(
@@ -395,6 +421,7 @@ class RecruitmentController extends Controller
         );
         return view('page.content.edit')
         ->with('model', $model)
+        ->with('logs',$logs)
         ->with('contents', $contents);
     }
 
@@ -410,10 +437,15 @@ class RecruitmentController extends Controller
             'type'  =>  'REQUEST_STATUS',
             'name'  =>  'REJECTED'
         ])->id;
+        $logs               =   LogDB::where('model', $this->log_model)
+        ->where('model_id',$model->id)
+        ->orderBy('created_at', 'DESC')
+        ->get();
         $contents   = array(
             array(
                 'label'     =>  'Reason to reject',
                 'field'     =>  'remark',
+                'has_logs'  =>  $logs->contains('field', 'remark'),
                 'type'      =>  'textarea'
             ),
             array(
@@ -429,6 +461,7 @@ class RecruitmentController extends Controller
         );
         return view('page.content.edit')
         ->with('model', $model)
+        ->with('logs',$logs)
         ->with('contents', $contents);
     }
 
@@ -444,6 +477,10 @@ class RecruitmentController extends Controller
             'type'  =>  'PROCESS_STATUS',
             'name'  =>  'ON PROGRESS'
         ])->id;
+        $logs               =   LogDB::where('model', $this->log_model)
+        ->where('model_id',$model->id)
+        ->orderBy('created_at', 'DESC')
+        ->get();
         $contents   = array(
             array(
                 'label'     =>  'Start date',
@@ -452,6 +489,7 @@ class RecruitmentController extends Controller
             ),
             array(
                 'field'     =>  'remark',
+                'has_logs'  =>  $logs->contains('field', 'remark'),
                 'type'      =>  'textarea'
             ),
             array(
@@ -467,6 +505,7 @@ class RecruitmentController extends Controller
         );
         return view('page.content.edit')
         ->with('model', $model)
+        ->with('logs',$logs)
         ->with('contents', $contents);
     }
 
@@ -482,14 +521,19 @@ class RecruitmentController extends Controller
             'type'  =>  'PROCESS_STATUS',
             'name'  =>  'DONE'
         ])->id;
+        $logs               =   LogDB::where('model', $this->log_model)
+        ->where('model_id',$model->id)
+        ->orderBy('created_at', 'DESC')
+        ->get();
         $contents   = array(
             array(
-                'label'     =>  'Start date',
+                'label'     =>  'End date',
                 'field'     =>  'end_process',
                 'type'      =>  'date'
             ),
             array(
                 'field'     =>  'remark',
+                'has_logs'  =>  $logs->contains('field', 'remark'),
                 'type'      =>  'textarea'
             ),
             array(
@@ -505,6 +549,7 @@ class RecruitmentController extends Controller
         );
         return view('page.content.edit')
         ->with('model', $model)
+        ->with('logs',$logs)
         ->with('contents', $contents);
     }
 }

@@ -14,6 +14,13 @@ class FormUpdate extends Component
     public $contents;
 
     /**
+     * The lists log.
+     *
+     * @var array
+     */
+    public $logs;
+
+    /**
      * The model.
      *
      * @var App\Models
@@ -25,10 +32,11 @@ class FormUpdate extends Component
      *
      * @return void
      */
-    public function __construct($contents, $model)
+    public function __construct($contents, $model, $logs = null)
     {
-        $this->contents = $contents;
-        $this->model = $model;
+        $this->contents =   $contents;
+        $this->model    =   $model;
+        $this->logs     =   $logs;
     }
 
     /**

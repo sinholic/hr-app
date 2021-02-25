@@ -41,6 +41,15 @@
                     @case('text')
                     @case('number')
                         {{ Form::$type($content['field'], $content['value'] ?? NULL, ['placeholder'=> $label, 'class' => 'form-control', $state]) }}
+                        @if(isset($content['has_logs']) && $content['has_logs'])
+                        <ul>
+                            <?php
+                                $logs->where('field', $content['field'])->each(function($log){
+                                    echo '<li>'.nl2br(stripcslashes($log->value)).'</li>';
+                                })
+                            ?>
+                        </ul>
+                        @endif
                         @break
 
                     @case('wsywig')

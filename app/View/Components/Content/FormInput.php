@@ -14,13 +14,21 @@ class FormInput extends Component
     public $contents;
 
     /**
+     * The lists content.
+     *
+     * @var array
+     */
+    public $logs;
+
+    /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($contents)
+    public function __construct($contents, $logs = null)
     {
-        $this->contents = $contents;
+        $this->contents =   $contents;
+        $this->logs     =   $logs;
     }
 
     /**

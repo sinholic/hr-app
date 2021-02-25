@@ -7,10 +7,13 @@ use Illuminate\Http\Request;
 use App\Models\Candidate;
 use App\Models\Recruitment;
 use App\Models\Option;
+use App\Models\Log as LogDB;
 use Ramsey\Uuid\Uuid;
 
 class CandidateController extends Controller
 {
+    private $name           =   'Candidate';
+    private $log_model      =   'App\Models\Candidate';
     /**
      * Display a listing of the candidate from recruitment id.
      * 
@@ -259,13 +262,19 @@ class CandidateController extends Controller
                 'recruitment_id'        =>  'required',
             ]
         );
-        $data = $request->all();
+        $data                           = $request->all();
         if ($request->hasFile("curriculum_vitae")) {
             $fileName = Uuid::uuid4()->toString()."." . $request->file("curriculum_vitae")->getClientOriginalExtension();
             $request->file("curriculum_vitae")->move(public_path() . "/storage/uploads/cv/", $fileName);
             $data['curriculum_vitae'] = $fileName;
         }
-        Candidate::create($data);
+        $candidate                      =   Candidate::create($data);
+        LogDB::create([
+            'field'                     =>  'remark',
+            'model'                     =>  $this->log_model,
+            'model_id'  	            =>  $candidate->id,
+            'value'                     =>  \Auth::user()->name.' : '.($request->remark ?? 'No remark').' \n On : '.\Carbon\Carbon::now().'\n\n'
+        ]);
         return redirect()->route("candidates.index", $model_url->id)->withSuccess("Candidate has been Added Successfully");
     }
 
@@ -286,11 +295,12 @@ class CandidateController extends Controller
                     'interview_date'        =>  'required',
                 ]
             );
-        }elseif ($request->interview_result || $request->test_result) {
+        }elseif ($request->interview_result || $request->test_result || $request->fileresult) {
             $request->validate(
                 [
                     'interview_result'      =>  'required',
-                    'test_result'           =>  'required'
+                    'test_result'           =>  'required',
+                    'fileresult'            =>  'required',
                 ]
             );
         }elseif ($request->hasFile("curriculum_vitae")) {
@@ -299,7 +309,12 @@ class CandidateController extends Controller
             $data['curriculum_vitae'] = $fileName;
         }
         $model->update($data);
-        
+        LogDB::create([
+            'field'                     =>  'remark',
+            'model'                     =>  $this->log_model,
+            'model_id'  	            =>  $model->id,
+            'value'                     =>  \Auth::user()->name.' : '.($request->remark ?? 'No remark').' \n On : '.\Carbon\Carbon::now().'\n\n'
+        ]);
 
         return redirect()->route("candidates.index", $model_url->id)->withSuccess("Candidate has been Updated Successfully");
     }
@@ -314,6 +329,10 @@ class CandidateController extends Controller
      */
     public function edit(Recruitment $model_url, Candidate $model, Request $request)
     {
+        $logs               =   LogDB::where('model', $this->log_model)
+        ->orderBy('created_at', 'DESC')
+        ->where('model_id',$model->id)
+        ->get();
         $contents   = array(
             array(
                 'field'     =>  'name',
@@ -338,12 +357,14 @@ class CandidateController extends Controller
             ),            
             array(
                 'field'     =>  'remark',
+                'has_logs'  =>  $logs->contains('field', 'remark'),
                 'type'      =>  'textarea'
             ),
         );
         return view('page.content.edit')
         ->with('model_url', $model_url)
         ->with('model', $model)
+        ->with('logs',$logs)
         ->with('contents', $contents);
     }
 
@@ -361,6 +382,10 @@ class CandidateController extends Controller
             'type'  =>  'CANDIDATE_STATUS',
             'name'  =>  'WAITING FOR INTERVIEW WITH USER'
         ])->id;
+        $logs               =   LogDB::where('model', $this->log_model)
+        ->orderBy('created_at', 'DESC')
+        ->where('model_id',$model->id)
+        ->get();
         $contents   = array(
             array(
                 'field'     =>  'interview_date',
@@ -368,6 +393,7 @@ class CandidateController extends Controller
             ),
             array(
                 'field'     =>  'remark',
+                'has_logs'  =>  $logs->contains('field', 'remark'),
                 'type'      =>  'textarea'
             ),
             array(
@@ -379,6 +405,7 @@ class CandidateController extends Controller
         return view('page.content.edit')
         ->with('model_url', $model_url)
         ->with('model', $model)
+        ->with('logs',$logs)
         ->with('contents', $contents);
     }
 
@@ -396,6 +423,10 @@ class CandidateController extends Controller
             'type'  =>  'CANDIDATE_STATUS',
             'name'  =>  'WAITING FOR CONFIRMATION FROM USER'
         ])->id;
+        $logs               =   LogDB::where('model', $this->log_model)
+        ->orderBy('created_at', 'DESC')
+        ->where('model_id',$model->id)
+        ->get();
         $contents   = array(
             array(
                 'field'     =>  'interview_result',
@@ -406,7 +437,13 @@ class CandidateController extends Controller
                 'type'      =>  'text'
             ),
             array(
+                'field'     =>  'fileresult',
+                'label'     =>  'File result',
+                'type'      =>  'file'
+            ),
+            array(
                 'field'     =>  'remark',
+                'has_logs'  =>  $logs->contains('field', 'remark'),
                 'type'      =>  'textarea'
             ),
             array(
@@ -418,6 +455,7 @@ class CandidateController extends Controller
         return view('page.content.edit')
         ->with('model_url', $model_url)
         ->with('model', $model)
+        ->with('logs',$logs)
         ->with('contents', $contents);
     }
 
@@ -435,9 +473,14 @@ class CandidateController extends Controller
             'type'  =>  'CANDIDATE_STATUS',
             'name'  =>  'SUITABLE'
         ])->id;
+        $logs               =   LogDB::where('model', $this->log_model)
+        ->orderBy('created_at', 'DESC')
+        ->where('model_id',$model->id)
+        ->get();
         $contents   = array(
             array(
                 'field'     =>  'remark',
+                'has_logs'  =>  $logs->contains('field', 'remark'),
                 'type'      =>  'textarea'
             ),
             array(
@@ -449,6 +492,7 @@ class CandidateController extends Controller
         return view('page.content.edit')
         ->with('model_url', $model_url)
         ->with('model', $model)
+        ->with('logs',$logs)
         ->with('contents', $contents);
     }
 
@@ -466,9 +510,14 @@ class CandidateController extends Controller
             'type'  =>  'CANDIDATE_STATUS',
             'name'  =>  'NOT SUITABLE'
         ])->id;
+        $logs               =   LogDB::where('model', $this->log_model)
+        ->orderBy('created_at', 'DESC')
+        ->where('model_id',$model->id)
+        ->get();
         $contents   = array(
             array(
                 'field'     =>  'remark',
+                'has_logs'  =>  $logs->contains('field', 'remark'),
                 'type'      =>  'textarea'
             ),
             array(
@@ -480,6 +529,7 @@ class CandidateController extends Controller
         return view('page.content.edit')
         ->with('model_url', $model_url)
         ->with('model', $model)
+        ->with('logs',$logs)
         ->with('contents', $contents);
     }
 
@@ -497,6 +547,10 @@ class CandidateController extends Controller
             'type'  =>  'CANDIDATE_STATUS',
             'name'  =>  'OFFERING LETTER SENT'
         ])->id;
+        $logs               =   LogDB::where('model', $this->log_model)
+        ->orderBy('created_at', 'DESC')
+        ->where('model_id',$model->id)
+        ->get();
         $contents   = array(
             array(
                 'field'     =>  'name',
@@ -518,6 +572,7 @@ class CandidateController extends Controller
             ),
             array(
                 'field'     =>  'remark',
+                'has_logs'  =>  $logs->contains('field', 'remark'),
                 'type'      =>  'textarea'
             ),
             array(
@@ -529,6 +584,7 @@ class CandidateController extends Controller
         return view('page.content.edit')
         ->with('model_url', $model_url)
         ->with('model', $model)
+        ->with('logs',$logs)
         ->with('contents', $contents);
     }
 
@@ -546,6 +602,10 @@ class CandidateController extends Controller
             'type'  =>  'CANDIDATE_STATUS',
             'name'  =>  'ON BOARDING'
         ])->id;
+        $logs               =   LogDB::where('model', $this->log_model)
+        ->orderBy('created_at', 'DESC')
+        ->where('model_id',$model->id)
+        ->get();
         $contents   = array(
             array(
                 'field'     =>  'joindate',
@@ -554,6 +614,7 @@ class CandidateController extends Controller
             ),
             array(
                 'field'     =>  'remark',
+                'has_logs'  =>  $logs->contains('field', 'remark'),
                 'type'      =>  'textarea'
             ),
             array(
@@ -565,6 +626,7 @@ class CandidateController extends Controller
         return view('page.content.edit')
         ->with('model_url', $model_url)
         ->with('model', $model)
+        ->with('logs',$logs)
         ->with('contents', $contents);
     }
 
@@ -585,6 +647,7 @@ class CandidateController extends Controller
         $contents   = array(
             array(
                 'field'     =>  'remark',
+                'has_logs'  =>  $logs->contains('field', 'remark'),
                 'type'      =>  'textarea'
             ),
             array(
@@ -596,6 +659,7 @@ class CandidateController extends Controller
         return view('page.content.edit')
         ->with('model_url', $model_url)
         ->with('model', $model)
+        ->with('logs',$logs)
         ->with('contents', $contents);
     }
 }

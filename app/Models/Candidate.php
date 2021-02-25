@@ -10,15 +10,7 @@ class Candidate extends Model
 {
     use Uuids, SoftDeletes;
     protected $guarded = [];
-
-    protected $dates = ['joindate', 'interview_date'];
-
-
-    protected $casts = [
-        'joindate'  => 'date:Y-m-d',
-        'interview_date' => 'datetime:Y-m-d H:i',
-    ];
-
+    
     public function candidate_status()
     {
         return $this->belongsTo('App\Models\Option', 'candidate_status_id', 'id')->withDefault([

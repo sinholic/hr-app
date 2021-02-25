@@ -14,7 +14,10 @@
     <div class="row">
         <div class="col-md-12">
             {!! Form::model($model, ['route' => [$route_as_name.'.update', $params], 'method' => 'PUT', 'files' => true]) !!}
-                <x-content.FormInput :contents=$contents />
+                <x-content.FormInput 
+                    :contents=$contents 
+                    :logs=$logs
+                />
             {!! Form::close() !!}
         </div>
     </div>

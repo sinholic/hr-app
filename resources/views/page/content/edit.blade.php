@@ -6,7 +6,12 @@
 <link rel="stylesheet" href="{{ asset('vendors/datepicker/daterangepicker.css') }}" type="text/css">
 @endsection
 @section('content')
-    <x-content.FormUpdate :contents=$contents :model=$model />
+    <?php $logs = $logs ?? null ?>
+    <x-content.FormUpdate 
+        :contents=$contents 
+        :model=$model 
+        :logs=$logs
+    />
 @endsection
 
 @section('js-footer')
