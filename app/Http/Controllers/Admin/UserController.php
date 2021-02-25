@@ -150,7 +150,6 @@ class UserController extends Controller
                 'name'          =>  'required',
                 'email'         =>  'required',
                 'password'      =>  'required',
-                'department_id' =>  'required',
                 'role_id'       =>  'required',
             ]
         );
