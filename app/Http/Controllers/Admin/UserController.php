@@ -10,6 +10,8 @@ use App\Models\Role;
 
 class UserController extends Controller
 {
+    private $name           =   'User';
+    private $log_model      =   'App\Models\User';
     /**
      * Display a listing of the resource.
      *
@@ -35,16 +37,12 @@ class UserController extends Controller
             [
                 'field'     =>  'department',
                 'key'       =>  'name'
-            ],
-            [
-                'field'     =>  'roles',
-                'type'      =>  'roles_name'
             ]
         );
         $view_options = array(
             'table_class_override'      =>  'table-bordered table-striped table-responsive-stack',
             'enable_add'                =>  true,
-            'enable_delete'             =>  false,
+            'enable_delete'             =>  true,
             'enable_edit'               =>  true,
             'enable_action'             =>  true,
             // 'button_extends'            =>  
@@ -119,6 +117,10 @@ class UserController extends Controller
                 'state'     =>  'readonly'
             ],
             [
+                'field'     =>  'password',
+                'type'      =>  'password'
+            ],
+            [
                 'field'     =>  'department_id',
                 'label'     =>  'Department',
                 'type'      =>  'select2',
@@ -175,17 +177,37 @@ class UserController extends Controller
     {
         $request->validate(
             [
-                'department_id'     =>  'required',
                 'role_id'           =>  'required',
             ]
         );
-        $data = $request->all();
+        $data   = $request->all();
         unset($data['role_id']);
+        unset($data['password']);
+        if ($request->password) {
+            $data['password']       =   \Hash::make($request->password);
+        }
         $model->update($data);
-        $role   = Role::find($request->role_id);
+        $role                       = Role::find($request->role_id);
         $model->syncRoles($role);
         
 
         return redirect()->route("users.index")->withSuccess("User has been Updated Successfully");
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\User  $model
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(User $model)
+    {
+        if (!$model) {
+            return redirect()->route("users.index")->withWarning("$this->name Not Found / has been Deleted");
+        }
+
+        $model->delete();
+
+        return redirect()->route("users.index")->withSuccess("$this->name has been Deleted Successfully");
     }
 }

@@ -94,7 +94,7 @@
                                     <a href="{{ route($route_as_name.'.edit', $data->id) }}" class="btn btn-block btn-sm btn-warning">Edit</a>
                                 @endif
                                 @if(isset($options['enable_delete']) && $options['enable_delete'])
-                                    <a href="{{ route($route_as_name.'.destroy', $data->id) }}" class="btn btn-block btn-sm btn-danger">Delete</a>
+                                    <a onclick="return confirm('Are you sure to delete?!');" href="{{ route($route_as_name.'.destroy', $data->id) }}" class="btn btn-block btn-sm btn-danger">Delete</a>
                                 @endif
                                 @if(isset($options['button_extends']))
                                     @foreach($options['button_extends'] as $button_extend)

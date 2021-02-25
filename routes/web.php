@@ -63,6 +63,7 @@ Route::group(["middleware" => "auth", "namespace" => "Admin"], function () {
         Route::get('users/edit/{model}',  'UserController@edit')->name('users.edit');
         Route::post('users', 'UserController@store')->name('users.store');
         Route::put('users/{model}', 'UserController@update')->name('users.update');
+        Route::get('users/destroy/{model}',  'UserController@destroy')->name('users.destroy');
 
         // Departments
         Route::get('departments', 'DepartmentController@index')->name('departments.index');
