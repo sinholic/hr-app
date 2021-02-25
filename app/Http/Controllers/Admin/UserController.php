@@ -37,6 +37,10 @@ class UserController extends Controller
             [
                 'field'     =>  'department',
                 'key'       =>  'name'
+            ],
+            [
+                'field'     =>  'roles',
+                'type'      =>  'roles_name'
             ]
         );
         $view_options = array(
