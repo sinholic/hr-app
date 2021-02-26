@@ -291,12 +291,12 @@ class RecruitmentController extends Controller
     public function update(Request $request, Recruitment $model)
     {
         if ($request->number_of_people_approved) {
-            $request->validate(
-                [
-                    'number_of_people_approved'     =>  'integer|min:0',
-                    'sallary_adjusted'              =>  'integer|min:0',
-                ]
-            );
+            // $request->validate(
+            //     [
+            //         'number_of_people_approved'     =>  'integer|min:0',
+            //         'sallary_adjusted'              =>  'integer|min:0',
+            //     ]
+            // );
         }
         $data = $request->all();
         if (isset($request->sallary_adjusted) && is_null($request->sallary_adjusted)) {
