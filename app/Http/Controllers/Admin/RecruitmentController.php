@@ -322,11 +322,17 @@ class RecruitmentController extends Controller
     public function edit(Recruitment $model)
     {
         $priorities         =   Option::where('type', 'PRIORITY')->pluck('name', 'id');
+        $departments        =   Option::where('type', 'DEPARTMENT')->pluck('name', 'id');
         $logs               =   LogDB::where('model', $this->log_model)
         ->where('model_id',$model->id)
         ->orderBy('created_at', 'DESC')
         ->get();
         $contents   = array(
+            array(
+                'field'     =>  'department_id',
+                'type'      =>  'select2',
+                'data'      =>  $departments
+            ),
             array(
                 'field'     =>  'number_of_people_requested',
                 'type'      =>  'number',
