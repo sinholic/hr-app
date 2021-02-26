@@ -84,6 +84,12 @@ class RecruitmentController extends Controller
             'enable_action'             =>  true,
             'button_extends'            =>  array(
                 array(
+                    'label'                 =>  'edit',  // Button text to be shown in the HTML
+                    'action'                =>  'recruitments.edit', // Routes to action, eg : dashboard.index, user.create
+                    'class'                 =>  'warning',  // Default button class, leave it blank if you want the primary color
+                    'roles'                 =>  ['Super Admin','HR Manager','Management'], // Roles to be checked for the UI to be show
+                ),
+                array(
                     'label'                 =>  'approve',  // Button text to be shown in the HTML
                     'action'                =>  'recruitments.approve', // Routes to action, eg : dashboard.index, user.create
                     'class'                 =>  'success',  // Default button class, leave it blank if you want the primary color
@@ -305,6 +311,44 @@ class RecruitmentController extends Controller
         ]);
 
         return redirect()->route("recruitments.index")->withSuccess("$this->name has been Updated Successfully");
+    }
+
+    /**
+     * Show the form for reject the recruitment.
+     *
+     * @param  \App\Models\Recruitment  $model
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Recruitment $model)
+    {
+        $priorities         =   Option::where('type', 'PRIORITY')->pluck('name', 'id');
+        $logs               =   LogDB::where('model', $this->log_model)
+        ->where('model_id',$model->id)
+        ->orderBy('created_at', 'DESC')
+        ->get();
+        $contents   = array(
+            array(
+                'field'     =>  'number_of_people_requested',
+                'type'      =>  'number',
+            ),
+            array(
+                'field'     =>  'requirements',
+                'type'      =>  'wsywig',
+            ),
+            array(
+                'field'     =>  'sallary_proposed',
+                'type'      =>  'currency',
+            ),
+            array(
+                'field'     =>  'priority_id',
+                'type'      =>  'select2',
+                'data'      =>  $priorities
+            ),
+        );
+        return view('page.content.edit')
+        ->with('model', $model)
+        ->with('logs',$logs)
+        ->with('contents', $contents);
     }
 
     /**

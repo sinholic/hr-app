@@ -38,6 +38,7 @@ Route::group(["middleware" => "auth", "namespace" => "Admin"], function () {
         Route::get('recruitments/reject/{model}', 'RecruitmentController@reject')->name('recruitments.reject');
         Route::get('recruitments/start/{model}', 'RecruitmentController@start')->name('recruitments.start');
         Route::get('recruitments/end/{model}', 'RecruitmentController@end')->name('recruitments.end');
+        Route::get('recruitments/edit/{model}', 'RecruitmentController@edit')->name('recruitments.edit');
 
         // Recruitments - Candidate
         Route::get('recruitments/{model_url}/candidates', 'CandidateController@index')->name('candidates.index');
