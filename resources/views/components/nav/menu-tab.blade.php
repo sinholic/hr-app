@@ -47,11 +47,6 @@
     <div>
         <ul>
             <li>
-                <a href="#" data-toggle="tooltip" data-placement="right" title="Settings">
-                    <i data-feather="settings"></i>
-                </a>
-            </li>
-            <li>
                 <a href="{{ route('logout') }}" data-toggle="tooltip" data-placement="right" title="Logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <i data-feather="log-out"></i>
                 </a>

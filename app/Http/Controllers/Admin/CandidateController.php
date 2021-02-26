@@ -12,8 +12,10 @@ use Ramsey\Uuid\Uuid;
 
 class CandidateController extends Controller
 {
-    private $name           =   'Candidate';
-    private $log_model      =   'App\Models\Candidate';
+    public $name           =   'Candidate';
+    public $log_model      =   'App\Models\Candidate';
+    public $back_from_list =   'recruitments.index';
+    public $back_from_form =   'candidates.index';
     /**
      * Display a listing of the candidate from recruitment id.
      * 
@@ -88,10 +90,10 @@ class CandidateController extends Controller
                     'action'                =>  'candidates.edit', // Routes to action, eg : dashboard.index, user.create
                     'params'                =>  ['model_url'   =>  $model_url->id],
                     'class'                 =>  'warning',  // Default button class, eg: primary, success, warning, danger, info
-                    'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
-                    'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
-                    'when_key'              =>  'name', // Only add this when we check on relationship value
-                    'when_value'            =>  'WAITING FOR CONFIRMATION FROM CANDIDATE' // Value that right for the condition
+                    'roles'                 =>  ['Super Admin','HR Manager','Management'], // Roles to be checked for the UI to be show
+                    // 'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
+                    // 'when_key'              =>  'name', // Only add this when we check on relationship value
+                    // 'when_value'            =>  'WAITING FOR CONFIRMATION FROM CANDIDATE' // Value that right for the condition
                 ),
                 // Schedule Interview
                 array(
@@ -185,6 +187,8 @@ class CandidateController extends Controller
         );
         return view('page.content.index')
         ->with('datas', $datas)
+        ->with('back_from_list', $this->back_from_list)
+        ->with('back_from_form', $this->back_from_form)
         ->with('contents', $contents)
         ->with('view_options', $view_options);
     }
@@ -239,6 +243,8 @@ class CandidateController extends Controller
             )
         );
         return view('page.content.add')
+        ->with('back_from_list', $this->back_from_list)
+        ->with('back_from_form', $this->back_from_form)
         ->with('contents', $contents);
     }
 
@@ -256,8 +262,6 @@ class CandidateController extends Controller
                 'name'                  =>  'required',
                 'email'                 =>  'required|email',
                 'phone'                 =>  'required',
-                'expected_salary'       =>  'required',
-                'curriculum_vitae'      =>  'required',
                 'candidate_status_id'   =>  'required',
                 'recruitment_id'        =>  'required',
             ]
@@ -275,7 +279,7 @@ class CandidateController extends Controller
             'model_id'  	            =>  $candidate->id,
             'value'                     =>  \Auth::user()->name.' : '.($request->remark ?? 'No remark').' \n On : '.\Carbon\Carbon::now().'\n\n'
         ]);
-        return redirect()->route("candidates.index", $model_url->id)->withSuccess("Candidate has been Added Successfully");
+        return redirect()->route("candidates.index", $model_url->id)->withSuccess("$this->name has been Added Successfully");
     }
 
     /**
@@ -316,7 +320,7 @@ class CandidateController extends Controller
             'value'                     =>  \Auth::user()->name.' : '.($request->remark ?? 'No remark').' \n On : '.\Carbon\Carbon::now().'\n\n'
         ]);
 
-        return redirect()->route("candidates.index", $model_url->id)->withSuccess("Candidate has been Updated Successfully");
+        return redirect()->route("candidates.index", $model_url->id)->withSuccess("$this->name has been Updated Successfully");
     }
 
     /**
@@ -353,7 +357,8 @@ class CandidateController extends Controller
             ),
             array(
                 'field'     =>  'curriculum_vitae',
-                'type'      =>  'file'
+                'type'      =>  'file',
+                'value'     =>  $model->curriculum_vitae
             ),            
             array(
                 'field'     =>  'remark',
@@ -365,6 +370,8 @@ class CandidateController extends Controller
         ->with('model_url', $model_url)
         ->with('model', $model)
         ->with('logs',$logs)
+        ->with('back_from_list', $this->back_from_list)
+        ->with('back_from_form', $this->back_from_form)
         ->with('contents', $contents);
     }
 
@@ -406,6 +413,8 @@ class CandidateController extends Controller
         ->with('model_url', $model_url)
         ->with('model', $model)
         ->with('logs',$logs)
+        ->with('back_from_list', $this->back_from_list)
+        ->with('back_from_form', $this->back_from_form)
         ->with('contents', $contents);
     }
 
@@ -456,6 +465,8 @@ class CandidateController extends Controller
         ->with('model_url', $model_url)
         ->with('model', $model)
         ->with('logs',$logs)
+        ->with('back_from_list', $this->back_from_list)
+        ->with('back_from_form', $this->back_from_form)
         ->with('contents', $contents);
     }
 
@@ -493,6 +504,8 @@ class CandidateController extends Controller
         ->with('model_url', $model_url)
         ->with('model', $model)
         ->with('logs',$logs)
+        ->with('back_from_list', $this->back_from_list)
+        ->with('back_from_form', $this->back_from_form)
         ->with('contents', $contents);
     }
 
@@ -530,6 +543,8 @@ class CandidateController extends Controller
         ->with('model_url', $model_url)
         ->with('model', $model)
         ->with('logs',$logs)
+        ->with('back_from_list', $this->back_from_list)
+        ->with('back_from_form', $this->back_from_form)
         ->with('contents', $contents);
     }
 
@@ -585,6 +600,8 @@ class CandidateController extends Controller
         ->with('model_url', $model_url)
         ->with('model', $model)
         ->with('logs',$logs)
+        ->with('back_from_list', $this->back_from_list)
+        ->with('back_from_form', $this->back_from_form)
         ->with('contents', $contents);
     }
 
@@ -627,6 +644,8 @@ class CandidateController extends Controller
         ->with('model_url', $model_url)
         ->with('model', $model)
         ->with('logs',$logs)
+        ->with('back_from_list', $this->back_from_list)
+        ->with('back_from_form', $this->back_from_form)
         ->with('contents', $contents);
     }
 
@@ -660,6 +679,8 @@ class CandidateController extends Controller
         ->with('model_url', $model_url)
         ->with('model', $model)
         ->with('logs',$logs)
+        ->with('back_from_list', $this->back_from_list)
+        ->with('back_from_form', $this->back_from_form)
         ->with('contents', $contents);
     }
 }

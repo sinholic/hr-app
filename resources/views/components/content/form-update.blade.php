@@ -8,7 +8,7 @@
     <!-- The only way to do great work is to love what you do. - Steve Jobs -->
     <div class="row mb-3">
         <div class="col-md-12">
-            {{ link_to(url()->previous(), 'Back', ['class' => 'btn btn-warning']) }}
+            {{ link_to_route(Route::current()->controller->back_from_form, 'Back', $params['model_url'],['class' => 'btn btn-warning']) }}
         </div>
     </div>
     <div class="row">

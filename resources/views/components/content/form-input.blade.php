@@ -72,7 +72,18 @@
                         @break
 
                     @case('file')
-                        {{ Form::file($content['field'], ['placeholder'=> $label, 'class' => 'form-control-file', $state]) }}
+                        <div class="row">
+                            <div class="col-10">
+                                {{ Form::file($content['field'], ['placeholder'=> $label, 'class' => 'form-control-file', $state]) }}
+                            </div>
+                            <div class="col-2">
+                                @if(isset($content['value']))
+                                <a href="{{ asset('storage/uploads/cv/'.$content['value']) }}" target="_blank">
+                                    <i class="fa fa-eye" aria-hidden="true"></i> View CV
+                                </a>
+                                @endif
+                            </div>
+                        </div>
                         @break
 
                     @case('selectMonth')

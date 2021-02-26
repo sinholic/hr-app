@@ -10,8 +10,10 @@ use App\Models\Role;
 
 class UserController extends Controller
 {
-    private $name           =   'User';
-    private $log_model      =   'App\Models\User';
+    public $name           =   'User';
+    public $log_model      =   'App\Models\User';
+    public $back_from_list =   'users.index';
+    public $back_from_form =   'users.index';
     /**
      * Display a listing of the resource.
      *
@@ -166,7 +168,7 @@ class UserController extends Controller
         $role   = Role::find($request->role_id);
         $user->syncRoles($role);
 
-        return redirect()->route("users.index")->withSuccess("Users has been Added Successfully");
+        return redirect()->route("users.index")->withSuccess("$this->name has been Added Successfully");
 
     }
 
@@ -195,7 +197,7 @@ class UserController extends Controller
         $model->syncRoles($role);
         
 
-        return redirect()->route("users.index")->withSuccess("User has been Updated Successfully");
+        return redirect()->route("users.index")->withSuccess("$this->name has been Updated Successfully");
     }
 
     /**

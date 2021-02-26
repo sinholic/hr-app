@@ -7,7 +7,8 @@
         <div class="row mb-3">
             <div class="col-md-12">
                 @if($back_button)
-                    {{ link_to(url()->previous(), 'Back', ['class' => 'btn btn-warning']) }}
+                    <?php $model_url = Route::current()->parameters['model_url']; ?>
+                    {{ link_to_route(Route::current()->controller->back_from_list, 'Back', null,['class' => 'btn btn-warning']) }}
                 @endif
                 @if(is_array($options['enable_add']))
                     <?php $show_add = isset($options['enable_add']['roles']) ? false : true; ?>
@@ -66,9 +67,13 @@
 
                                             @case('download')
                                                 <td>
+                                                    @if($data->$field)
                                                     <a href="{{ asset('storage/uploads/cv/'.$data->$field) }}" target="_blank">
                                                         <i class="fa fa-download" aria-hidden="true"></i>
                                                     </a>
+                                                    @else
+                                                    <span>CV not uploaded yet</span>
+                                                    @endif
                                                 </td>
                                                 @break
 

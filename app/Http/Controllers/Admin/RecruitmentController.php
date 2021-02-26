@@ -10,8 +10,10 @@ use App\Http\Controllers\Controller;
 
 class RecruitmentController extends Controller
 {
-    private $name           =   'Recruitment';
-    private $log_model      =   'App\Models\Recruitment';
+    public $name           =   'Recruitment';
+    public $log_model      =   'App\Models\Recruitment';
+    public $back_from_list =   'recruitments.index';
+    public $back_from_form =   'recruitments.index';
     /**
      * Display a listing of the resource.
      *
@@ -252,10 +254,7 @@ class RecruitmentController extends Controller
             [
                 'department_id'                 =>  'required',
                 'job_position'                  =>  'required',
-                'number_of_people_requested'    =>  'required',
-                'requirements'                  =>  'required',
                 'deadline'                      =>  'required',
-                'sallary_proposed'              =>  'required',
                 'priority_id'                   =>  'required',
                 'request_status_id'             =>  'required',
                 'requested_by_user'             =>  'required',
@@ -280,7 +279,7 @@ class RecruitmentController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Recruitment  $model
+     * @param  \App\Models\Recruitment  $model
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Recruitment $model)
@@ -311,7 +310,7 @@ class RecruitmentController extends Controller
     /**
      * Show the form for approve the recruitment.
      *
-     * @param  \App\Recruitment  $model
+     * @param  \App\Models\Recruitment  $model
      * @return \Illuminate\Http\Response
      */
     public function approve(Recruitment $model)
@@ -371,7 +370,7 @@ class RecruitmentController extends Controller
     /**
      * Show the form for adjustment the recruitment.
      *
-     * @param  \App\Recruitment  $model
+     * @param  \App\Models\Recruitment  $model
      * @return \Illuminate\Http\Response
      */
     public function adjustment(Recruitment $model)
@@ -428,7 +427,7 @@ class RecruitmentController extends Controller
     /**
      * Show the form for reject the recruitment.
      *
-     * @param  \App\Recruitment  $model
+     * @param  \App\Models\Recruitment  $model
      * @return \Illuminate\Http\Response
      */
     public function reject(Recruitment $model)
@@ -468,7 +467,7 @@ class RecruitmentController extends Controller
     /**
      * Show the form for reject the recruitment.
      *
-     * @param  \App\Recruitment  $model
+     * @param  \App\Models\Recruitment  $model
      * @return \Illuminate\Http\Response
      */
     public function start(Recruitment $model)
@@ -512,7 +511,7 @@ class RecruitmentController extends Controller
     /**
      * Show the form for reject the recruitment.
      *
-     * @param  \App\Recruitment  $model
+     * @param  \App\Models\Recruitment  $model
      * @return \Illuminate\Http\Response
      */
     public function end(Recruitment $model)

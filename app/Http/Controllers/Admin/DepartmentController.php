@@ -8,6 +8,10 @@ use App\Http\Controllers\Controller;
 
 class DepartmentController extends Controller
 {
+    public $name           =   'Department';
+    public $log_model      =   'App\Models\Option';
+    public $back_from_list =   'departments.index';
+    public $back_from_form =   'departments.index';
     /**
      * Store a newly created resource in storage.
      *
@@ -25,7 +29,7 @@ class DepartmentController extends Controller
         $data = $request->all();
         Option::create($data);
 
-        return redirect()->route("users.index")->withSuccess("Department has been Added Successfully");
+        return redirect()->route("users.index")->withSuccess("$this->name has been Added Successfully");
 
     }
 
@@ -47,7 +51,7 @@ class DepartmentController extends Controller
         $data = $request->all();
         $model->update($data);        
         
-        return redirect()->route("users.index")->withSuccess("Department has been Updated Successfully");
+        return redirect()->route("users.index")->withSuccess("$this->name has been Updated Successfully");
     }
 
 
