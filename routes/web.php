@@ -46,10 +46,18 @@ Route::group(["middleware" => "auth", "namespace" => "Admin"], function () {
         Route::post('recruitments/{model_url}/candidates', 'CandidateController@store')->name('candidates.store');
         Route::put('recruitments/{model_url}/candidates/{model}', 'CandidateController@update')->name('candidates.update');
         Route::get('recruitments/{model_url}/candidates/edit/{model}', 'CandidateController@edit')->name('candidates.edit');
+        // After first input CV, user decide if the CV is suitable or not
+        Route::get('recruitments/{model_url}/candidates/cv-suitable/{model}', 'CandidateController@cv_suitable')->name('candidates.cv_suitable');
+        Route::get('recruitments/{model_url}/candidates/cv-not-suitable/{model}', 'CandidateController@cv_not_suitable')->name('candidates.cv_not_suitable');
+        // After CV Suitable, then send the screening form 
+        Route::get('recruitments/{model_url}/candidates/send-screening-form/{model}', 'CandidateController@send_screening_form')->name('candidates.send_screening_form');
+        // After candidate send back the screening form
+        Route::get('recruitments/{model_url}/candidates/receive-screening-form/{model}', 'CandidateController@receive_screening_form')->name('candidates.receive_screening_form');
+        Route::get('recruitments/{model_url}/candidates/suitable-to-interview/{model}', 'CandidateController@suitable_to_interview')->name('candidates.suitable_to_interview');
+        Route::get('recruitments/{model_url}/candidates/not-suitable-to-interview/{model}', 'CandidateController@not_suitable_to_interview')->name('candidates.not_suitable_to_interview');
+
         Route::get('recruitments/{model_url}/candidates/schedule/{model}', 'CandidateController@schedule')->name('candidates.schedule');
         Route::get('recruitments/{model_url}/candidates/result/{model}', 'CandidateController@result')->name('candidates.result');
-        Route::get('recruitments/{model_url}/candidates/suitable/{model}', 'CandidateController@suitable')->name('candidates.suitable');
-        Route::get('recruitments/{model_url}/candidates/not-suitable/{model}', 'CandidateController@not_suitable')->name('candidates.not_suitable');
         Route::get('recruitments/{model_url}/candidates/send-offering/{model}', 'CandidateController@send_offering')->name('candidates.send_offering');
         Route::get('recruitments/{model_url}/candidates/approve-join/{model}', 'CandidateController@approve_join')->name('candidates.approve_join');
         Route::get('recruitments/{model_url}/candidates/cancel-join/{model}', 'CandidateController@cancel_join')->name('candidates.cancel_join');

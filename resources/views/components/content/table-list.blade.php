@@ -104,17 +104,31 @@
                                 @if(isset($options['button_extends']))
                                     @foreach($options['button_extends'] as $button_extend)
                                         <?php 
-                                            $params         = $button_extend['params'] ?? 'id'; 
-                                            $when           = $button_extend['when'] ?? '';
-                                            $when_key       = $button_extend['when_key'] ?? '';
-                                            $when_value     = $button_extend['when_value'] ?? '';
-                                            $skip_when      = true;
-                                            $state_show     = false;
-                                            $route_button   = null;
-                                            $roles          = $button_extend['roles'] ?? \App\Models\Role::select('name')->get()->toArray();
+                                            // Get the params to edit or using and nested routes
+                                            $params             = $button_extend['params'] ?? 'id';
+                                            // Show the button when the value in variable $when/$when->$when_key equal to $when_value 
+                                            $when               = $button_extend['when'] ?? '';
+                                            $when_key           = $button_extend['when_key'] ?? '';
+                                            $when_value         = $button_extend['when_value'] ?? '';
+                                            // Hide the button when the value in variable $hide_when/$hide_when->$hide_when_key equal to $hide_when_value 
+                                            $hide_when          = $button_extend['hide_when'] ?? '';
+                                            $hide_when_key      = $button_extend['hide_when_key'] ?? '';
+                                            $hide_when_value    = $button_extend['hide_when_value'] ?? '';
+                                            // Set the variable if we want to skip to check the `when` datas
+                                            $skip_when          = true;
+                                            $skip_hide_when     = true;
+                                            // Set the variable for showing or not showing the button
+                                            $state_show         = false;
+                                            $route_button       = null;
+                                            // Get the roles for specified user or open for all
+                                            $roles              = $button_extend['roles'] ?? \App\Models\Role::select('name')->get()->toArray();
                                         ?>
                                         @hasanyrole($roles)
-                                            <?php $state_show = true; $skip_when = ($when == '' ? true : false); ?>
+                                            <?php 
+                                                $state_show     = true; 
+                                                $skip_when      = ($when == '' ? true : false);
+                                                $skip_hide_when = ($hide_when == '' ? true : false);
+                                            ?>
                                         @endhasanyrole
                                         @if($when != ''  && !$skip_when)
                                             @if($when_key != '')
@@ -147,6 +161,41 @@
                                                 @endif
                                             @else
                                                 <?php $state_show = $data->$when == $when_value ? true : false ?>
+                                            @endif
+                                        @endif
+                                        @if($hide_when != ''  && !$skip_hide_when)
+                                            @if($hide_when_key != '')
+                                                <?php $state_show = $data->$hide_when->$hide_when_key == $hide_when_value ? false : true; ?>
+                                                {{--
+                                                @if(is_array($hide_when))
+                                                    <?php $state_true = false; ?>
+                                                    @foreach($hide_when as $key => $value)
+                                                        <?php 
+                                                            $check_key          = $hide_when_key[$key]; 
+                                                            $check_value        = $hide_when_value[$key];
+                                                            if ($check_key      == 'count_more') {
+                                                                $state_show     = $data->$value->count() > $check_value ? true : false;
+                                                            }elseif ($check_key == 'count_less') {
+                                                                $state_show     = $data->$value->count() < $check_value ? true : false;
+                                                            }elseif ($check_key == 'count_equal') {
+                                                                $state_show     = $data->$value->count() == $check_value ? true : false;
+                                                            }else {
+                                                                $state_show     = $data->$value->$check_key == $check_value ? true : false;
+                                                            }
+                                                            if ($state_true && $state_show) {
+                                                                $state_true = $state_show;
+                                                                $state_show = false;
+                                                            }else{
+                                                                $state_true = $state_show;
+                                                                $state_show = true;
+                                                            }
+                                                        ?>
+                                                    @endforeach
+                                                @else
+                                                @endif
+                                                --}}
+                                            @else
+                                                <?php $state_show = $data->$hide_when == $hide_when_value ? false : true ?>
                                             @endif
                                         @endif
                                         @if($state_show)

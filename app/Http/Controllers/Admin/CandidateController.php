@@ -91,9 +91,86 @@ class CandidateController extends Controller
                     'params'                =>  ['model_url'   =>  $model_url->id],
                     'class'                 =>  'warning',  // Default button class, eg: primary, success, warning, danger, info
                     'roles'                 =>  ['Super Admin','HR Manager','Management'], // Roles to be checked for the UI to be show
-                    // 'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
-                    // 'when_key'              =>  'name', // Only add this when we check on relationship value
-                    // 'when_value'            =>  'WAITING FOR CONFIRMATION FROM CANDIDATE' // Value that right for the condition
+                    'hide_when'             =>  'candidate_status', // Field or relation you want to check to show the button
+                    'hide_when_key'         =>  'name', // Only add this when we check on relationship value
+                    'hide_when_value'       =>  'ON BOARDING' // Value that right for the condition
+                ),
+                // Cancel Join
+                array(
+                    'label'                 =>  'cancel join',  // Button text to be shown in the HTML
+                    'action'                =>  'candidates.cancel_join', // Routes to action, eg : dashboard.index, user.create
+                    'params'                =>  ['model_url'   =>  $model_url->id],
+                    'class'                 =>  'danger',  // Default button class, eg: primary, success, warning, danger, info
+                    'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
+                    'hide_when'             =>  'candidate_status', // Field or relation you want to check to show the button
+                    'hide_when_key'         =>  'name', // Only add this when we check on relationship value
+                    'hide_when_value'       =>  'ON BOARDING' // Value that right for the condition
+                ),
+                // CV Suitable
+                array(
+                    'label'                 =>  'CV suitable',  // Button text to be shown in the HTML
+                    'action'                =>  'candidates.cv_suitable', // Routes to action, eg : dashboard.index, user.create
+                    'params'                =>  ['model_url'   =>  $model_url->id],
+                    'class'                 =>  'primary',  // Default button class, eg: primary, success, warning, danger, info
+                    'roles'                 =>  ['Super Admin','Manager'], // Roles to be checked for the UI to be show
+                    'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
+                    'when_key'              =>  'name', // Only add this when we check on relationship value
+                    'when_value'            =>  'WAITING FOR CONFIRMATION FROM USER' // Value that right for the condition
+                ),
+                // CV Not Suitable
+                array(
+                    'label'                 =>  'CV not suitable',  // Button text to be shown in the HTML
+                    'action'                =>  'candidates.cv_not_suitable', // Routes to action, eg : dashboard.index, user.create
+                    'params'                =>  ['model_url'   =>  $model_url->id],
+                    'class'                 =>  'danger',  // Default button class, eg: primary, success, warning, danger, info
+                    'roles'                 =>  ['Super Admin','Manager','HR Manager'], // Roles to be checked for the UI to be show
+                    'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
+                    'when_key'              =>  'name', // Only add this when we check on relationship value
+                    'when_value'            =>  'WAITING FOR CONFIRMATION FROM USER' // Value that right for the condition
+                ),
+                // Send Screening Form
+                array(
+                    'label'                 =>  'send screening form',  // Button text to be shown in the HTML
+                    'action'                =>  'candidates.send_screening_form', // Routes to action, eg : dashboard.index, user.create
+                    'params'                =>  ['model_url'   =>  $model_url->id],
+                    'class'                 =>  'primary',  // Default button class, eg: primary, success, warning, danger, info
+                    'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
+                    'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
+                    'when_key'              =>  'name', // Only add this when we check on relationship value
+                    'when_value'            =>  'CV SUITABLE' // Value that right for the condition
+                ),
+                // Receive Screening Form
+                array(
+                    'label'                 =>  'receive screening form',  // Button text to be shown in the HTML
+                    'action'                =>  'candidates.receive_screening_form', // Routes to action, eg : dashboard.index, user.create
+                    'params'                =>  ['model_url'   =>  $model_url->id],
+                    'class'                 =>  'primary',  // Default button class, eg: primary, success, warning, danger, info
+                    'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
+                    'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
+                    'when_key'              =>  'name', // Only add this when we check on relationship value
+                    'when_value'            =>  'FORM SCREENING SENT' // Value that right for the condition
+                ),
+                // Suitable to interview
+                array(
+                    'label'                 =>  'suitable to interview',  // Button text to be shown in the HTML
+                    'action'                =>  'candidates.suitable_to_interview', // Routes to action, eg : dashboard.index, user.create
+                    'params'                =>  ['model_url'   =>  $model_url->id],
+                    'class'                 =>  'success',  // Default button class, eg: primary, success, warning, danger, info
+                    'roles'                 =>  ['Super Admin','Manager', 'HR Manager'], // Roles to be checked for the UI to be show
+                    'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
+                    'when_key'              =>  'name', // Only add this when we check on relationship value
+                    'when_value'            =>  'FORM SCREENING RECEIVED' // Value that right for the condition
+                ),
+                // Not Suitable to interview
+                array(
+                    'label'                 =>  'not suitable to interview',  // Button text to be shown in the HTML
+                    'action'                =>  'candidates.not_suitable_to_interview', // Routes to action, eg : dashboard.index, user.create
+                    'params'                =>  ['model_url'   =>  $model_url->id],
+                    'class'                 =>  'danger',  // Default button class, eg: primary, success, warning, danger, info
+                    'roles'                 =>  ['Super Admin','Manager','HR Manager'], // Roles to be checked for the UI to be show
+                    'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
+                    'when_key'              =>  'name', // Only add this when we check on relationship value
+                    'when_value'            =>  'FORM SCREENING RECEIVED' // Value that right for the condition
                 ),
                 // Schedule Interview
                 array(
@@ -104,29 +181,7 @@ class CandidateController extends Controller
                     'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
                     'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
-                    'when_value'            =>  'SUITABLE' // Value that right for the condition
-                ),
-                // Suitable
-                array(
-                    'label'                 =>  'suitable',  // Button text to be shown in the HTML
-                    'action'                =>  'candidates.suitable', // Routes to action, eg : dashboard.index, user.create
-                    'params'                =>  ['model_url'   =>  $model_url->id],
-                    'class'                 =>  'primary',  // Default button class, eg: primary, success, warning, danger, info
-                    'roles'                 =>  ['Super Admin','Manager'], // Roles to be checked for the UI to be show
-                    'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
-                    'when_key'              =>  'name', // Only add this when we check on relationship value
-                    'when_value'            =>  'WAITING FOR CONFIRMATION FROM CANDIDATE' // Value that right for the condition
-                ),
-                // Not Suitable
-                array(
-                    'label'                 =>  'not suitable',  // Button text to be shown in the HTML
-                    'action'                =>  'candidates.not_suitable', // Routes to action, eg : dashboard.index, user.create
-                    'params'                =>  ['model_url'   =>  $model_url->id],
-                    'class'                 =>  'danger',  // Default button class, eg: primary, success, warning, danger, info
-                    'roles'                 =>  ['Super Admin','Manager'], // Roles to be checked for the UI to be show
-                    'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
-                    'when_key'              =>  'name', // Only add this when we check on relationship value
-                    'when_value'            =>  'WAITING FOR CONFIRMATION FROM CANDIDATE' // Value that right for the condition
+                    'when_value'            =>  'SUITABLE TO INTERVIEW' // Value that right for the condition
                 ),
                 // Add Result test and interview
                 array(
@@ -139,17 +194,6 @@ class CandidateController extends Controller
                     'when_key'              =>  'name', // Only add this when we check on relationship value
                     'when_value'            =>  'WAITING FOR INTERVIEW WITH USER' // Value that right for the condition
                 ),
-                // Not Suitable
-                array(
-                    'label'                 =>  'not suitable',  // Button text to be shown in the HTML
-                    'action'                =>  'candidates.not_suitable', // Routes to action, eg : dashboard.index, user.create
-                    'params'                =>  ['model_url'   =>  $model_url->id],
-                    'class'                 =>  'danger',  // Default button class, eg: primary, success, warning, danger, info
-                    'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
-                    'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
-                    'when_key'              =>  'name', // Only add this when we check on relationship value
-                    'when_value'            =>  'WAITING FOR CONFIRMATION FROM USER' // Value that right for the condition
-                ),
                 // Send Offer
                 array(
                     'label'                 =>  'send offering',  // Button text to be shown in the HTML
@@ -159,7 +203,7 @@ class CandidateController extends Controller
                     'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
                     'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
-                    'when_value'            =>  'WAITING FOR CONFIRMATION FROM USER' // Value that right for the condition
+                    'when_value'            =>  "WAITING FOR USER'S DECISION" // Value that right for the condition
                 ),
                 // Approve Join
                 array(
@@ -172,23 +216,10 @@ class CandidateController extends Controller
                     'when_key'              =>  'name', // Only add this when we check on relationship value
                     'when_value'            =>  'OFFERING LETTER SENT' // Value that right for the condition
                 ),
-                // Cancel Join
-                array(
-                    'label'                 =>  'cancel join',  // Button text to be shown in the HTML
-                    'action'                =>  'candidates.cancel_join', // Routes to action, eg : dashboard.index, user.create
-                    'params'                =>  ['model_url'   =>  $model_url->id],
-                    'class'                 =>  'danger',  // Default button class, eg: primary, success, warning, danger, info
-                    'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
-                    'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
-                    'when_key'              =>  'name', // Only add this when we check on relationship value
-                    'when_value'            =>  'OFFERING LETTER SENT' // Value that right for the condition
-                ),
             )
         );
         return view('page.content.index')
         ->with('datas', $datas)
-        ->with('back_from_list', $this->back_from_list)
-        ->with('back_from_form', $this->back_from_form)
         ->with('contents', $contents)
         ->with('view_options', $view_options);
     }
@@ -203,7 +234,7 @@ class CandidateController extends Controller
     {
         $candidateStatus    =   Option::firstWhere([
             'type'  =>  'CANDIDATE_STATUS',
-            'name'  =>  'WAITING FOR CONFIRMATION FROM CANDIDATE'
+            'name'  =>  'WAITING FOR CONFIRMATION FROM USER'
         ])->id;
         $contents   = array(
             array(
@@ -243,8 +274,6 @@ class CandidateController extends Controller
             )
         );
         return view('page.content.add')
-        ->with('back_from_list', $this->back_from_list)
-        ->with('back_from_form', $this->back_from_form)
         ->with('contents', $contents);
     }
 
@@ -270,7 +299,7 @@ class CandidateController extends Controller
         if ($request->hasFile("curriculum_vitae")) {
             $fileName = Uuid::uuid4()->toString()."." . $request->file("curriculum_vitae")->getClientOriginalExtension();
             $request->file("curriculum_vitae")->move(public_path() . "/storage/uploads/cv/", $fileName);
-            $data['curriculum_vitae'] = $fileName;
+            $data['curriculum_vitae']   = $fileName;
         }
         $candidate                      =   Candidate::create($data);
         LogDB::create([
@@ -299,7 +328,8 @@ class CandidateController extends Controller
                     'interview_date'        =>  'required',
                 ]
             );
-        }elseif ($request->interview_result || $request->test_result || $request->fileresult) {
+        }
+        if ($request->interview_result || $request->test_result || $request->fileresult) {
             $request->validate(
                 [
                     'interview_result'      =>  'required',
@@ -307,7 +337,8 @@ class CandidateController extends Controller
                     'fileresult'            =>  'required',
                 ]
             );
-        }elseif ($request->hasFile("curriculum_vitae")) {
+        }
+        if ($request->hasFile("curriculum_vitae")) {
             $fileName = Uuid::uuid4()->toString()."." . $request->file("curriculum_vitae")->getClientOriginalExtension();
             $request->file("curriculum_vitae")->move(public_path() . "/storage/uploads/cv/", $fileName);
             $data['curriculum_vitae'] = $fileName;
@@ -370,8 +401,228 @@ class CandidateController extends Controller
         ->with('model_url', $model_url)
         ->with('model', $model)
         ->with('logs',$logs)
-        ->with('back_from_list', $this->back_from_list)
-        ->with('back_from_form', $this->back_from_form)
+        ->with('contents', $contents);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Recruitment  $model_url
+     * @param  \App\Candidate  $model
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function cv_suitable(Recruitment $model_url, Candidate $model, Request $request)
+    {
+        $candidateStatus      =   Option::firstWhere([
+            'type'  =>  'CANDIDATE_STATUS',
+            'name'  =>  'CV SUITABLE'
+        ])->id;
+        $logs               =   LogDB::where('model', $this->log_model)
+        ->orderBy('created_at', 'DESC')
+        ->where('model_id',$model->id)
+        ->get();
+        $contents   = array(
+            array(
+                'field'     =>  'remark',
+                'has_logs'  =>  $logs->contains('field', 'remark'),
+                'type'      =>  'textarea'
+            ),
+            array(
+                'field'     =>  'candidate_status_id',
+                'type'      =>  'hidden',
+                'value'     =>  $candidateStatus
+            ),
+        );
+        return view('page.content.edit')
+        ->with('model_url', $model_url)
+        ->with('model', $model)
+        ->with('logs',$logs)
+        ->with('contents', $contents);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Recruitment  $model_url
+     * @param  \App\Candidate  $model
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function cv_not_suitable(Recruitment $model_url, Candidate $model, Request $request)
+    {
+        $candidateStatus      =   Option::firstWhere([
+            'type'  =>  'CANDIDATE_STATUS',
+            'name'  =>  'CV NOT SUITABLE'
+        ])->id;
+        $logs               =   LogDB::where('model', $this->log_model)
+        ->orderBy('created_at', 'DESC')
+        ->where('model_id',$model->id)
+        ->get();
+        $contents   = array(
+            array(
+                'field'     =>  'remark',
+                'has_logs'  =>  $logs->contains('field', 'remark'),
+                'type'      =>  'textarea'
+            ),
+            array(
+                'field'     =>  'candidate_status_id',
+                'type'      =>  'hidden',
+                'value'     =>  $candidateStatus
+            ),
+        );
+        return view('page.content.edit')
+        ->with('model_url', $model_url)
+        ->with('model', $model)
+        ->with('logs',$logs)
+        ->with('contents', $contents);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Recruitment  $model_url
+     * @param  \App\Candidate  $model
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function send_screening_form(Recruitment $model_url, Candidate $model, Request $request)
+    {
+        $candidateStatus      =   Option::firstWhere([
+            'type'  =>  'CANDIDATE_STATUS',
+            'name'  =>  'FORM SCREENING SENT'
+        ])->id;
+        $logs               =   LogDB::where('model', $this->log_model)
+        ->orderBy('created_at', 'DESC')
+        ->where('model_id',$model->id)
+        ->get();
+        $contents   = array(
+            array(
+                'field'     =>  'remark',
+                'has_logs'  =>  $logs->contains('field', 'remark'),
+                'type'      =>  'textarea'
+            ),
+            array(
+                'field'     =>  'candidate_status_id',
+                'type'      =>  'hidden',
+                'value'     =>  $candidateStatus
+            ),
+        );
+        return view('page.content.edit')
+        ->with('model_url', $model_url)
+        ->with('model', $model)
+        ->with('logs',$logs)
+        ->with('contents', $contents);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Recruitment  $model_url
+     * @param  \App\Candidate  $model
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function receive_screening_form(Recruitment $model_url, Candidate $model, Request $request)
+    {
+        $candidateStatus      =   Option::firstWhere([
+            'type'  =>  'CANDIDATE_STATUS',
+            'name'  =>  'FORM SCREENING RECEIVED'
+        ])->id;
+        $logs               =   LogDB::where('model', $this->log_model)
+        ->orderBy('created_at', 'DESC')
+        ->where('model_id',$model->id)
+        ->get();
+        $contents   = array(
+            array(
+                'field'     =>  'remark',
+                'has_logs'  =>  $logs->contains('field', 'remark'),
+                'type'      =>  'textarea'
+            ),
+            array(
+                'field'     =>  'candidate_status_id',
+                'type'      =>  'hidden',
+                'value'     =>  $candidateStatus
+            ),
+        );
+        return view('page.content.edit')
+        ->with('model_url', $model_url)
+        ->with('model', $model)
+        ->with('logs',$logs)
+        ->with('contents', $contents);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Recruitment  $model_url
+     * @param  \App\Candidate  $model
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function suitable_to_interview(Recruitment $model_url, Candidate $model, Request $request)
+    {
+        $candidateStatus      =   Option::firstWhere([
+            'type'  =>  'CANDIDATE_STATUS',
+            'name'  =>  'SUITABLE TO INTERVIEW'
+        ])->id;
+        $logs               =   LogDB::where('model', $this->log_model)
+        ->orderBy('created_at', 'DESC')
+        ->where('model_id',$model->id)
+        ->get();
+        $contents   = array(
+            array(
+                'field'     =>  'remark',
+                'has_logs'  =>  $logs->contains('field', 'remark'),
+                'type'      =>  'textarea'
+            ),
+            array(
+                'field'     =>  'candidate_status_id',
+                'type'      =>  'hidden',
+                'value'     =>  $candidateStatus
+            ),
+        );
+        return view('page.content.edit')
+        ->with('model_url', $model_url)
+        ->with('model', $model)
+        ->with('logs',$logs)
+        ->with('contents', $contents);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Recruitment  $model_url
+     * @param  \App\Candidate  $model
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function not_suitable_to_interview(Recruitment $model_url, Candidate $model, Request $request)
+    {
+        $candidateStatus      =   Option::firstWhere([
+            'type'  =>  'CANDIDATE_STATUS',
+            'name'  =>  'NOT SUITABLE TO INTERVIEW'
+        ])->id;
+        $logs               =   LogDB::where('model', $this->log_model)
+        ->orderBy('created_at', 'DESC')
+        ->where('model_id',$model->id)
+        ->get();
+        $contents   = array(
+            array(
+                'field'     =>  'remark',
+                'has_logs'  =>  $logs->contains('field', 'remark'),
+                'type'      =>  'textarea'
+            ),
+            array(
+                'field'     =>  'candidate_status_id',
+                'type'      =>  'hidden',
+                'value'     =>  $candidateStatus
+            ),
+        );
+        return view('page.content.edit')
+        ->with('model_url', $model_url)
+        ->with('model', $model)
+        ->with('logs',$logs)
         ->with('contents', $contents);
     }
 
@@ -413,8 +664,6 @@ class CandidateController extends Controller
         ->with('model_url', $model_url)
         ->with('model', $model)
         ->with('logs',$logs)
-        ->with('back_from_list', $this->back_from_list)
-        ->with('back_from_form', $this->back_from_form)
         ->with('contents', $contents);
     }
 
@@ -428,9 +677,9 @@ class CandidateController extends Controller
      */
     public function result(Recruitment $model_url, Candidate $model, Request $request)
     {
-        $candidateStatus      =   Option::firstWhere([
+        $candidateStatus    =   Option::firstWhere([
             'type'  =>  'CANDIDATE_STATUS',
-            'name'  =>  'WAITING FOR CONFIRMATION FROM USER'
+            'name'  =>  "WAITING FOR USER'S DECISION"
         ])->id;
         $logs               =   LogDB::where('model', $this->log_model)
         ->orderBy('created_at', 'DESC')
@@ -465,86 +714,6 @@ class CandidateController extends Controller
         ->with('model_url', $model_url)
         ->with('model', $model)
         ->with('logs',$logs)
-        ->with('back_from_list', $this->back_from_list)
-        ->with('back_from_form', $this->back_from_form)
-        ->with('contents', $contents);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Recruitment  $model_url
-     * @param  \App\Candidate  $model
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function suitable(Recruitment $model_url, Candidate $model, Request $request)
-    {
-        $candidateStatus      =   Option::firstWhere([
-            'type'  =>  'CANDIDATE_STATUS',
-            'name'  =>  'SUITABLE'
-        ])->id;
-        $logs               =   LogDB::where('model', $this->log_model)
-        ->orderBy('created_at', 'DESC')
-        ->where('model_id',$model->id)
-        ->get();
-        $contents   = array(
-            array(
-                'field'     =>  'remark',
-                'has_logs'  =>  $logs->contains('field', 'remark'),
-                'type'      =>  'textarea'
-            ),
-            array(
-                'field'     =>  'candidate_status_id',
-                'type'      =>  'hidden',
-                'value'     =>  $candidateStatus
-            ),
-        );
-        return view('page.content.edit')
-        ->with('model_url', $model_url)
-        ->with('model', $model)
-        ->with('logs',$logs)
-        ->with('back_from_list', $this->back_from_list)
-        ->with('back_from_form', $this->back_from_form)
-        ->with('contents', $contents);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Recruitment  $model_url
-     * @param  \App\Candidate  $model
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function not_suitable(Recruitment $model_url, Candidate $model, Request $request)
-    {
-        $candidateStatus      =   Option::firstWhere([
-            'type'  =>  'CANDIDATE_STATUS',
-            'name'  =>  'NOT SUITABLE'
-        ])->id;
-        $logs               =   LogDB::where('model', $this->log_model)
-        ->orderBy('created_at', 'DESC')
-        ->where('model_id',$model->id)
-        ->get();
-        $contents   = array(
-            array(
-                'field'     =>  'remark',
-                'has_logs'  =>  $logs->contains('field', 'remark'),
-                'type'      =>  'textarea'
-            ),
-            array(
-                'field'     =>  'candidate_status_id',
-                'type'      =>  'hidden',
-                'value'     =>  $candidateStatus
-            ),
-        );
-        return view('page.content.edit')
-        ->with('model_url', $model_url)
-        ->with('model', $model)
-        ->with('logs',$logs)
-        ->with('back_from_list', $this->back_from_list)
-        ->with('back_from_form', $this->back_from_form)
         ->with('contents', $contents);
     }
 
@@ -600,8 +769,6 @@ class CandidateController extends Controller
         ->with('model_url', $model_url)
         ->with('model', $model)
         ->with('logs',$logs)
-        ->with('back_from_list', $this->back_from_list)
-        ->with('back_from_form', $this->back_from_form)
         ->with('contents', $contents);
     }
 
@@ -644,8 +811,6 @@ class CandidateController extends Controller
         ->with('model_url', $model_url)
         ->with('model', $model)
         ->with('logs',$logs)
-        ->with('back_from_list', $this->back_from_list)
-        ->with('back_from_form', $this->back_from_form)
         ->with('contents', $contents);
     }
 
@@ -679,8 +844,6 @@ class CandidateController extends Controller
         ->with('model_url', $model_url)
         ->with('model', $model)
         ->with('logs',$logs)
-        ->with('back_from_list', $this->back_from_list)
-        ->with('back_from_form', $this->back_from_form)
         ->with('contents', $contents);
     }
 }
