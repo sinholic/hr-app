@@ -20,10 +20,10 @@ class AppServiceProvider extends ServiceProvider
             // dd($route);
             $route_as       = explode(".", $route->action['as']);
             $route_as_name  = explode(".", $route->action['as'])[0];
-            $title          = ucfirst($route_as[0]);
+            $title          = ucwords(str_replace('_', ' ', $route_as[0]));
             $subTitle       = "";
             if (isset($route_as[1])) {
-                $subTitle   = ucfirst(($route_as[1] == 'index' ? 'list' : $route_as[1]));
+                $subTitle   = ucwords(($route_as[1] == 'index' ? 'list' : str_replace('_', ' ', $route_as[1])));
             }
             $route_prefix   = ucfirst(str_replace("/", "", $route->action['prefix']));
             $breadcrumbs    = [$route_prefix, $title, $subTitle];

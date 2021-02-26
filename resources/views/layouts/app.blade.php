@@ -61,7 +61,7 @@
                     (object) array(
                         'label'     => 'Candidate Status',
                         'link'      => 'candidate_status.index',
-                        'id'        => 'candidate_status'
+                        'id'        => 'candidate-status'
                     ),
                     (object) array(
                         'label'     => 'Departments',
