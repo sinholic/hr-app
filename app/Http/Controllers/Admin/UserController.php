@@ -168,7 +168,7 @@ class UserController extends Controller
         $role   = Role::find($request->role_id);
         $user->syncRoles($role);
 
-        return redirect()->route("users.index")->withSuccess("$this->name has been Added Successfully");
+        return redirect()->route($this->back_from_form)->withSuccess("$this->name has been Added Successfully");
 
     }
 
@@ -197,7 +197,7 @@ class UserController extends Controller
         $model->syncRoles($role);
         
 
-        return redirect()->route("users.index")->withSuccess("$this->name has been Updated Successfully");
+        return redirect()->route($this->back_from_form)->withSuccess("$this->name has been Updated Successfully");
     }
 
     /**
@@ -209,11 +209,11 @@ class UserController extends Controller
     public function destroy(User $model)
     {
         if (!$model) {
-            return redirect()->route("users.index")->withWarning("$this->name Not Found / has been Deleted");
+            return redirect()->route($this->back_from_form)->withWarning("$this->name Not Found / has been Deleted");
         }
 
         $model->delete();
 
-        return redirect()->route("users.index")->withSuccess("$this->name has been Deleted Successfully");
+        return redirect()->route($this->back_from_form)->withSuccess("$this->name has been Deleted Successfully");
     }
 }

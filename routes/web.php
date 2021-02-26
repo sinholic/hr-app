@@ -72,5 +72,12 @@ Route::group(["middleware" => "auth", "namespace" => "Admin"], function () {
         Route::get('departments/edit/{model}',  'DepartmentController@edit')->name('departments.edit');
         Route::post('departments', 'DepartmentController@store')->name('departments.store');
         Route::put('departments/{model}', 'DepartmentController@update')->name('departments.update');
+
+        // Candidate Status
+        Route::get('candidate-statuses', 'CandidateStatusController@index')->name('candidate_status.index');
+        Route::get('candidate-statuses/create', 'CandidateStatusController@create')->name('candidate_status.create');
+        Route::get('candidate-statuses/edit/{model}',  'CandidateStatusController@edit')->name('candidate_status.edit');
+        Route::post('candidate-statuses', 'CandidateStatusController@store')->name('candidate_status.store');
+        Route::put('candidate-statuses/{model}', 'CandidateStatusController@update')->name('candidate_status.update');
     });
 });

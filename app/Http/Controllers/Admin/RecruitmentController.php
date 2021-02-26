@@ -277,7 +277,7 @@ class RecruitmentController extends Controller
             'value'                             =>  \Auth::user()->name.' : '.($request->remark ?? 'No remark').' \n On : '.\Carbon\Carbon::now().'\n\n'
         ]);
 
-        return redirect()->route("recruitments.index")->withSuccess("$this->name has been Added Successfully");
+        return redirect()->route($this->back_from_form)->withSuccess("$this->name has been Added Successfully");
 
     }
 
@@ -310,7 +310,7 @@ class RecruitmentController extends Controller
             'value'                             =>  \Auth::user()->name.' : '.($request->remark ?? 'No remark').' \n On : '.\Carbon\Carbon::now().'\n\n'
         ]);
 
-        return redirect()->route("recruitments.index")->withSuccess("$this->name has been Updated Successfully");
+        return redirect()->route($this->back_from_form)->withSuccess("$this->name has been Updated Successfully");
     }
 
     /**

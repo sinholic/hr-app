@@ -59,6 +59,11 @@
                 'roles'             =>  ['Super Admin', 'HR Manager', 'Management'],
                 'child_menus'       => array(
                     (object) array(
+                        'label'     => 'Candidate Status',
+                        'link'      => 'candidate_status.index',
+                        'id'        => 'candidate_status'
+                    ),
+                    (object) array(
                         'label'     => 'Departments',
                         'link'      => 'departments.index',
                         'id'        => 'departments'

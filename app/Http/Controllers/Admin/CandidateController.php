@@ -279,7 +279,7 @@ class CandidateController extends Controller
             'model_id'  	            =>  $candidate->id,
             'value'                     =>  \Auth::user()->name.' : '.($request->remark ?? 'No remark').' \n On : '.\Carbon\Carbon::now().'\n\n'
         ]);
-        return redirect()->route("candidates.index", $model_url->id)->withSuccess("$this->name has been Added Successfully");
+        return redirect()->route($this->back_from_form, $model_url->id)->withSuccess("$this->name has been Added Successfully");
     }
 
     /**
@@ -320,7 +320,7 @@ class CandidateController extends Controller
             'value'                     =>  \Auth::user()->name.' : '.($request->remark ?? 'No remark').' \n On : '.\Carbon\Carbon::now().'\n\n'
         ]);
 
-        return redirect()->route("candidates.index", $model_url->id)->withSuccess("$this->name has been Updated Successfully");
+        return redirect()->route($this->back_from_form, $model_url->id)->withSuccess("$this->name has been Updated Successfully");
     }
 
     /**

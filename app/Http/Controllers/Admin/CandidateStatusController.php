@@ -6,12 +6,12 @@ use App\Models\Option;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class DepartmentController extends Controller
+class CandidateStatusController extends Controller
 {
-    public $name           =   'Department';
+    public $name           =   'Candidate Status';
     public $log_model      =   'App\Models\Option';
-    public $back_from_list =   'departments.index';
-    public $back_from_form =   'departments.index';
+    public $back_from_list =   'candidate_status.index';
+    public $back_from_form =   'candidate_status.index';
     /**
      * Store a newly created resource in storage.
      *
@@ -62,7 +62,7 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        $datas = Option::where('type', 'DEPARTMENT')
+        $datas = Option::where('type', 'CANDIDATE_STATUS')
         ->orderBy('type','ASC')
         ->orderBy('created_at','DESC')
         ->get();
@@ -101,7 +101,7 @@ class DepartmentController extends Controller
                 'label'     =>  'Category',
                 'type'      =>  'text',
                 'state'     =>  'readonly',
-                'value'     =>  'DEPARTMENT'
+                'value'     =>  'CANDIDATE_STATUS'
             ),
             array(
                 'field'     =>  'name',
@@ -127,7 +127,7 @@ class DepartmentController extends Controller
                 'label'     =>  'Category',
                 'type'      =>  'text',
                 'state'     =>  'readonly',
-                'value'     =>  'DEPARTMENT'
+                'value'     =>  'CANDIDATE_STATUS'
             ),
             array(
                 'field'     =>  'name',
