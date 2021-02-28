@@ -17,3 +17,12 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::group(["namespace" => "API"], function () {
+    Route::prefix('recruitments')->group(function () {
+        Route::get('open', 'RecruitmentController@open');
+    });
+    Route::prefix('candidates')->group(function () {
+        Route::get('processed', 'CandidateController@processed');
+    });
+});

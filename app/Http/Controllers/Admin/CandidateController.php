@@ -343,6 +343,11 @@ class CandidateController extends Controller
             $request->file("curriculum_vitae")->move(public_path() . "/storage/uploads/cv/", $fileName);
             $data['curriculum_vitae'] = $fileName;
         }
+        if ($request->hasFile("fileresult")) {
+            $fileName = Uuid::uuid4()->toString()."." . $request->file("fileresult")->getClientOriginalExtension();
+            $request->file("fileresult")->move(public_path() . "/storage/uploads/result/", $fileName);
+            $data['fileresult'] = $fileName;
+        }
         $model->update($data);
         LogDB::create([
             'field'                     =>  'remark',
