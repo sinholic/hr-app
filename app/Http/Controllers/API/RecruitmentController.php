@@ -32,7 +32,16 @@ class RecruitmentController extends Controller
                 'DONE',
                 'REJECTED'
             ]);
-        })->get();
+        })
+        ->whereHas('candidates.candidate_status', function($query_process){
+            return $query_process->whereNotIn('name', [
+                'NOT SUITABLE TO INTERVIEW',
+                'CV NOT SUITABLE',
+                'NOT SUITABLE FOR OL',
+                'NOT SUITABLE'
+            ]);
+        })
+        ->get();
 
         return response()->json($recruitments, 200);
     }
