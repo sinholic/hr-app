@@ -25,7 +25,8 @@ class RecruitmentController extends Controller
             'priority',
             'request_status',
             'process_status',
-            'candidates'
+            'candidates',
+            'candidates.candidate_status'
         )
         ->whereHas('process_status', function($query_process){
             return $query_process->whereNotIn('name', [
