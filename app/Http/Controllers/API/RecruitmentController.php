@@ -17,7 +17,17 @@ class RecruitmentController extends Controller
      */
     public function open()
     {
-        $recruitments = Recruitment::whereHas('process_status', function($query_process){
+        $recruitments = Recruitment::with(
+            'department',
+            'user_requested',
+            'user_change_status',
+            'user_processed',
+            'priority',
+            'request_status',
+            'process_status',
+            'candidates'
+        )
+        ->whereHas('process_status', function($query_process){
             return $query_process->whereNotIn('name', [
                 'DONE',
                 'REJECTED'
