@@ -93,7 +93,10 @@ class CandidateController extends Controller
                     'roles'                 =>  ['Super Admin','HR Manager','Management'], // Roles to be checked for the UI to be show
                     'hide_when'             =>  'candidate_status', // Field or relation you want to check to show the button
                     'hide_when_key'         =>  'name', // Only add this when we check on relationship value
-                    'hide_when_value'       =>  'ON BOARDING' // Value that right for the condition
+                    'hide_when_value'       =>  array(
+                        'ON BOARDING',
+                        'CANCELED'
+                    ) // Value that right for the condition
                 ),
                 // Cancel Join
                 array(
@@ -104,7 +107,10 @@ class CandidateController extends Controller
                     'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
                     'hide_when'             =>  'candidate_status', // Field or relation you want to check to show the button
                     'hide_when_key'         =>  'name', // Only add this when we check on relationship value
-                    'hide_when_value'       =>  'ON BOARDING' // Value that right for the condition
+                    'hide_when_value'       =>  array(
+                        'ON BOARDING',
+                        'CANCELED'
+                    ) // Value that right for the condition
                 ),
                 // CV Suitable
                 array(

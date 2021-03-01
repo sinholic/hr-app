@@ -54,15 +54,25 @@
                         <td>{{$loop->iteration}}</td>
                         @foreach($contents as $content)
                             @if(is_array($content))
-                                <?php $field = $content['field'] ?> 
-                                @if(isset($content['key']))
-                                    <?php $key = $content['key'] ?>
+                                <?php 
+                                    $field      =   $content['field'];
+                                    $key        =   $content['key'] ?? NULL;
+                                    $rel        =   $content['rel'] ?? NULL;
+                                    $rel_key    =   $content['rel_key'] ?? NULL;
+                                    $rel_val    =   $content['rel_val'] ?? NULL;
+                                ?> 
+                                @if(isset($key))
+                                    <?php  ?>
                                     <td>{{ $data->$field->$key ?? '' }}</td>
                                 @else
                                     @if(isset($content['type']))
                                         @switch($content['type'])
                                             @case('count')
                                                 <td>{{ $data->$field()->count() }}</td>
+                                                @break
+
+                                            @case('rel_where_count')
+                                                <td>{{ isset($data->$field->$rel) ? $data->$field->$rel->whereIn($rel_key, $rel_val)->count() :  0 }}</td>
                                                 @break
 
                                             @case('download')
@@ -157,6 +167,9 @@
                                                         ?>
                                                     @endforeach
                                                 @else
+                                                    @if(is_array($hide_when_value))
+                                                    <?php $state_show = in_array($data->$when->$when_key,$when_value) ? true : false; ?>
+                                                    @else
                                                     <?php $state_show = $data->$when->$when_key == $when_value ? true : false ?>
                                                 @endif
                                             @else
@@ -165,8 +178,6 @@
                                         @endif
                                         @if($hide_when != ''  && !$skip_hide_when)
                                             @if($hide_when_key != '')
-                                                <?php $state_show = $data->$hide_when->$hide_when_key == $hide_when_value ? false : true; ?>
-                                                {{--
                                                 @if(is_array($hide_when))
                                                     <?php $state_true = false; ?>
                                                     @foreach($hide_when as $key => $value)
@@ -174,15 +185,15 @@
                                                             $check_key          = $hide_when_key[$key]; 
                                                             $check_value        = $hide_when_value[$key];
                                                             if ($check_key      == 'count_more') {
-                                                                $state_show     = $data->$value->count() > $check_value ? true : false;
+                                                                $state_show     = $data->$value->count() > $check_value ? false : true;
                                                             }elseif ($check_key == 'count_less') {
-                                                                $state_show     = $data->$value->count() < $check_value ? true : false;
+                                                                $state_show     = $data->$value->count() < $check_value ? false : true;
                                                             }elseif ($check_key == 'count_equal') {
-                                                                $state_show     = $data->$value->count() == $check_value ? true : false;
+                                                                $state_show     = $data->$value->count() == $check_value ? false : true;
                                                             }else {
-                                                                $state_show     = $data->$value->$check_key == $check_value ? true : false;
+                                                                $state_show     = $data->$value->$check_key == $check_value ? false : true;
                                                             }
-                                                            if ($state_true && $state_show) {
+                                                            if (!$state_true && !$state_show) {
                                                                 $state_true = $state_show;
                                                                 $state_show = false;
                                                             }else{
@@ -192,8 +203,12 @@
                                                         ?>
                                                     @endforeach
                                                 @else
+                                                    @if(is_array($hide_when_value))
+                                                    <?php $state_show = in_array($data->$hide_when->$hide_when_key,$hide_when_value) ? false : true; ?>
+                                                    @else
+                                                    <?php $state_show = $data->$hide_when->$hide_when_key == $hide_when_value ? false : true; ?>
+                                                    @endif
                                                 @endif
-                                                --}}
                                             @else
                                                 <?php $state_show = $data->$hide_when == $hide_when_value ? false : true ?>
                                             @endif
