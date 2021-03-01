@@ -42,6 +42,7 @@ class DashboardController extends Controller
             'request_status',
             'process_status',
             'candidates',
+            'candidates.candidate_status'
         ])
         ->whereIn('department_id', $departments);
         if ($request->created_at != '' && $request->created_at != 'All') {
@@ -74,7 +75,7 @@ class DashboardController extends Controller
             array(
                 'field'     =>  'user_change_status',
                 'key'       =>  'name',
-                'label'     =>  'Approved/Rejected by'
+                'label'     =>  'Approved / Rejected by'
             ),
             array(
                 'field'     =>  'user_processed',
@@ -83,11 +84,11 @@ class DashboardController extends Controller
             ),
             array(
                 'field'     =>  'number_of_people_requested',
-                'label'     =>  'Proposed'
+                'label'     =>  '# Proposed'
             ),
             array(
                 'field'     =>  'number_of_people_approved',
-                'label'     =>  'Approved'
+                'label'     =>  '# Approved'
             ),
             array(
                 'field'     =>  'request_status',
@@ -99,8 +100,44 @@ class DashboardController extends Controller
             ),
             array(
                 'field'     =>  'candidates',
-                'label'     =>  'Actual',
-                'type'      =>  'count'
+                'label'     =>  '# Form Sent',
+                'type'      =>  'rel_where_count',
+                'rel'       =>  'candidate_status',
+                'rel_key'   =>  'name',
+                'rel_val'   =>  [
+                    'FORM SCREENING SENT',
+                ]
+            ),
+            array(
+                'field'     =>  'candidates',
+                'label'     =>  '# Form Returned',
+                'type'      =>  'rel_where_count',
+                'rel'       =>  'candidate_status',
+                'rel_key'   =>  'name',
+                'rel_val'   =>  [
+                    'FORM SCREENING SENT',
+                    'FORM SCREENING RECEIVED',
+                ]
+            ),
+            array(
+                'field'     =>  'candidates',
+                'label'     =>  '# OL Issued',
+                'type'      =>  'rel_where_count',
+                'rel'       =>  'candidate_status',
+                'rel_key'   =>  'name',
+                'rel_val'   =>  [
+                    'OFFERING LETTER SENT',
+                ]
+            ),
+            array(
+                'field'     =>  'candidates',
+                'label'     =>  '# On Boarding',
+                'type'      =>  'rel_where_count',
+                'rel'       =>  'candidate_status',
+                'rel_key'   =>  'name',
+                'rel_val'   =>  [
+                    'ON BOARDING',
+                ]
             ),
         );
         $view_options       =   array(
