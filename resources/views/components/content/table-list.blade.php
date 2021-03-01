@@ -167,10 +167,11 @@
                                                         ?>
                                                     @endforeach
                                                 @else
-                                                    @if(is_array($hide_when_value))
+                                                    @if(is_array($when_value))
                                                     <?php $state_show = in_array($data->$when->$when_key,$when_value) ? true : false; ?>
                                                     @else
                                                     <?php $state_show = $data->$when->$when_key == $when_value ? true : false ?>
+                                                    @endif
                                                 @endif
                                             @else
                                                 <?php $state_show = $data->$when == $when_value ? true : false ?>
