@@ -72,7 +72,13 @@
                                                 @break
 
                                             @case('rel_where_count')
-                                                <td>{{ isset($data->$field->$rel) ? $data->$field->$rel->whereIn($rel_key, $rel_val)->count() :  0 }}</td>
+                                                <td>
+                                                    {{ 
+                                                        $data->$field()->with($rel)->whereHas($rel, function($query) use($rel_key, $rel_val){
+                                                            return $query->whereIn($rel_key, $rel_val);
+                                                        })->count()
+                                                    }}
+                                                </td>
                                                 @break
 
                                             @case('download')

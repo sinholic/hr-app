@@ -27,7 +27,7 @@ class Option extends Model
      */
     public function recruitment_departments()
     {
-        return $this->hasMany(Comment::class, 'department_id', 'id');
+        return $this->hasMany(Recruitment::class, 'department_id', 'id');
     }
 
     /**
@@ -37,7 +37,7 @@ class Option extends Model
      */
     public function recruitment_priorities()
     {
-        return $this->hasMany(Comment::class, 'priority_id', 'id');
+        return $this->hasMany(Recruitment::class, 'priority_id', 'id');
     }
 
     /**
@@ -47,7 +47,7 @@ class Option extends Model
      */
     public function recruitment_request_statuses()
     {
-        return $this->hasMany(Comment::class, 'request_status_id', 'id');
+        return $this->hasMany(Recruitment::class, 'request_status_id', 'id');
     }
 
     /**
@@ -57,6 +57,16 @@ class Option extends Model
      */
     public function recruitment_process_statuses()
     {
-        return $this->hasMany(Comment::class, 'process_status_id', 'id');
+        return $this->hasMany(Recruitment::class, 'process_status_id', 'id');
+    }
+
+    /**
+     * Get all of the candidate_statuses for the Option
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function candidate_statuses()
+    {
+        return $this->hasMany(Candidate::class, 'process_status_id', 'id');
     }
 }

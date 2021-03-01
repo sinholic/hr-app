@@ -13,13 +13,13 @@ class Candidate extends Model
     
     public function candidate_status()
     {
-        return $this->belongsTo('App\Models\Option', 'candidate_status_id', 'id')->withDefault([
+        return $this->belongsTo(Option::class, 'candidate_status_id', 'id')->withDefault([
             'type' => 'CANDIDATE_STATUS',
         ]);
     }
 
     public function recruitment()
     {
-        return $this->belongsTo('App\Models\Recruitment', 'recruitment_id', 'id');
+        return $this->belongsTo(Recruitment::class, 'recruitment_id', 'id');
     }
 }
