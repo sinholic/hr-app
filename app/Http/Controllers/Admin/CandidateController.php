@@ -833,6 +833,10 @@ class CandidateController extends Controller
             'type'  =>  'CANDIDATE_STATUS',
             'name'  =>  'CANCELED'
         ])->id;
+        $logs               =   LogDB::where('model', $this->log_model)
+        ->orderBy('created_at', 'DESC')
+        ->where('model_id',$model->id)
+        ->get();
         $contents   = array(
             array(
                 'field'     =>  'remark',
