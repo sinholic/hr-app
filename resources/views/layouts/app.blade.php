@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}" type="text/css">
     @yield('css-header')
 </head>
-<body>
+<body class="navigation-toggle-two">
     <!-- begin::preloader-->
     <div class="preloader">
         <div class="preloader-icon"></div>

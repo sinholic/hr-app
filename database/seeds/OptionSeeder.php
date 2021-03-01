@@ -71,35 +71,71 @@ class OptionSeeder extends Seeder
             ),
             array(
                 'type'  =>  'CANDIDATE_STATUS',
-                'name'  =>  'WAITING FOR CONFIRMATION FROM CANDIDATE'
+                'name'  =>  "NOT SUITABLE TO INTERVIEW"
             ),
             array(
                 'type'  =>  'CANDIDATE_STATUS',
-                'name'  =>  'WAITING FOR CONFIRMATION FROM USER'
+                'name'  =>  "OFFERING LETTER SENT"
             ),
             array(
                 'type'  =>  'CANDIDATE_STATUS',
-                'name'  =>  'WAITING FOR INTERVIEW WITH USER'
+                'name'  =>  "CV NOT SUITABLE"
             ),
             array(
                 'type'  =>  'CANDIDATE_STATUS',
-                'name'  =>  'OFFERING LETTER SENT'
+                'name'  =>  "WAITING FOR USER'S DECISION"
             ),
             array(
                 'type'  =>  'CANDIDATE_STATUS',
-                'name'  =>  'ON BOARDING'
+                'name'  =>  "SUITABLE FOR OL"
             ),
             array(
                 'type'  =>  'CANDIDATE_STATUS',
-                'name'  =>  'CANCELED'
+                'name'  =>  "FORM SCREENING RECEIVED"
             ),
             array(
                 'type'  =>  'CANDIDATE_STATUS',
-                'name'  =>  'NOT SUITABLE'
+                'name'  =>  "SUITABLE"
             ),
             array(
                 'type'  =>  'CANDIDATE_STATUS',
-                'name'  =>  'SUITABLE'
+                'name'  =>  "WAITING FOR CONFIRMATION FROM CANDIDATE"
+            ),
+            array(
+                'type'  =>  'CANDIDATE_STATUS',
+                'name'  =>  "CV SUITABLE"
+            ),
+            array(
+                'type'  =>  'CANDIDATE_STATUS',
+                'name'  =>  "WAITING FOR INTERVIEW WITH USER"
+            ),
+            array(
+                'type'  =>  'CANDIDATE_STATUS',
+                'name'  =>  "NOT SUITABLE FOR OL"
+            ),
+            array(
+                'type'  =>  'CANDIDATE_STATUS',
+                'name'  =>  "WAITING FOR CONFIRMATION FROM USER"
+            ),
+            array(
+                'type'  =>  'CANDIDATE_STATUS',
+                'name'  =>  "NOT SUITABLE"
+            ),
+            array(
+                'type'  =>  'CANDIDATE_STATUS',
+                'name'  =>  "SUITABLE TO INTERVIEW"
+            ),
+            array(
+                'type'  =>  'CANDIDATE_STATUS',
+                'name'  =>  "CANCELED"
+            ),
+            array(
+                'type'  =>  'CANDIDATE_STATUS',
+                'name'  =>  "ON BOARDING"
+            ),
+            array(
+                'type'  =>  'CANDIDATE_STATUS',
+                'name'  =>  "FORM SCREENING SENT"
             ),
         );
 
