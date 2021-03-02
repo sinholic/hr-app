@@ -18,7 +18,7 @@ class RecruitmentController extends Controller
     public function open()
     {
         $datas          =   \DB::select('SELECT 
-            DATE_FORMAT(rec.created_at, "%M %d, %Y") as created_at,
+            DATE_FORMAT(rec.start_process, "%M %d, %Y") as start_process,
             dept.`name` as department_name, 
             job_position,
             prt.`name` as priority,
