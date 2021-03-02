@@ -180,7 +180,24 @@
                                                     @endif
                                                 @endif
                                             @else
+                                                @if(is_array($when))
+                                                    <?php $state_true = false; ?>
+                                                    @foreach($when as $key => $value)
+                                                        <?php 
+                                                            $check_value    = $when_value[$key];
+                                                            $state_show     = $data->$value == $check_value ? true : false;
+                                                            if ($state_true && $state_show) {
+                                                                $state_true = $state_show;
+                                                                $state_show = true;
+                                                            }else{
+                                                                $state_true = $state_show;
+                                                                $state_show = false;
+                                                            }
+                                                        ?>
+                                                    @endforeach
+                                                @else
                                                 <?php $state_show = $data->$when == $when_value ? true : false ?>
+                                                @endif
                                             @endif
                                         @endif
                                         @if($hide_when != ''  && !$skip_hide_when)

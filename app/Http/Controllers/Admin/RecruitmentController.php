@@ -21,22 +21,34 @@ class RecruitmentController extends Controller
      */
     public function index()
     {
-        $datas = Recruitment::with([
-            'department',
-            'user_requested',
-            'user_change_status',
-            'user_processed',
-            'priority',
-            'request_status',
-            'process_status',
-            'candidates',
-        ])
-        ->orderBy('created_at','DESC')
-        ->get();
+        $datas = \DB::select('SELECT 
+            rec.id as id,
+            dept.`name` as department_name, 
+            job_position,
+            number_of_people_requested,
+            number_of_people_approved,
+            req.`name` as user_requested,
+            chg.`name` as user_changed,
+            prt.`name` as priority,
+            reqs.`name` as request_status,
+            prcs.`name` as process_status,
+            count(cand.id) as number_of_candidates,
+            count(cand.id) > 0 as show_view_candidates
+        FROM recruitments rec
+        JOIN `options` dept ON rec.department_id = dept.id
+        JOIN users req ON rec.requested_by_user	= req.id
+        JOIN users chg ON rec.change_request_status_by_user = chg.id
+        JOIN `options` prt ON rec.priority_id = prt.id
+        JOIN `options` reqs ON rec.request_status_id = reqs.id
+        JOIN `options` prcs ON rec.process_status_id = prcs.id
+        LEFT JOIN candidates cand ON cand.recruitment_id = rec.id
+        GROUP BY rec.id
+        ORDER BY FIELD(prt.`name`,"HIGH", "NORMAL", "LOW")');
+        // ->get();
+        // dd($datas);
         $contents = array(
             array(
-                'field'     =>  'department',
-                'key'       =>  'name'
+                'field'     =>  'department_name',
             ),
             array(
                 'field'     =>  'job_position'
@@ -51,29 +63,23 @@ class RecruitmentController extends Controller
             ),
             array(
                 'field'     =>  'user_requested',
-                'key'       =>  'name',
                 'label'     =>  'Requested by'
             ),
             array(
-                'field'     =>  'user_change_status',
-                'key'       =>  'name',
+                'field'     =>  'user_changed',
                 'label'     =>  'Approved/Rejected by'
             ),
             array(
                 'field'     =>  'priority',
-                'key'       =>  'name'
             ),
             array(
                 'field'     =>  'request_status',
-                'key'       =>  'name'
             ),
             array(
                 'field'     =>  'process_status',
-                'key'       =>  'name'
             ),
             array(
-                'field'     =>  'candidates',
-                'type'      =>  'count'
+                'field'     =>  'number_of_candidates',
             ),
         );
         $view_options = array(
@@ -95,7 +101,6 @@ class RecruitmentController extends Controller
                     'class'                 =>  'success',  // Default button class, leave it blank if you want the primary color
                     'roles'                 =>  ['Super Admin','Management'], // Roles to be checked for the UI to be show
                     'when'                  =>  'request_status', // Field or relation you want to check to show the button
-                    'when_key'              =>  'name', // Only add this when we check on relationship value
                     'when_value'            =>  'WAITING FOR APPROVAL' // Value that right for the condition
                 ),
                 array(
@@ -104,7 +109,6 @@ class RecruitmentController extends Controller
                     'class'                 =>  'warning',  // Default button class, leave it blank if you want the primary color
                     'roles'                 =>  ['Super Admin','Management'], // Roles to be checked for the UI to be show
                     'when'                  =>  'request_status', // Field or relation you want to check to show the button
-                    'when_key'              =>  'name', // Only add this when we check on relationship value
                     'when_value'            =>  'WAITING FOR APPROVAL' // Value that right for the condition
                 ),
                 array(
@@ -113,7 +117,6 @@ class RecruitmentController extends Controller
                     'class'                 =>  'danger',  // Default button class, leave it blank if you want the primary color
                     'roles'                 =>  ['Super Admin','Management'], // Roles to be checked for the UI to be show
                     'when'                  =>  'request_status', // Field or relation you want to check to show the button
-                    'when_key'              =>  'name', // Only add this when we check on relationship value
                     'when_value'            =>  'WAITING FOR APPROVAL' // Value that right for the condition
                 ),
                 array(
@@ -125,10 +128,6 @@ class RecruitmentController extends Controller
                         'request_status',
                         'process_status'
                     ), // Field or relation you want to check to show the button
-                    'when_key'              =>  array(
-                        'name',
-                        'name'
-                    ), // Only add this when we check on relationship value
                     'when_value'            =>  array(
                         'APPROVED',
                         'NOT YET PROCESSED'
@@ -140,7 +139,6 @@ class RecruitmentController extends Controller
                     'class'                 =>  'danger',  // Default button class, leave it blank if you want the primary color
                     'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
                     'when'                  =>  'process_status', // Field or relation you want to check to show the button
-                    'when_key'              =>  'name', // Only add this when we check on relationship value
                     'when_value'            =>  'ON PROGRESS' // Value that right for the condition
                 ),
                 array(
@@ -148,7 +146,6 @@ class RecruitmentController extends Controller
                     'action'                =>  'candidates.create', // Routes to action, eg : dashboard.index, user.create
                     'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
                     'when'                  =>  'process_status', // Field or relation you want to check to show the button
-                    'when_key'              =>  'name', // Only add this when we check on relationship value
                     'when_value'            =>  'ON PROGRESS' // Value that right for the condition
                 ),
                 array(
@@ -157,15 +154,11 @@ class RecruitmentController extends Controller
                     'action'                =>  'candidates.index', // Routes to action, eg : dashboard.index, user.create
                     'when'                  =>  array(
                         'process_status', 
-                        'candidates'
+                        'show_view_candidates'
                     ),// Field or relation you want to check to show the button
-                    'when_key'              =>  array(
-                        'name',
-                        'count_more'
-                    ), // Only add this when we check on relationship value
                     'when_value'            =>  array(
                         'ON PROGRESS',
-                        '> 0'
+                        '1'
                     ) // Value that right for the condition
                 )
             )
