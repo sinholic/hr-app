@@ -34,6 +34,7 @@ class DashboardController extends Controller
             $departments    =   [\Auth::user()->department_id];
         }
         $departments        =   '"'.implode('","', $departments->toArray()).'"';
+        $where              =   "1 = 1";
         if ($request->created_at != '' && $request->created_at != 'All') {
             $created_at     =   explode("-",$request->created_at);
             // $datas          =   $datas->whereYear('created_at', $created_at[0])
