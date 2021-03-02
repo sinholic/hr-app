@@ -32,8 +32,8 @@ class RecruitmentController extends Controller
             prt.`name` as priority,
             reqs.`name` as request_status,
             prcs.`name` as process_status,
-            count(cand.id) as number_of_candidates,
-            count(cand.id) > 0 as show_view_candidates
+            COUNT(DISTINCT cand.id) as number_of_candidates,
+            COUNT(DISTINCT cand.id) > 0 as show_view_candidates
         FROM recruitments rec
         JOIN `options` dept ON rec.department_id = dept.id
         JOIN users req ON rec.requested_by_user	= req.id

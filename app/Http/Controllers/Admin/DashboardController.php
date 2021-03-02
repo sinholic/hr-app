@@ -53,10 +53,10 @@ class DashboardController extends Controller
             prt.`name` as priority,
             reqs.`name` as request_status,
             prcs.`name` as process_status,
-            count(candfs.id) as number_of_form_sent,
-            count(candfr.id) as number_of_form_returned,
-            count(candol.id) as number_of_ol_issued,
-            count(candon.id) as number_of_on_board
+            COUNT(DISTINCT candol.id)candfs.id) as number_of_form_sent,
+            COUNT(DISTINCT candol.id)candfr.id) as number_of_form_returned,
+            COUNT(DISTINCT candol.id)candol.id) as number_of_ol_issued,
+            COUNT(DISTINCT candol.id)candon.id) as number_of_on_board
         FROM recruitments rec
         JOIN `options` dept ON rec.department_id = dept.id
         JOIN users req ON rec.requested_by_user	= req.id
