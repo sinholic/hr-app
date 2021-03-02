@@ -33,111 +33,112 @@ class DashboardController extends Controller
             in_array('Employee', $roles)) {
             $departments    =   [\Auth::user()->department_id];
         }
-        $datas              =   Recruitment::with([
-            'department',
-            'user_requested',
-            'user_change_status',
-            'user_processed',
-            'priority',
-            'request_status',
-            'process_status',
-            'candidates',
-            'candidates.candidate_status'
-        ])
-        ->whereIn('department_id', $departments);
+        $departments        =   '"'.implode('","', $departments->toArray()).'"';
         if ($request->created_at != '' && $request->created_at != 'All') {
             $created_at     =   explode("-",$request->created_at);
-            $datas          =   $datas->whereYear('created_at', $created_at[0])
-            ->whereMonth('created_at', $created_at[1]);
+            // $datas          =   $datas->whereYear('created_at', $created_at[0])
+            // ->whereMonth('created_at', $created_at[1]);
+            $where          =   "AND YEAR(rec.created_at) = $created_at[0] AND MONTH(rec.created_at) = $created_at[1]";
         }
-        $datas              =   $datas->orderBy('created_at','DESC')
-        ->get();
+        $datas              =   \DB::select('SELECT 
+            DATE_FORMAT(rec.created_at, "%M %d, %Y") as created_at,
+            rec.id as id,
+            dept.`name` as department_name, 
+            job_position,
+            number_of_people_requested,
+            number_of_people_approved,
+            req.`name` as user_requested,
+            chg.`name` as user_changed,
+            prt.`name` as priority,
+            reqs.`name` as request_status,
+            prcs.`name` as process_status,
+            count(candfs.id) as number_of_form_sent,
+            count(candfr.id) as number_of_form_returned,
+            count(candol.id) as number_of_ol_issued,
+            count(candon.id) as number_of_on_board
+        FROM recruitments rec
+        JOIN `options` dept ON rec.department_id = dept.id
+        JOIN users req ON rec.requested_by_user	= req.id
+        JOIN users chg ON rec.change_request_status_by_user = chg.id
+        JOIN `options` prt ON rec.priority_id = prt.id
+        JOIN `options` reqs ON rec.request_status_id = reqs.id
+        JOIN `options` prcs ON rec.process_status_id = prcs.id
+        LEFT JOIN (
+            SELECT cand.id, cand.recruitment_id FROM candidates cand
+            JOIN `options` opt ON cand.candidate_status_id = opt.id AND opt.`name` IN ("FORM SCREENING SENT")
+        ) candfs ON candfs.recruitment_id = rec.id
+        LEFT JOIN (
+            SELECT cand.id, cand.recruitment_id FROM candidates cand
+            JOIN `options` opt ON cand.candidate_status_id = opt.id AND opt.`name` IN ("FORM SCREENING RECEIVED")
+        ) candfr ON candfr.recruitment_id = rec.id
+        LEFT JOIN (
+            SELECT cand.id, cand.recruitment_id FROM candidates cand
+            JOIN `options` opt ON cand.candidate_status_id = opt.id AND opt.`name` IN ("OFFERING LETTER SENT")
+        ) candol ON candol.recruitment_id = rec.id
+        LEFT JOIN (
+            SELECT cand.id, cand.recruitment_id FROM candidates cand
+            JOIN `options` opt ON cand.candidate_status_id = opt.id AND opt.`name` IN ("ON BOARDING")
+        ) candon ON candon.recruitment_id = rec.id
+        WHERE rec.department_id IN ('.$departments.')
+        '.$where.'
+        GROUP BY rec.id
+        ORDER BY FIELD(prt.`name`,"HIGH", "NORMAL", "LOW")', 
+        ['departments' => $departments]);
 
         $contents           =   array(
             array(
                 'field'     =>  'created_at',
                 'label'     =>  'Requested at',
-                'type'      =>  'date',
-                'format'    =>  'F j, Y'
             ),
             array(
-                'field'     =>  'department',
-                'key'       =>  'name'
+                'field'     =>  'department_name',
             ),
             array(
                 'field'     =>  'job_position'
             ),
             array(
-                'field'     =>  'user_requested',
-                'key'       =>  'name',
-                'label'     =>  'Requested by'
-            ),
-            array(
-                'field'     =>  'user_change_status',
-                'key'       =>  'name',
-                'label'     =>  'Approved / Rejected by'
-            ),
-            array(
-                'field'     =>  'user_processed',
-                'key'       =>  'name',
-                'label'     =>  'Action by'
+                'field'     =>  'priority'
             ),
             array(
                 'field'     =>  'number_of_people_requested',
-                'label'     =>  '# Proposed'
+                'label'     =>  '# Request people'
             ),
             array(
                 'field'     =>  'number_of_people_approved',
-                'label'     =>  '# Approved'
+                'label'     =>  '# Approved people'
+            ),
+            array(
+                'field'     =>  'user_requested',
+                'label'     =>  'Requested by'
+            ),
+            array(
+                'field'     =>  'user_changed',
+                'label'     =>  'Approved/Rejected by'
+            ),
+            array(
+                'field'     =>  'priority',
             ),
             array(
                 'field'     =>  'request_status',
-                'key'       =>  'name'
             ),
             array(
                 'field'     =>  'process_status',
-                'key'       =>  'name'
             ),
             array(
-                'field'     =>  'candidates',
+                'field'     =>  'number_of_form_sent',
                 'label'     =>  '# Form Sent',
-                'type'      =>  'rel_where_count',
-                'rel'       =>  'candidate_status',
-                'rel_key'   =>  'name',
-                'rel_val'   =>  [
-                    'FORM SCREENING SENT',
-                ]
             ),
             array(
-                'field'     =>  'candidates',
+                'field'     =>  'number_of_form_returned',
                 'label'     =>  '# Form Returned',
-                'type'      =>  'rel_where_count',
-                'rel'       =>  'candidate_status',
-                'rel_key'   =>  'name',
-                'rel_val'   =>  [
-                    'FORM SCREENING SENT',
-                    'FORM SCREENING RECEIVED',
-                ]
             ),
             array(
-                'field'     =>  'candidates',
+                'field'     =>  'number_of_ol_issued',
                 'label'     =>  '# OL Issued',
-                'type'      =>  'rel_where_count',
-                'rel'       =>  'candidate_status',
-                'rel_key'   =>  'name',
-                'rel_val'   =>  [
-                    'OFFERING LETTER SENT',
-                ]
             ),
             array(
-                'field'     =>  'candidates',
+                'field'     =>  'number_of_on_board',
                 'label'     =>  '# On Boarding',
-                'type'      =>  'rel_where_count',
-                'rel'       =>  'candidate_status',
-                'rel_key'   =>  'name',
-                'rel_val'   =>  [
-                    'ON BOARDING',
-                ]
             ),
         );
         $view_options       =   array(
