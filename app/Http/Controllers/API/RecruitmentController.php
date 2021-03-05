@@ -28,6 +28,7 @@ class RecruitmentController extends Controller
             prcs.`name` as process_status,
             COUNT(DISTINCT candpr.id) as number_of_proceed,
             COUNT(DISTINCT candpr_today.id) as number_of_proceed_today,
+            COUNT(DISTINCT cand_intv.id) as number_of_interview,
             COUNT(DISTINCT cand_intv_today.id) as number_of_interview_today,
             COUNT(DISTINCT candol.id) as number_of_ol_issued,
             COUNT(DISTINCT candol_today.id) as number_of_ol_issued_today,
@@ -44,14 +45,12 @@ class RecruitmentController extends Controller
                 cand.recruitment_id 
             FROM candidates cand
             JOIN `options` opt ON cand.candidate_status_id = opt.id
+            JOIN candidate_status_logs csl ON cand.id = csl.candidate_id AND csl.candidate_status_id = opt.id
             AND opt.`name` IN (
                     "CV SUITABLE",
                     "FORM SCREENING SENT",
                     "FORM SCREENING RECEIVED",
-                    "SUITABLE TO INTERVIEW",
-                    "WAITING FOR INTERVIEW WITH USER",
-                    "WAITING FOR INTERVIEW WITH USER",
-                    "WAITING FOR USER\'S DECISION"
+                    "SUITABLE TO INTERVIEW"
             )
         ) candpr ON candpr.recruitment_id = rec.id
         LEFT JOIN (
@@ -65,9 +64,7 @@ class RecruitmentController extends Controller
                     "CV SUITABLE",
                     "FORM SCREENING SENT",
                     "FORM SCREENING RECEIVED",
-                    "SUITABLE TO INTERVIEW",
-                    "WAITING FOR INTERVIEW WITH USER",
-                    "WAITING FOR USER\'S DECISION"
+                    "SUITABLE TO INTERVIEW"
             )
             WHERE DATE(csl.action_datetime) = DATE(NOW())
         ) candpr_today ON candpr_today.recruitment_id = rec.id
@@ -77,6 +74,19 @@ class RecruitmentController extends Controller
                 cand.recruitment_id 
             FROM candidates cand
             JOIN `options` opt ON cand.candidate_status_id = opt.id
+            JOIN candidate_status_logs csl ON cand.id = csl.candidate_id AND csl.candidate_status_id = opt.id
+            AND opt.`name` IN (
+                "WAITING FOR INTERVIEW WITH USER",
+                "WAITING FOR USER\'S DECISION"
+            )
+        ) cand_intv ON cand_intv.recruitment_id = rec.id
+        LEFT JOIN (
+            SELECT 
+                cand.id as id, 
+                cand.recruitment_id 
+            FROM candidates cand
+            JOIN `options` opt ON cand.candidate_status_id = opt.id
+            JOIN candidate_status_logs csl ON cand.id = csl.candidate_id AND csl.candidate_status_id = opt.id
             AND opt.`name` IN (
                 "WAITING FOR INTERVIEW WITH USER",
                 "WAITING FOR USER\'S DECISION"
@@ -115,6 +125,7 @@ class RecruitmentController extends Controller
                 cand.recruitment_id 
             FROM candidates cand
             JOIN `options` opt ON cand.candidate_status_id = opt.id
+            JOIN candidate_status_logs csl ON cand.id = csl.candidate_id AND csl.candidate_status_id = opt.id
             AND opt.`name` IN (
                 "ON BOARDING"
             )
