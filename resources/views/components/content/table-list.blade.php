@@ -1,11 +1,16 @@
 <div>
     <?php 
+        // Check if we in a nested table view with model_url or not
         $back_button = isset(Route::current()->parameters['model_url']) ? true : false;
     ?>
     <!-- Simplicity is the ultimate sophistication. - Leonardo da Vinci -->
+    <?php  //Check if we add the options for enble add and the enable add is true ?>
     @if(isset($options['enable_add']) && $options['enable_add'])
         <div class="row mb-3">
             <div class="col-md-12">
+                <?php
+                // 
+                ?>
                 @if($back_button)
                     <?php $model_url = Route::current()->parameters['model_url']; ?>
                     {{ link_to_route(Route::current()->controller->back_from_list, 'Back', null,['class' => 'btn btn-warning']) }}

@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Candidate;
 use App\Models\Recruitment;
 use App\Models\Option;
-use App\Models\Log as LogDB;
+use App\Models\Log as LogFieldDB;
+use App\Models\CandidateStatusLog;
 use Ramsey\Uuid\Uuid;
 
 class CandidateController extends Controller
@@ -27,6 +28,7 @@ class CandidateController extends Controller
         $datas = Candidate::with([
             'candidate_status',
         ])
+        ->where('canceled', 0)
         ->where('recruitment_id', $model_url->id)
         ->orderBy('created_at','DESC')
         ->get();
@@ -308,11 +310,16 @@ class CandidateController extends Controller
             $data['curriculum_vitae']   = $fileName;
         }
         $candidate                      =   Candidate::create($data);
-        LogDB::create([
+        LogFieldDB::create([
             'field'                     =>  'remark',
             'model'                     =>  $this->log_model,
             'model_id'  	            =>  $candidate->id,
             'value'                     =>  \Auth::user()->name.' : '.($request->remark ?? 'No remark').' \n On : '.\Carbon\Carbon::now().'\n\n'
+        ]);
+        CandidateStatusLog::create([
+            'candidate_id'              =>  $candidate->id,
+            'candidate_status_id'       =>  $request->candidate_status_id,
+            'action_datetime'           =>  \Carbon\Carbon::now()
         ]);
         return redirect()->route($this->back_from_form, $model_url->id)->withSuccess("$this->name has been Added Successfully");
     }
@@ -355,11 +362,16 @@ class CandidateController extends Controller
             $data['fileresult'] = $fileName;
         }
         $model->update($data);
-        LogDB::create([
+        LogFieldDB::create([
             'field'                     =>  'remark',
             'model'                     =>  $this->log_model,
             'model_id'  	            =>  $model->id,
             'value'                     =>  \Auth::user()->name.' : '.($request->remark ?? 'No remark').' \n On : '.\Carbon\Carbon::now().'\n\n'
+        ]);
+        CandidateStatusLog::create([
+            'candidate_id'              =>  $model->id,
+            'candidate_status_id'       =>  $request->candidate_status_id,
+            'action_datetime'           =>  \Carbon\Carbon::now()
         ]);
 
         return redirect()->route($this->back_from_form, $model_url->id)->withSuccess("$this->name has been Updated Successfully");
@@ -375,7 +387,7 @@ class CandidateController extends Controller
      */
     public function edit(Recruitment $model_url, Candidate $model, Request $request)
     {
-        $logs               =   LogDB::where('model', $this->log_model)
+        $logs               =   LogFieldDB::where('model', $this->log_model)
         ->orderBy('created_at', 'DESC')
         ->where('model_id',$model->id)
         ->get();
@@ -429,7 +441,7 @@ class CandidateController extends Controller
             'type'  =>  'CANDIDATE_STATUS',
             'name'  =>  'CV SUITABLE'
         ])->id;
-        $logs               =   LogDB::where('model', $this->log_model)
+        $logs               =   LogFieldDB::where('model', $this->log_model)
         ->orderBy('created_at', 'DESC')
         ->where('model_id',$model->id)
         ->get();
@@ -466,7 +478,7 @@ class CandidateController extends Controller
             'type'  =>  'CANDIDATE_STATUS',
             'name'  =>  'CV NOT SUITABLE'
         ])->id;
-        $logs               =   LogDB::where('model', $this->log_model)
+        $logs               =   LogFieldDB::where('model', $this->log_model)
         ->orderBy('created_at', 'DESC')
         ->where('model_id',$model->id)
         ->get();
@@ -503,7 +515,7 @@ class CandidateController extends Controller
             'type'  =>  'CANDIDATE_STATUS',
             'name'  =>  'FORM SCREENING SENT'
         ])->id;
-        $logs               =   LogDB::where('model', $this->log_model)
+        $logs               =   LogFieldDB::where('model', $this->log_model)
         ->orderBy('created_at', 'DESC')
         ->where('model_id',$model->id)
         ->get();
@@ -540,7 +552,7 @@ class CandidateController extends Controller
             'type'  =>  'CANDIDATE_STATUS',
             'name'  =>  'FORM SCREENING RECEIVED'
         ])->id;
-        $logs               =   LogDB::where('model', $this->log_model)
+        $logs               =   LogFieldDB::where('model', $this->log_model)
         ->orderBy('created_at', 'DESC')
         ->where('model_id',$model->id)
         ->get();
@@ -577,7 +589,7 @@ class CandidateController extends Controller
             'type'  =>  'CANDIDATE_STATUS',
             'name'  =>  'SUITABLE TO INTERVIEW'
         ])->id;
-        $logs               =   LogDB::where('model', $this->log_model)
+        $logs               =   LogFieldDB::where('model', $this->log_model)
         ->orderBy('created_at', 'DESC')
         ->where('model_id',$model->id)
         ->get();
@@ -614,7 +626,7 @@ class CandidateController extends Controller
             'type'  =>  'CANDIDATE_STATUS',
             'name'  =>  'NOT SUITABLE TO INTERVIEW'
         ])->id;
-        $logs               =   LogDB::where('model', $this->log_model)
+        $logs               =   LogFieldDB::where('model', $this->log_model)
         ->orderBy('created_at', 'DESC')
         ->where('model_id',$model->id)
         ->get();
@@ -651,7 +663,7 @@ class CandidateController extends Controller
             'type'  =>  'CANDIDATE_STATUS',
             'name'  =>  'WAITING FOR INTERVIEW WITH USER'
         ])->id;
-        $logs               =   LogDB::where('model', $this->log_model)
+        $logs               =   LogFieldDB::where('model', $this->log_model)
         ->orderBy('created_at', 'DESC')
         ->where('model_id',$model->id)
         ->get();
@@ -692,7 +704,7 @@ class CandidateController extends Controller
             'type'  =>  'CANDIDATE_STATUS',
             'name'  =>  "WAITING FOR USER'S DECISION"
         ])->id;
-        $logs               =   LogDB::where('model', $this->log_model)
+        $logs               =   LogFieldDB::where('model', $this->log_model)
         ->orderBy('created_at', 'DESC')
         ->where('model_id',$model->id)
         ->get();
@@ -742,7 +754,7 @@ class CandidateController extends Controller
             'type'  =>  'CANDIDATE_STATUS',
             'name'  =>  'OFFERING LETTER SENT'
         ])->id;
-        $logs               =   LogDB::where('model', $this->log_model)
+        $logs               =   LogFieldDB::where('model', $this->log_model)
         ->orderBy('created_at', 'DESC')
         ->where('model_id',$model->id)
         ->get();
@@ -797,7 +809,7 @@ class CandidateController extends Controller
             'type'  =>  'CANDIDATE_STATUS',
             'name'  =>  'ON BOARDING'
         ])->id;
-        $logs               =   LogDB::where('model', $this->log_model)
+        $logs               =   LogFieldDB::where('model', $this->log_model)
         ->orderBy('created_at', 'DESC')
         ->where('model_id',$model->id)
         ->get();
@@ -835,11 +847,7 @@ class CandidateController extends Controller
      */
     public function cancel_join(Recruitment $model_url, Candidate $model, Request $request)
     {
-        $candidateStatus      =   Option::firstWhere([
-            'type'  =>  'CANDIDATE_STATUS',
-            'name'  =>  'CANCELED'
-        ])->id;
-        $logs               =   LogDB::where('model', $this->log_model)
+        $logs               =   LogFieldDB::where('model', $this->log_model)
         ->orderBy('created_at', 'DESC')
         ->where('model_id',$model->id)
         ->get();
@@ -850,9 +858,9 @@ class CandidateController extends Controller
                 'type'      =>  'textarea'
             ),
             array(
-                'field'     =>  'candidate_status_id',
+                'field'     =>  'canceled',
                 'type'      =>  'hidden',
-                'value'     =>  $candidateStatus
+                'value'     =>  1
             ),
         );
         return view('page.content.edit')

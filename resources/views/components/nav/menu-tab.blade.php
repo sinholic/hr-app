@@ -35,8 +35,8 @@
             @foreach($menus as $menu)
                 @hasanyrole($menu->roles ?? \App\Models\Role::select('name')->get()->toArray())
                 <li>
-                    <a class="{{ request()->is($menu->menu_tab_id.'*') ? 'active' : '' }}" href="#" data-toggle="tooltip" data-placement="right" title="{{$menu->menu_tab_label}}"
-                    data-nav-target="#{{$menu->menu_tab_id}}">
+                    <a class="{{ request()->is($menu->menu_tab_prefix.'*') ? 'active' : '' }}" href="#" data-toggle="tooltip" data-placement="right" title="{{$menu->menu_tab_label}}"
+                    data-nav-target="#{{$menu->menu_tab_prefix}}">
                         <i data-feather="{{$menu->menu_tab_icon}}"></i>
                     </a>
                 </li>

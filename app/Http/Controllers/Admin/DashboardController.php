@@ -65,19 +65,23 @@ class DashboardController extends Controller
         JOIN `options` reqs ON rec.request_status_id = reqs.id
         JOIN `options` prcs ON rec.process_status_id = prcs.id
         LEFT JOIN (
-            SELECT cand.id, cand.recruitment_id FROM candidates cand
+            SELECT cand.id, cand.recruitment_id 
+            FROM candidates cand
             JOIN `options` opt ON cand.candidate_status_id = opt.id AND opt.`name` IN ("FORM SCREENING SENT")
         ) candfs ON candfs.recruitment_id = rec.id
         LEFT JOIN (
-            SELECT cand.id, cand.recruitment_id FROM candidates cand
+            SELECT cand.id, cand.recruitment_id 
+            FROM candidates cand
             JOIN `options` opt ON cand.candidate_status_id = opt.id AND opt.`name` IN ("FORM SCREENING RECEIVED")
         ) candfr ON candfr.recruitment_id = rec.id
         LEFT JOIN (
-            SELECT cand.id, cand.recruitment_id FROM candidates cand
+            SELECT cand.id, cand.recruitment_id 
+            FROM candidates cand
             JOIN `options` opt ON cand.candidate_status_id = opt.id AND opt.`name` IN ("OFFERING LETTER SENT")
         ) candol ON candol.recruitment_id = rec.id
         LEFT JOIN (
-            SELECT cand.id, cand.recruitment_id FROM candidates cand
+            SELECT cand.id, cand.recruitment_id 
+            FROM candidates cand
             JOIN `options` opt ON cand.candidate_status_id = opt.id AND opt.`name` IN ("ON BOARDING")
         ) candon ON candon.recruitment_id = rec.id
         WHERE rec.department_id IN ('.$departments.')

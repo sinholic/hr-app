@@ -35,30 +35,29 @@ class RecruitmentController extends Controller
         LEFT JOIN (
             SELECT cand.id as id, cand.recruitment_id FROM candidates cand
             JOIN `options` opt ON cand.candidate_status_id = opt.id 
-                        AND opt.`name` IN ("OFFERING LETTER SENT")
+            AND opt.`name` IN ("OFFERING LETTER SENT")
         ) candol ON candol.recruitment_id = rec.id
         LEFT JOIN(
             SELECT cand.id as id, cand.recruitment_id FROM candidates cand
             JOIN `options` opt ON cand.candidate_status_id = opt.id 
-                        AND opt.`name` IN ("ON BOARDING")
+            AND opt.`name` IN ("ON BOARDING")
         ) candon ON candon.recruitment_id = rec.id
-                LEFT JOIN (
+        LEFT JOIN (
             SELECT cand.id as id, cand.recruitment_id FROM candidates cand
             JOIN `options` opt ON cand.candidate_status_id = opt.id
-                        AND opt.`name` IN (
-                            "CV SUITABLE",
-                            "FORM SCREENING SENT",
-                            "FORM SCREENING RECEIVED",
-                            "SUITABLE TO INTERVIEW",
-                            "WAITING FOR INTERVIEW WITH USER",
-                            "WAITING FOR INTERVIEW WITH USER",
-                            "WAITING FOR USER\'S DECISION"
-                        )
+            AND opt.`name` IN (
+                "CV SUITABLE",
+                "FORM SCREENING SENT",
+                "FORM SCREENING RECEIVED",
+                "SUITABLE TO INTERVIEW",
+                "WAITING FOR INTERVIEW WITH USER",
+                "WAITING FOR INTERVIEW WITH USER",
+                "WAITING FOR USER\'S DECISION"
+            )
         ) candpr ON candpr.recruitment_id = rec.id
-                WHERE reqs.`name` NOT IN ("DONE", "REJECTED")
+        WHERE reqs.`name` NOT IN ("DONE", "REJECTED")
         GROUP BY rec.id
         ORDER BY FIELD(prt.`name`,"HIGH", "NORMAL", "LOW")');
-
         return response()->json($datas, 200);
     }
 }

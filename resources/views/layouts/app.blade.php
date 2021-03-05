@@ -28,32 +28,32 @@
     <?php
         $menus = array(
             (object) array(
-                'menu_tab_id' => 'dashboard',
-                'menu_tab_label' => 'Dashboards',
-                'menu_tab_icon' => 'bar-chart-2',
-                'child_menus' => array(
+                'menu_tab_prefix'   => 'dashboard',
+                'menu_tab_label'    => 'Dashboards',
+                'menu_tab_icon'     => 'bar-chart-2',
+                'child_menus'       => array(
                     (object) array(
-                        'label' => 'HR System',
-                        'link' => 'dashboard.hr',
-                        'id'    => 'hr'
+                        'label'     => 'HR System',
+                        'link'      => 'dashboard.hr',
+                        'prefix'    => 'hr'
                     ),
                 ),
             ),
             (object) array(
-                'menu_tab_id'       => 'application',
+                'menu_tab_prefix'   => 'application',
                 'menu_tab_label'    => 'Apps',
                 'menu_tab_icon'     => 'command',
                 'child_menus'       => array(
                     (object) array(
                         'label'     => 'Recruitment',
                         'link'      => 'recruitments.index',
-                        'id'        => 'recruitments',
+                        'prefix'    => 'recruitments',
                         // 'roles'     =>  ['Super Admin', 'HR Manager', 'Management']
                     ),
                 ),
             ),
             (object) array(
-                'menu_tab_id'       => 'settings',
+                'menu_tab_prefix'   => 'settings',
                 'menu_tab_label'    => 'Settings',
                 'menu_tab_icon'     => 'sliders',
                 'roles'             =>  ['Super Admin', 'HR Manager', 'Management'],
@@ -61,17 +61,17 @@
                     (object) array(
                         'label'     => 'Candidate Status',
                         'link'      => 'candidate_status.index',
-                        'id'        => 'candidate-status'
+                        'prefix'    => 'candidate-status'
                     ),
                     (object) array(
                         'label'     => 'Departments',
                         'link'      => 'departments.index',
-                        'id'        => 'departments'
+                        'prefix'    => 'departments'
                     ),
                     (object) array(
                         'label'     => 'Users',
                         'link'      => 'users.index',
-                        'id'        => 'users'
+                        'prefix'    => 'users'
                     ),
                 ),
             ),
