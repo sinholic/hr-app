@@ -43,7 +43,7 @@ class RecruitmentController extends Controller
         JOIN `options` prcs ON rec.process_status_id = prcs.id
         LEFT JOIN candidates cand ON cand.recruitment_id = rec.id
         GROUP BY rec.id
-        ORDER BY FIELD(prt.`name`,"HIGH", "NORMAL", "LOW")');
+        ORDER BY FIELD(prt.`name`,"HIGH", "NORMAL", "LOW"), rec.created_at DESC');
         // ->get();
         // dd($datas);
         $contents = array(

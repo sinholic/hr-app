@@ -87,7 +87,7 @@ class DashboardController extends Controller
         WHERE rec.department_id IN ('.$departments.')
         '.$where.'
         GROUP BY rec.id
-        ORDER BY FIELD(prt.`name`,"HIGH", "NORMAL", "LOW")', 
+        ORDER BY FIELD(prt.`name`,"HIGH", "NORMAL", "LOW"), rec.created_at DESC', 
         ['departments' => $departments]);
 
         $contents           =   array(
