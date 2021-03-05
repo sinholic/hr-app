@@ -19,7 +19,8 @@ class RecruitmentController extends Controller
     {
         $datas          =   
         \DB::select('SELECT 
-            DATE_FORMAT(rec.start_process, "%M %d, %Y") as start_process,
+            DATE_FORMAT(rec.start_process, "%M %d, %Y") as start_process_date,
+            DATE_FORMAT(rec.created_at, "%M %d, %Y") as request_date,
             dept.`name` as department_name, 
             job_position,
             prt.`name` as priority,
@@ -121,7 +122,7 @@ class RecruitmentController extends Controller
         ) candon_today ON candon_today.recruitment_id = rec.id
         WHERE reqs.`name` NOT IN ("DONE", "REJECTED")
         GROUP BY rec.id
-        ORDER BY FIELD(prt.`name`,"HIGH", "NORMAL", "LOW")');
+        ORDER BY FIELD(prt.`name`,"HIGH", "NORMAL", "LOW"), rec.created_at');
         return response()->json($datas, 200);
     }
 }
