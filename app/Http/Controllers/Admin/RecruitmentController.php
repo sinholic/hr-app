@@ -322,6 +322,10 @@ class RecruitmentController extends Controller
         ->get();
         $contents   = array(
             array(
+                'field'     =>  'job_position',
+                'type'      =>  'text'
+            ),
+            array(
                 'field'     =>  'department_id',
                 'type'      =>  'select2',
                 'data'      =>  $departments
