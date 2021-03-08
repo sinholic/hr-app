@@ -154,7 +154,6 @@ class RecruitmentController extends Controller
                 cand.recruitment_id 
             FROM candidates cand
             JOIN `options` opt ON cand.candidate_status_id = opt.id
-            JOIN candidate_status_logs csl ON cand.id = csl.candidate_id AND csl.candidate_status_id = opt.id
             AND opt.`name` IN (
                 "ON BOARDING"
             )
