@@ -407,6 +407,11 @@ class RecruitmentController extends Controller
                 'type'      =>  'hidden',
                 'value'     =>  \Auth::user()->id
             ),
+            array(
+                'field'     =>  'approved_datetime',
+                'type'      =>  'hidden',
+                'value'     =>  \Carbon\Carbon::now()
+            ),
         );
         return view('page.content.edit')
         ->with('model', $model)
@@ -463,6 +468,11 @@ class RecruitmentController extends Controller
                 'field'     =>  'change_request_status_by_user',
                 'type'      =>  'hidden',
                 'value'     =>  \Auth::user()->id
+            ),
+            array(
+                'field'     =>  'approved_datetime',
+                'type'      =>  'hidden',
+                'value'     =>  \Carbon\Carbon::now()
             ),
         );
         return view('page.content.edit')
