@@ -21,6 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(["namespace" => "API"], function () {
     Route::prefix('recruitments')->group(function () {
         Route::get('open', 'RecruitmentController@open');
+        Route::get('total_header', 'RecruitmentController@total_header');
     });
     Route::prefix('candidates')->group(function () {
         Route::get('processed', 'CandidateController@processed');
