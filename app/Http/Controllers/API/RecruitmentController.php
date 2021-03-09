@@ -23,7 +23,7 @@ class RecruitmentController extends Controller
             DATE_FORMAT(rec.approved_datetime, "%M %d, %Y") as request_date,
             -- dept.`name` as department_name, 
             job_position,
-            -- prt.`name` as priority,
+            prt.`name` as priority,
             -- reqs.`name` as request_status,
             -- prcs.`name` as process_status,
             COUNT(DISTINCT candpr.id) as processed,
