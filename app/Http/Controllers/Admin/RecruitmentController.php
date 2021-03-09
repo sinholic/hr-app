@@ -41,7 +41,7 @@ class RecruitmentController extends Controller
         JOIN `options` prt ON rec.priority_id = prt.id
         JOIN `options` reqs ON rec.request_status_id = reqs.id
         JOIN `options` prcs ON rec.process_status_id = prcs.id
-        LEFT JOIN candidates cand ON cand.recruitment_id = rec.id
+        LEFT JOIN candidates cand ON cand.recruitment_id = rec.id AND cand.canceled = 0
         GROUP BY rec.id
         ORDER BY FIELD(prt.`name`,"HIGH", "NORMAL", "LOW"), rec.created_at DESC');
         // ->get();
@@ -80,6 +80,7 @@ class RecruitmentController extends Controller
             ),
             array(
                 'field'     =>  'number_of_candidates',
+                'label'     =>  '# of candidates active'
             ),
         );
         $view_options = array(
