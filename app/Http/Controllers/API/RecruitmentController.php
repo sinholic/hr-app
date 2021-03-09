@@ -19,7 +19,7 @@ class RecruitmentController extends Controller
     {
         $datas          =   
         \DB::select('SELECT 
-            DATE_FORMAT(rec.start_process, "%M %d, %Y") as start_process_date,
+            DATE_FORMAT(rec.start_process, "%M %d, %Y") as start_date,
             DATE_FORMAT(rec.approved_datetime, "%M %d, %Y") as request_date,
             dept.`name` as department_name, 
             job_position,
@@ -28,8 +28,8 @@ class RecruitmentController extends Controller
             prcs.`name` as process_status,
             COUNT(DISTINCT candpr.id) as candidate_processed,
             COUNT(DISTINCT cand_intv.id) as candidate_interviewed,
-            COUNT(DISTINCT candol.id) as candidate_offering_letter_sent,
-            COUNT(DISTINCT candon.id) as candidate_on_board
+            COUNT(DISTINCT candol.id) as ol_sent,
+            COUNT(DISTINCT candon.id) as on_board
         FROM recruitments rec
         JOIN `options` dept ON rec.department_id = dept.id
         JOIN `options` prt ON rec.priority_id = prt.id
