@@ -5,8 +5,8 @@
     <div>
         <div id="navigation-logo">
             <a href="{{ route('index') }}">
-                <img class="logo" src="{{ asset('assets/media/image/logo.png') }}" alt="logo">
-                <img class="logo-light" src="{{ asset('assets/media/image/logo-light.png') }}" alt="light logo">
+                <img class="logo" src="assets/media/image/logo.png" alt="image" style="filter: invert(1);width: 150px;">
+                <img class="logo-dark" src="assets/media/image/logo-dark.png" alt="image">
             </a>
         </div>
     </div>

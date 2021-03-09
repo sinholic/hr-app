@@ -27,7 +27,10 @@ class RecruitmentController extends Controller
             -- reqs.`name` as request_status,
             -- prcs.`name` as process_status,
             COUNT(DISTINCT candpr.id) as processed,
+            COUNT(DISTINCT candpr_left.id) as processed_left,
+            COUNT(DISTINCT cand_intv_left.id) as interviewed_left,
             COUNT(DISTINCT cand_intv.id) as interviewed,
+            COUNT(DISTINCT candol_left.id) as ol_sent_left,
             COUNT(DISTINCT candol.id) as ol_sent,
             COUNT(DISTINCT candon.id) as on_board
         FROM recruitments rec
@@ -44,8 +47,39 @@ class RecruitmentController extends Controller
             JOIN `options` opt ON cand.candidate_status_id = opt.id
             JOIN candidate_status_logs csl ON cand.id = csl.candidate_id AND csl.candidate_status_id = opt.id
             AND opt.`name` IN (
+                "WAITING FOR CONFIRMATION FROM USER",
+                "CV SUITABLE",
+                "FORM SCREENING SENT",
+                "FORM SCREENING RECEIVED",
+                "SUITABLE TO INTERVIEW"
+            )
+        ) candpr_left ON candpr_left.recruitment_id = rec.id
+        LEFT JOIN (
+            SELECT 
+                cand.id as id, 
+                cand.recruitment_id 
+            FROM candidates cand
+            JOIN `options` opt ON cand.candidate_status_id = opt.id
+            JOIN candidate_status_logs csl ON cand.id = csl.candidate_id AND csl.candidate_status_id = opt.id
+            AND opt.`name` IN (
+                "SUITABLE FOR OL",
+                "OFFERING LETTER SENT",
+                "ON BOARDING"
+            )
+        ) cand_intv_left ON cand_intv_left.recruitment_id = rec.id
+        LEFT JOIN (
+            SELECT 
+                cand.id as id, 
+                cand.recruitment_id 
+            FROM candidates cand
+            JOIN `options` opt ON cand.candidate_status_id = opt.id
+            JOIN candidate_status_logs csl ON cand.id = csl.candidate_id AND csl.candidate_status_id = opt.id
+            AND opt.`name` IN (
                 "WAITING FOR INTERVIEW WITH USER",
-                "WAITING FOR USER\'S DECISION"
+                "WAITING FOR USER\'S DECISION",
+                "SUITABLE FOR OL",
+                "OFFERING LETTER SENT",
+                "ON BOARDING"
             )
         ) cand_intv ON cand_intv.recruitment_id = rec.id
         LEFT JOIN (
@@ -55,7 +89,21 @@ class RecruitmentController extends Controller
             FROM candidates cand
             JOIN `options` opt ON cand.candidate_status_id = opt.id
                 JOIN candidate_status_logs csl ON cand.id = csl.candidate_id AND csl.candidate_status_id = opt.id
-            AND opt.`name` IN ("OFFERING LETTER SENT")
+            AND opt.`name` IN (
+                    "OFFERING LETTER SENT"
+                )
+        ) candol_left ON candol_left.recruitment_id = rec.id
+        LEFT JOIN (
+            SELECT 
+                cand.id as id, 
+                cand.recruitment_id 
+            FROM candidates cand
+            JOIN `options` opt ON cand.candidate_status_id = opt.id
+                JOIN candidate_status_logs csl ON cand.id = csl.candidate_id AND csl.candidate_status_id = opt.id
+            AND opt.`name` IN (
+                    "OFFERING LETTER SENT",
+                    "ON BOARDING"
+                )
         ) candol ON candol.recruitment_id = rec.id
         LEFT JOIN(
             SELECT 
@@ -76,13 +124,13 @@ class RecruitmentController extends Controller
         $datas          =   
         \DB::select('SELECT
             COUNT(DISTINCT rec.id) as total_open_position,
-            COUNT(DISTINCT candpr_today.id) as candidate_processed_today,
+            COUNT(DISTINCT candpr_left.id) as candidate_processed_today,
             COUNT(DISTINCT candpr.id) as candidate_processed,
-            COUNT(DISTINCT cand_intv_today.id) as candidate_interview_today,
+            COUNT(DISTINCT cand_intv_left.id) as candidate_interview_today,
             COUNT(DISTINCT cand_intv.id) as candidate_interview,
-            COUNT(DISTINCT candol_today.id) as number_of_ol_issued_today,
+            COUNT(DISTINCT candol_left.id) as number_of_ol_issued_today,
             COUNT(DISTINCT candol.id) as number_of_ol_issued,
-            COUNT(DISTINCT candon_today.id) as number_of_on_board_today,
+            COUNT(DISTINCT candon.id) as number_of_on_board_today,
             COUNT(DISTINCT candon.id) as number_of_on_board
         FROM recruitments rec
         JOIN `options` proc_stat ON rec.process_status_id = proc_stat.id
@@ -94,22 +142,27 @@ class RecruitmentController extends Controller
             FROM candidates cand
             JOIN `options` opt ON cand.candidate_status_id = opt.id
             JOIN candidate_status_logs csl ON cand.id = csl.candidate_id AND csl.candidate_status_id = opt.id
-            WHERE DATE(csl.action_datetime) = DATE(NOW())
-            OR DATE(cand.interview_date) = DATE(NOW())
-        ) candpr_today ON candpr.recruitment_id = rec.id
-        LEFT JOIN (
-            SELECT 
-                cand.id as id, 
-                cand.recruitment_id 
-            FROM candidates cand
-            JOIN `options` opt ON cand.candidate_status_id = opt.id
-            JOIN candidate_status_logs csl ON cand.id = csl.candidate_id AND csl.candidate_status_id = opt.id
             AND opt.`name` IN (
-                "WAITING FOR INTERVIEW WITH USER",
-                "WAITING FOR USER\'S DECISION"
+                "WAITING FOR CONFIRMATION FROM USER",
+                "CV SUITABLE",
+                "FORM SCREENING SENT",
+                "FORM SCREENING RECEIVED",
+                "SUITABLE TO INTERVIEW"
             )
-            WHERE DATE(cand.interview_date) = DATE(NOW())
-        ) cand_intv_today ON cand_intv_today.recruitment_id = rec.id
+        ) candpr_left ON candpr_left.recruitment_id = rec.id
+        LEFT JOIN (
+            SELECT 
+                cand.id as id, 
+                cand.recruitment_id 
+            FROM candidates cand
+            JOIN `options` opt ON cand.candidate_status_id = opt.id
+            JOIN candidate_status_logs csl ON cand.id = csl.candidate_id AND csl.candidate_status_id = opt.id
+            AND opt.`name` IN (
+                "SUITABLE FOR OL",
+                "OFFERING LETTER SENT",
+                "ON BOARDING"
+            )
+        ) cand_intv_left ON cand_intv_left.recruitment_id = rec.id
         LEFT JOIN (
             SELECT 
                 cand.id as id, 
@@ -119,7 +172,10 @@ class RecruitmentController extends Controller
             JOIN candidate_status_logs csl ON cand.id = csl.candidate_id AND csl.candidate_status_id = opt.id
             AND opt.`name` IN (
                 "WAITING FOR INTERVIEW WITH USER",
-                "WAITING FOR USER\'S DECISION"
+                "WAITING FOR USER\'S DECISION",
+                "SUITABLE FOR OL",
+                "OFFERING LETTER SENT",
+                "ON BOARDING"
             )
         ) cand_intv ON cand_intv.recruitment_id = rec.id
         LEFT JOIN (
@@ -127,38 +183,32 @@ class RecruitmentController extends Controller
                 cand.id as id, 
                 cand.recruitment_id 
             FROM candidates cand
-            JOIN `options` opt ON cand.candidate_status_id = opt.id 
-            AND opt.`name` IN ("OFFERING LETTER SENT")
-        ) candol ON candol.recruitment_id = rec.id
+            JOIN `options` opt ON cand.candidate_status_id = opt.id
+                JOIN candidate_status_logs csl ON cand.id = csl.candidate_id AND csl.candidate_status_id = opt.id
+            AND opt.`name` IN (
+                    "OFFERING LETTER SENT"
+                )
+        ) candol_left ON candol_left.recruitment_id = rec.id
         LEFT JOIN (
             SELECT 
                 cand.id as id, 
                 cand.recruitment_id 
             FROM candidates cand
             JOIN `options` opt ON cand.candidate_status_id = opt.id
-            JOIN candidate_status_logs csl ON cand.id = csl.candidate_id AND csl.candidate_status_id = opt.id
-            AND opt.`name` IN ("OFFERING LETTER SENT")
-            WHERE DATE(csl.action_datetime) = DATE(NOW())
-        ) candol_today ON candol_today.recruitment_id = rec.id
+                JOIN candidate_status_logs csl ON cand.id = csl.candidate_id AND csl.candidate_status_id = opt.id
+            AND opt.`name` IN (
+                    "OFFERING LETTER SENT",
+                    "ON BOARDING"
+                )
+        ) candol ON candol.recruitment_id = rec.id
         LEFT JOIN(
             SELECT 
                 cand.id as id, 
                 cand.recruitment_id 
             FROM candidates cand
-            JOIN `options` opt ON cand.candidate_status_id = opt.id 
+            JOIN `options` opt ON cand.candidate_status_id = opt.id
             AND opt.`name` IN ("ON BOARDING")
         ) candon ON candon.recruitment_id = rec.id
-        LEFT JOIN (
-            SELECT 
-                cand.id as id, 
-                cand.recruitment_id 
-            FROM candidates cand
-            JOIN `options` opt ON cand.candidate_status_id = opt.id
-            AND opt.`name` IN (
-                "ON BOARDING"
-            )
-            WHERE DATE(cand.joindate) = DATE(NOW())
-        ) candon_today ON candon_today.recruitment_id = rec.id
         WHERE proc_stat.`name` IN (
             "ON PROGRESS",
             "APPROVED"
