@@ -21,13 +21,13 @@ class RecruitmentController extends Controller
         \DB::select('SELECT 
             DATE_FORMAT(rec.start_process, "%M %d, %Y") as start_date,
             DATE_FORMAT(rec.approved_datetime, "%M %d, %Y") as request_date,
-            dept.`name` as department_name, 
+            -- dept.`name` as department_name, 
             job_position,
-            prt.`name` as priority,
-            reqs.`name` as request_status,
-            prcs.`name` as process_status,
-            COUNT(DISTINCT candpr.id) as candidate_processed,
-            COUNT(DISTINCT cand_intv.id) as candidate_interviewed,
+            -- prt.`name` as priority,
+            -- reqs.`name` as request_status,
+            -- prcs.`name` as process_status,
+            COUNT(DISTINCT candpr.id) as processed,
+            COUNT(DISTINCT cand_intv.id) as interviewed,
             COUNT(DISTINCT candol.id) as ol_sent,
             COUNT(DISTINCT candon.id) as on_board
         FROM recruitments rec
