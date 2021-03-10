@@ -18,6 +18,16 @@ class Candidate extends Model
         ]);
     }
 
+    /**
+     * Get all of the candidate_status_logs for the Candidate
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function candidate_status_logs()
+    {
+        return $this->hasMany(CandidateStatusLog::class, 'candidate_id', 'id');
+    }
+
     public function recruitment()
     {
         return $this->belongsTo(Recruitment::class, 'recruitment_id', 'id');
