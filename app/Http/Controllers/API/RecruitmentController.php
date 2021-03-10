@@ -130,7 +130,7 @@ class RecruitmentController extends Controller
             JOIN candidate_status_logs csl ON cand.id = csl.candidate_id
             JOIN `options` opt ON csl.candidate_status_id = opt.id
             WHERE opt.`name` IN (
-                "OFFERING LETTER SENT"
+                "ON BOARDING"
             )
         ) candol_left ON candol_left.recruitment_id = rec.id
         LEFT JOIN (
