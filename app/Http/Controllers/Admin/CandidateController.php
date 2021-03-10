@@ -202,6 +202,28 @@ class CandidateController extends Controller
                     'when_key'              =>  'name', // Only add this when we check on relationship value
                     'when_value'            =>  'WAITING FOR INTERVIEW WITH USER' // Value that right for the condition
                 ),
+                // Suitable OL
+                array(
+                    'label'                 =>  'suitable for OL',  // Button text to be shown in the HTML
+                    'action'                =>  'candidates.suitable_for_ol', // Routes to action, eg : dashboard.index, user.create
+                    'params'                =>  ['model_url'   =>  $model_url->id],
+                    'class'                 =>  'primary',  // Default button class, eg: primary, success, warning, danger, info
+                    'roles'                 =>  ['Super Admin','Manager','HR Manager'], // Roles to be checked for the UI to be show
+                    'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
+                    'when_key'              =>  'name', // Only add this when we check on relationship value
+                    'when_value'            =>  "WAITING FOR USER'S DECISION" // Value that right for the condition
+                ),
+                // Not Suitable OL
+                array(
+                    'label'                 =>  'not suitable for OL',  // Button text to be shown in the HTML
+                    'action'                =>  'candidates.not_suitable_for_ol', // Routes to action, eg : dashboard.index, user.create
+                    'params'                =>  ['model_url'   =>  $model_url->id],
+                    'class'                 =>  'primary',  // Default button class, eg: primary, success, warning, danger, info
+                    'roles'                 =>  ['Super Admin','Manager','HR Manager'], // Roles to be checked for the UI to be show
+                    'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
+                    'when_key'              =>  'name', // Only add this when we check on relationship value
+                    'when_value'            =>  "WAITING FOR USER'S DECISION" // Value that right for the condition
+                ),
                 // Send Offer
                 array(
                     'label'                 =>  'send offering',  // Button text to be shown in the HTML
@@ -211,7 +233,7 @@ class CandidateController extends Controller
                     'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
                     'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
-                    'when_value'            =>  "WAITING FOR USER'S DECISION" // Value that right for the condition
+                    'when_value'            =>  "SUITABLE FOR OL" // Value that right for the condition
                 ),
                 // Approve Join
                 array(
@@ -722,6 +744,80 @@ class CandidateController extends Controller
                 'label'     =>  'File result',
                 'type'      =>  'file'
             ),
+            array(
+                'field'     =>  'remark',
+                'has_logs'  =>  $logs->contains('field', 'remark'),
+                'type'      =>  'textarea'
+            ),
+            array(
+                'field'     =>  'candidate_status_id',
+                'type'      =>  'hidden',
+                'value'     =>  $candidateStatus
+            ),
+        );
+        return view('page.content.edit')
+        ->with('model_url', $model_url)
+        ->with('model', $model)
+        ->with('logs',$logs)
+        ->with('contents', $contents);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Recruitment  $model_url
+     * @param  \App\Candidate  $model
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function suitable_for_ol(Recruitment $model_url, Candidate $model, Request $request)
+    {
+        $candidateStatus      =   Option::firstWhere([
+            'type'  =>  'CANDIDATE_STATUS',
+            'name'  =>  'SUITABLE FOR OL'
+        ])->id;
+        $logs               =   LogFieldDB::where('model', $this->log_model)
+        ->orderBy('created_at', 'DESC')
+        ->where('model_id',$model->id)
+        ->get();
+        $contents   = array(
+            array(
+                'field'     =>  'remark',
+                'has_logs'  =>  $logs->contains('field', 'remark'),
+                'type'      =>  'textarea'
+            ),
+            array(
+                'field'     =>  'candidate_status_id',
+                'type'      =>  'hidden',
+                'value'     =>  $candidateStatus
+            ),
+        );
+        return view('page.content.edit')
+        ->with('model_url', $model_url)
+        ->with('model', $model)
+        ->with('logs',$logs)
+        ->with('contents', $contents);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Recruitment  $model_url
+     * @param  \App\Candidate  $model
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function not_suitable_for_ol(Recruitment $model_url, Candidate $model, Request $request)
+    {
+        $candidateStatus      =   Option::firstWhere([
+            'type'  =>  'CANDIDATE_STATUS',
+            'name'  =>  'NOT SUITABLE FOR OL'
+        ])->id;
+        $logs               =   LogFieldDB::where('model', $this->log_model)
+        ->orderBy('created_at', 'DESC')
+        ->where('model_id',$model->id)
+        ->get();
+        $contents   = array(
             array(
                 'field'     =>  'remark',
                 'has_logs'  =>  $logs->contains('field', 'remark'),

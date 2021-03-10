@@ -55,11 +55,18 @@ Route::group(["middleware" => "auth", "namespace" => "Admin"], function () {
         Route::get('recruitments/{model_url}/candidates/receive-screening-form/{model}', 'CandidateController@receive_screening_form')->name('candidates.receive_screening_form');
         Route::get('recruitments/{model_url}/candidates/suitable-to-interview/{model}', 'CandidateController@suitable_to_interview')->name('candidates.suitable_to_interview');
         Route::get('recruitments/{model_url}/candidates/not-suitable-to-interview/{model}', 'CandidateController@not_suitable_to_interview')->name('candidates.not_suitable_to_interview');
-
+        // Schedule interview for the candidate
         Route::get('recruitments/{model_url}/candidates/schedule/{model}', 'CandidateController@schedule')->name('candidates.schedule');
+        // Add result for the candidate
         Route::get('recruitments/{model_url}/candidates/result/{model}', 'CandidateController@result')->name('candidates.result');
+        // Suitable or not for OL
+        Route::get('recruitments/{model_url}/candidates/not-suitable-for-ol/{model}', 'CandidateController@not_suitable_for_ol')->name('candidates.not_suitable_for_ol');
+        Route::get('recruitments/{model_url}/candidates/suitable-for-ol/{model}', 'CandidateController@suitable_for_ol')->name('candidates.suitable_for_ol');
+        // Send OL
         Route::get('recruitments/{model_url}/candidates/send-offering/{model}', 'CandidateController@send_offering')->name('candidates.send_offering');
+        // On Board
         Route::get('recruitments/{model_url}/candidates/approve-join/{model}', 'CandidateController@approve_join')->name('candidates.approve_join');
+        // Cancel join
         Route::get('recruitments/{model_url}/candidates/cancel-join/{model}', 'CandidateController@cancel_join')->name('candidates.cancel_join');
     });
 
