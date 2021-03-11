@@ -60,8 +60,7 @@ class RecruitmentController extends Controller
                 cand.id as id, 
                 cand.recruitment_id 
             FROM candidates cand
-            JOIN candidate_status_logs csl ON cand.id = csl.candidate_id
-            JOIN `options` opt ON csl.candidate_status_id = opt.id
+            JOIN `options` opt ON cand.candidate_status_id = opt.id AND opt.type = "CANDIDATE_STATUS"
             WHERE opt.`name` IN (
                 "WAITING FOR CONFIRMATION FROM USER",
                 "CV SUITABLE",
@@ -87,8 +86,7 @@ class RecruitmentController extends Controller
                 cand.id as id, 
                 cand.recruitment_id 
             FROM candidates cand
-            JOIN candidate_status_logs csl ON cand.id = csl.candidate_id
-            JOIN `options` opt ON csl.candidate_status_id = opt.id AND opt.type = "CANDIDATE_STATUS"
+            JOIN `options` opt ON cand.candidate_status_id = opt.id AND opt.type = "CANDIDATE_STATUS"
             WHERE opt.`name` IN (
                 "SUITABLE FOR OL",
                 "OFFERING LETTER SENT",
@@ -127,8 +125,7 @@ class RecruitmentController extends Controller
                 cand.id as id, 
                 cand.recruitment_id 
             FROM candidates cand
-            JOIN candidate_status_logs csl ON cand.id = csl.candidate_id
-            JOIN `options` opt ON csl.candidate_status_id = opt.id
+            JOIN `options` opt ON cand.candidate_status_id = opt.id AND opt.type = "CANDIDATE_STATUS"
             WHERE opt.`name` IN (
                 "ON BOARDING"
             )
@@ -161,7 +158,7 @@ class RecruitmentController extends Controller
                 cand.id as id, 
                 cand.recruitment_id 
             FROM candidates cand
-            JOIN `options` opt ON cand.candidate_status_id = opt.id
+            JOIN `options` opt ON cand.candidate_status_id = opt.id AND opt.type = "CANDIDATE_STATUS"
             AND opt.`name` IN ("ON BOARDING")
         ) candon ON candon.recruitment_id = rec.id
         WHERE rec.id = :rec_id
