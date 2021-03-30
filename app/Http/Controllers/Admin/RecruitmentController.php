@@ -124,7 +124,7 @@ class RecruitmentController extends Controller
                     'label'                 =>  'start recruitment',   // Button text to be shown in the HTML
                     'action'                =>  'recruitments.start', // Routes to action, eg : dashboard.index, user.create
                     'class'                 =>  'success',  // Default button class, leave it blank if you want the primary color
-                    'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
+                    'roles'                 =>  ['Super Admin','Management', 'HR Manager'], // Roles to be checked for the UI to be show
                     'when'                  =>  array(
                         'request_status',
                         'process_status'
@@ -138,20 +138,20 @@ class RecruitmentController extends Controller
                     'label'                 =>  'end recruitment',   // Button text to be shown in the HTML
                     'action'                =>  'recruitments.end', // Routes to action, eg : dashboard.index, user.create
                     'class'                 =>  'danger',  // Default button class, leave it blank if you want the primary color
-                    'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
+                    'roles'                 =>  ['Super Admin','Management', 'HR Manager'], // Roles to be checked for the UI to be show
                     'when'                  =>  'process_status', // Field or relation you want to check to show the button
                     'when_value'            =>  'ON PROGRESS' // Value that right for the condition
                 ),
                 array(
                     'label'                 =>  'add candidate',    // Button text to be shown in the HTML
                     'action'                =>  'candidates.create', // Routes to action, eg : dashboard.index, user.create
-                    'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
+                    'roles'                 =>  ['Super Admin','Management', 'HR Manager'], // Roles to be checked for the UI to be show
                     'when'                  =>  'process_status', // Field or relation you want to check to show the button
                     'when_value'            =>  'ON PROGRESS' // Value that right for the condition
                 ),
                 array(
                     'label'                 =>  'view candidates',  // Button text to be shown in the HTML
-                    'roles'                 =>  ['Super Admin','HR Manager', 'Manager', 'Team Lead'], // Roles to be checked for the UI to be show
+                    'roles'                 =>  ['Super Admin','Management', 'HR Manager', 'Manager', 'Team Lead'], // Roles to be checked for the UI to be show
                     'action'                =>  'candidates.index', // Routes to action, eg : dashboard.index, user.create
                     'when'                  =>  array(
                         'process_status', 
