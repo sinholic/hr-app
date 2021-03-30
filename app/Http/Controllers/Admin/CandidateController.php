@@ -120,7 +120,7 @@ class CandidateController extends Controller
                     'action'                =>  'candidates.cv_suitable', // Routes to action, eg : dashboard.index, user.create
                     'params'                =>  ['model_url'   =>  $model_url->id],
                     'class'                 =>  'primary',  // Default button class, eg: primary, success, warning, danger, info
-                    'roles'                 =>  ['Super Admin','Manager'], // Roles to be checked for the UI to be show
+                    'roles'                 =>  ['Super Admin','Manager', 'Management'], // Roles to be checked for the UI to be show
                     'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
                     'when_value'            =>  'WAITING FOR CONFIRMATION FROM USER' // Value that right for the condition
@@ -131,7 +131,7 @@ class CandidateController extends Controller
                     'action'                =>  'candidates.cv_not_suitable', // Routes to action, eg : dashboard.index, user.create
                     'params'                =>  ['model_url'   =>  $model_url->id],
                     'class'                 =>  'danger',  // Default button class, eg: primary, success, warning, danger, info
-                    'roles'                 =>  ['Super Admin','Manager','HR Manager'], // Roles to be checked for the UI to be show
+                    'roles'                 =>  ['Super Admin','Manager','HR Manager', 'Management'], // Roles to be checked for the UI to be show
                     'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
                     'when_value'            =>  'WAITING FOR CONFIRMATION FROM USER' // Value that right for the condition
@@ -250,6 +250,7 @@ class CandidateController extends Controller
         );
         return view('page.content.index')
         ->with('datas', $datas)
+        ->with('detail', $model_url)
         ->with('contents', $contents)
         ->with('view_options', $view_options);
     }
@@ -304,6 +305,7 @@ class CandidateController extends Controller
             )
         );
         return view('page.content.add')
+        ->with('detail', $model_url)
         ->with('contents', $contents);
     }
 
@@ -446,6 +448,7 @@ class CandidateController extends Controller
         ->with('model_url', $model_url)
         ->with('model', $model)
         ->with('logs',$logs)
+        ->with('detail', $model_url)
         ->with('contents', $contents);
     }
 
@@ -483,6 +486,7 @@ class CandidateController extends Controller
         ->with('model_url', $model_url)
         ->with('model', $model)
         ->with('logs',$logs)
+        ->with('detail', $model_url)
         ->with('contents', $contents);
     }
 
@@ -520,6 +524,7 @@ class CandidateController extends Controller
         ->with('model_url', $model_url)
         ->with('model', $model)
         ->with('logs',$logs)
+        ->with('detail', $model_url)
         ->with('contents', $contents);
     }
 
@@ -557,6 +562,7 @@ class CandidateController extends Controller
         ->with('model_url', $model_url)
         ->with('model', $model)
         ->with('logs',$logs)
+        ->with('detail', $model_url)
         ->with('contents', $contents);
     }
 
@@ -594,6 +600,7 @@ class CandidateController extends Controller
         ->with('model_url', $model_url)
         ->with('model', $model)
         ->with('logs',$logs)
+        ->with('detail', $model_url)
         ->with('contents', $contents);
     }
 
@@ -631,6 +638,7 @@ class CandidateController extends Controller
         ->with('model_url', $model_url)
         ->with('model', $model)
         ->with('logs',$logs)
+        ->with('detail', $model_url)
         ->with('contents', $contents);
     }
 
@@ -668,6 +676,7 @@ class CandidateController extends Controller
         ->with('model_url', $model_url)
         ->with('model', $model)
         ->with('logs',$logs)
+        ->with('detail', $model_url)
         ->with('contents', $contents);
     }
 
@@ -709,6 +718,7 @@ class CandidateController extends Controller
         ->with('model_url', $model_url)
         ->with('model', $model)
         ->with('logs',$logs)
+        ->with('detail', $model_url)
         ->with('contents', $contents);
     }
 
@@ -759,6 +769,7 @@ class CandidateController extends Controller
         ->with('model_url', $model_url)
         ->with('model', $model)
         ->with('logs',$logs)
+        ->with('detail', $model_url)
         ->with('contents', $contents);
     }
 
@@ -796,6 +807,7 @@ class CandidateController extends Controller
         ->with('model_url', $model_url)
         ->with('model', $model)
         ->with('logs',$logs)
+        ->with('detail', $model_url)
         ->with('contents', $contents);
     }
 
@@ -833,6 +845,7 @@ class CandidateController extends Controller
         ->with('model_url', $model_url)
         ->with('model', $model)
         ->with('logs',$logs)
+        ->with('detail', $model_url)
         ->with('contents', $contents);
     }
 
@@ -888,6 +901,7 @@ class CandidateController extends Controller
         ->with('model_url', $model_url)
         ->with('model', $model)
         ->with('logs',$logs)
+        ->with('detail', $model_url)
         ->with('contents', $contents);
     }
 
@@ -930,6 +944,7 @@ class CandidateController extends Controller
         ->with('model_url', $model_url)
         ->with('model', $model)
         ->with('logs',$logs)
+        ->with('detail', $model_url)
         ->with('contents', $contents);
     }
 
@@ -963,6 +978,7 @@ class CandidateController extends Controller
         ->with('model_url', $model_url)
         ->with('model', $model)
         ->with('logs',$logs)
+        ->with('detail', $model_url)
         ->with('contents', $contents);
     }
 }

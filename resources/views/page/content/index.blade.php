@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app', ['detail' => $detail ?? NULL])
 
 @section('css-header')
 <!-- Css -->
@@ -20,8 +20,8 @@
 <script src="{{ asset('vendors/dataTable/dataTables.responsive.min.js') }}"></script>
 <script src="{{ asset('assets/js/examples/datatable.js') }}"></script>
 <script>
-    setInterval(function() {
-        window.location.reload();
-    }, 60000 ); 
+    // setInterval(function() {
+    //     window.location.reload();
+    // }, 60000 ); 
 </script>
 @endsection
