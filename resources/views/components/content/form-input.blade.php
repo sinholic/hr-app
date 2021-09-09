@@ -33,6 +33,10 @@
                         {{ Form::select($content['field'], $content['data'], $content['value'] ?? NULL, ['placeholder'=> $label, 'class' => 'form-control js-example-basic-single', $state]) }}
                         @break
 
+                    @case('select2_multiple')
+                        {{ Form::select($content['field'], $content['data'], $content['value'] ?? NULL, ['placeholder'=> $label, 'class' => 'form-control js-example-basic-single', $state, 'multiple']) }}
+                        @break
+
                     @case('password')
                         {{ Form::$type($content['field'], ['placeholder'=> $label, 'class' => 'form-control', $state]) }}
                         @break

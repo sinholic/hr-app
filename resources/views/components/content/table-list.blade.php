@@ -99,7 +99,11 @@
                                                 @break
 
                                             @case('roles_name')
-                                                <td>{{ $data->getRoleNames() }}</td>
+                                                <td>{!! implode('<br/>', $data->getRoleNames()->toArray()) !!}</td>
+                                                @break
+
+                                            @case('permission_name')
+                                                <td>{!! implode('<br/>', $data->getPermissionNames()->toArray()) !!}</td>
                                                 @break
 
                                             @case('date')
@@ -141,16 +145,16 @@
                                             // Set the variable for showing or not showing the button
                                             $state_show         = false;
                                             $route_button       = null;
-                                            // Get the roles for specified user or open for all
-                                            $roles              = $button_extend['roles'] ?? \App\Models\Role::select('name')->get()->toArray();
+                                            // Get the permissions for specified user or open for all
+                                            $permissions        = $button_extend['permissions'];
                                         ?>
-                                        @hasanyrole($roles)
+                                        @canany($permissions)
                                             <?php 
                                                 $state_show     = true; 
                                                 $skip_when      = ($when == '' ? true : false);
                                                 $skip_hide_when = ($hide_when == '' ? true : false);
                                             ?>
-                                        @endhasanyrole
+                                        @endcanany
                                         @if($when != ''  && !$skip_when)
                                             @if($when_key != '')
                                                 @if(is_array($when))

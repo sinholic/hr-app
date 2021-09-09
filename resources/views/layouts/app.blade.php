@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'Laravel') }}{{ $title != "" ? ' | '.$title : '' }}{{ $subTitle != "" ? ' | '.$subTitle : '' }}</title>
+    <title>{{ config('app.name', 'Laravel') }}{{ $title_first != "" ? ' | '.$title_first : '' }}{{ $subTitle != "" ? ' | '.$subTitle : '' }}</title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ asset('assets/media/image/favicon.png') }}" />
@@ -28,50 +28,74 @@
     <?php
         $menus = array(
             (object) array(
-                'menu_tab_prefix'   => 'dashboard',
-                'menu_tab_label'    => 'Dashboards',
-                'menu_tab_icon'     => 'bar-chart-2',
-                'child_menus'       => array(
+                'menu_tab_prefix'       => 'dashboard',
+                'menu_tab_label'        => 'Dashboards',
+                'menu_tab_icon'         => 'bar-chart-2',
+                'permissions'           => ['view hr dashboard by department', 'view hr dashboard all department'],
+                'child_menus'           => array(
                     (object) array(
-                        'label'     => 'HR System',
-                        'link'      => 'dashboard.hr',
-                        'prefix'    => 'hr'
+                        'label'         => 'HR System',
+                        'link'          => 'dashboard.hr',
+                        'prefix'        => 'hr',
+                        'permissions'   => ['view hr dashboard by department', 'view hr dashboard all department'],
                     ),
                 ),
             ),
             (object) array(
-                'menu_tab_prefix'   => 'application',
-                'menu_tab_label'    => 'Apps',
-                'menu_tab_icon'     => 'command',
-                'child_menus'       => array(
+                'menu_tab_prefix'       => 'application',
+                'menu_tab_label'        => 'Apps',
+                'menu_tab_icon'         => 'command',
+                'permissions'           => ['view recruitments', 'view candidates', 'view employees'],
+                'child_menus'           => array(
                     (object) array(
-                        'label'     => 'Recruitment',
-                        'link'      => 'recruitments.index',
-                        'prefix'    => 'recruitments',
-                        // 'roles'     =>  ['Super Admin', 'HR Manager', 'Management']
+                        'label'         => 'Recruitment',
+                        'link'          => 'recruitments.index',
+                        'prefix'        => 'recruitments',
+                        'permissions'   => ['view recruitments']
+                    ),
+                    (object) array(
+                        'label'         => 'Employees',
+                        'link'          => 'employees.index',
+                        'prefix'        => 'employees',
+                        'permissions'   => ['view employees']
                     ),
                 ),
             ),
             (object) array(
-                'menu_tab_prefix'   => 'settings',
-                'menu_tab_label'    => 'Settings',
-                'menu_tab_icon'     => 'sliders',
-                'roles'             =>  ['Super Admin', 'HR Manager', 'Management'],
-                'child_menus'       => array(
+                'menu_tab_prefix'       => 'settings',
+                'menu_tab_label'        => 'Settings',
+                'menu_tab_icon'         => 'sliders',
+                'roles'                 => ['view candidate status', 'view departments', 'view uesrs', 'view roles', 'view permissions'],
+                'child_menus'           => array(
                     (object) array(
-                        'label'     => 'Candidate Status',
-                        'link'      => 'candidate_status.index',
-                        'prefix'    => 'candidate-status'
+                        'label'         => 'Candidate Status',
+                        'link'          => 'candidate_status.index',
+                        'prefix'        => 'candidate-status',
+                        'permissions'   => ['view candidate status']
                     ),
                     (object) array(
-                        'label'     => 'Departments',
-                        'link'      => 'departments.index',
-                        'prefix'    => 'departments'
+                        'label'         => 'Departments',
+                        'link'          => 'departments.index',
+                        'prefix'        => 'departments',
+                        'permissions'   => ['view departments']
                     ),
                     (object) array(
-                        'label'     => 'Users',
-                        'link'      => 'users.index',
-                        'prefix'    => 'users'
+                        'label'         => 'Users',
+                        'link'          => 'users.index',
+                        'prefix'        => 'users',
+                        'permissions'   => ['view users']
+                    ),
+                    (object) array(
+                        'label'         => 'Roles',
+                        'link'          => 'roles.index',
+                        'prefix'        => 'roles',
+                        'permissions'   => ['view roles']
+                    ),
+                    (object) array(
+                        'label'         => 'Permissions',
+                        'link'          => 'permissions.index',
+                        'prefix'        => 'permissions',
+                        'permissions'   => ['view candidate status']
                     ),
                 ),
             ),
@@ -88,7 +112,10 @@
         <!-- end::navigation -->
         <!-- begin::main content -->
         <main class="main-content">
-            <x-page.PageHeader :title=$title :sub-title=$subTitle :breadcrumbs=$breadcrumbs />
+        <?php
+            $headTitle = isset($detail) ? ucwords(strtolower($detail->department->name)).' - '.ucwords(strtolower($detail->job_position)).' - '.$title_first : $title_first;
+        ?>
+            <x-page.PageHeader :title=$headTitle :sub-title=$subTitle :breadcrumbs=$breadcrumbs />
             <div class="container-fluid">
                 <x-page.PageAlert />
                 @yield('content')
@@ -96,7 +123,7 @@
             <!-- begin::footer -->
             <footer>
                 <div class="container-fluid">
-                    <div>© 2021 Prodable v1.0.0 Made by <a href="#">Mahar</a></div>
+                    <div>© 2021 Prodable v1.0.0</div>
                     <!-- <div>
                         <nav class="nav">
                             <a href="https://themeforest.net/licenses/standard" class="nav-link">Licenses</a>

@@ -26,4 +26,12 @@ Route::group(["namespace" => "API"], function () {
     Route::prefix('candidates')->group(function () {
         Route::get('processed', 'CandidateController@processed');
     });
+
+    Route::prefix('attendances')->group(function () {
+        Route::post('/', 'AttendanceController@attendance');
+    });
+
+    Route::prefix('employee')->group(function () {
+        Route::post('register', 'EmployeeController@registerEmployee');
+    });
 });

@@ -17,25 +17,27 @@ class AppServiceProvider extends ServiceProvider
         view()->composer('*', function ($view) {
             // all views will have access to current rout
             $route          = \Route::current();
-            // dd($route);
-            $route_as       = explode(".", $route->action['as']);
-            $route_as_name  = explode(".", $route->action['as'])[0];
-            $title          = ucwords(str_replace('_', ' ', $route_as[0]));
-            $subTitle       = "";
-            if (isset($route_as[1])) {
-                $subTitle   = ucwords(($route_as[1] == 'index' ? 'list' : str_replace('_', ' ', $route_as[1])));
+            if ($route) {
+                // dd($route);
+                $route_as       = explode(".", $route->action['as']);
+                $route_as_name  = explode(".", $route->action['as'])[0];
+                $title_first    = ucwords(str_replace('_', ' ', $route_as[0]));
+                $subTitle       = "";
+                if (isset($route_as[1])) {
+                    $subTitle   = ucwords(($route_as[1] == 'index' ? 'list' : str_replace('_', ' ', $route_as[1])));
+                }
+                $route_prefix   = ucfirst(str_replace("/", "", $route->action['prefix']));
+                $breadcrumbs    = [$route_prefix, $title_first, $subTitle];
+                $view->with([
+                    'route'         =>  $route,
+                    'route_as'      =>  $route_as,
+                    'route_as_name' =>  $route_as_name,
+                    'title_first'   =>  $title_first,
+                    'subTitle'      =>  $subTitle,
+                    'route_prefix'  =>  $route_prefix,
+                    'breadcrumbs'   =>  $breadcrumbs
+                ]);
             }
-            $route_prefix   = ucfirst(str_replace("/", "", $route->action['prefix']));
-            $breadcrumbs    = [$route_prefix, $title, $subTitle];
-            $view->with([
-                'route'         =>  $route,
-                'route_as'      =>  $route_as,
-                'route_as_name' =>  $route_as_name,
-                'title'         =>  $title,
-                'subTitle'      =>  $subTitle,
-                'route_prefix'  =>  $route_prefix,
-                'breadcrumbs'   =>  $breadcrumbs
-            ]);
         });
     
     }

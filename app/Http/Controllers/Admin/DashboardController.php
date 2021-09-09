@@ -26,19 +26,17 @@ class DashboardController extends Controller
      */
     public function humanResource(Request $request)
     {
-        $departments        =   Option::where('type', 'DEPARTMENT')->pluck('id');
-        $roles              =   \Auth::user()->getRoleNames()->toArray();
-        if (in_array('Manager', $roles)||
-            in_array('Team Lead', $roles)||
-            in_array('Employee', $roles)) {
+        $departments        =   [];
+        if (\Auth::user()->can('view hr dashboard by department')) {
             $departments    =   [\Auth::user()->department_id];
         }
-        $departments        =   '"'.implode('","', $departments->toArray()).'"';
+        if (\Auth::user()->can('view hr dashboard all department')) {
+            $departments    =   Option::where('type', 'DEPARTMENT')->pluck('id');
+        }
+        $departments        =   count($departments) > 0 ? '"'.implode('","', $departments->toArray()).'"' : '""';
         $where              =   "AND 1 = 1";
         if ($request->created_at != '' && $request->created_at != 'All') {
             $created_at     =   explode("-",$request->created_at);
-            // $datas          =   $datas->whereYear('created_at', $created_at[0])
-            // ->whereMonth('created_at', $created_at[1]);
             $where          =   "AND YEAR(rec.created_at) = $created_at[0] AND MONTH(rec.created_at) = $created_at[1]";
         }
         $datas              =   \DB::select('SELECT 

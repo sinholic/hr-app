@@ -69,4 +69,16 @@ class Option extends Model
     {
         return $this->hasMany(Candidate::class, 'process_status_id', 'id');
     }
+
+    /**
+     * The employees that belong to the Option
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function employees()
+    {
+        return $this->belongsToMany(Employee::class, 'team_employee', 'team_id', 'employee_id')
+        ->withPivot('position')
+    	->withTimestamps();
+    }
 }

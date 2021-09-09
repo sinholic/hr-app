@@ -80,7 +80,7 @@ class CandidateController extends Controller
                 'state'                 =>  true,
                 'action'                =>  'candidates.create',
                 'params'                =>  $model_url->id,
-                'roles'                 =>  ['Super Admin','HR Manager'],
+                'permissions'           =>  ['candidates.add'], // permissions to be checked for the UI to be show
             ),
             'enable_delete'             =>  false,
             'enable_edit'               =>  false,
@@ -92,7 +92,7 @@ class CandidateController extends Controller
                     'action'                =>  'candidates.edit', // Routes to action, eg : dashboard.index, user.create
                     'params'                =>  ['model_url'   =>  $model_url->id],
                     'class'                 =>  'warning',  // Default button class, eg: primary, success, warning, danger, info
-                    'roles'                 =>  ['Super Admin','HR Manager','Management'], // Roles to be checked for the UI to be show
+                    'permissions'           =>  ['candidates.edit'], // permissions to be checked for the UI to be show
                     'hide_when'             =>  'candidate_status', // Field or relation you want to check to show the button
                     'hide_when_key'         =>  'name', // Only add this when we check on relationship value
                     'hide_when_value'       =>  array(
@@ -106,7 +106,7 @@ class CandidateController extends Controller
                     'action'                =>  'candidates.cancel_join', // Routes to action, eg : dashboard.index, user.create
                     'params'                =>  ['model_url'   =>  $model_url->id],
                     'class'                 =>  'danger',  // Default button class, eg: primary, success, warning, danger, info
-                    'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
+                    'permissions'           =>  ['candidates.edit'], // permissions to be checked for the UI to be show
                     'hide_when'             =>  'candidate_status', // Field or relation you want to check to show the button
                     'hide_when_key'         =>  'name', // Only add this when we check on relationship value
                     'hide_when_value'       =>  array(
@@ -120,7 +120,7 @@ class CandidateController extends Controller
                     'action'                =>  'candidates.cv_suitable', // Routes to action, eg : dashboard.index, user.create
                     'params'                =>  ['model_url'   =>  $model_url->id],
                     'class'                 =>  'primary',  // Default button class, eg: primary, success, warning, danger, info
-                    'roles'                 =>  ['Super Admin','Manager', 'Management'], // Roles to be checked for the UI to be show
+                    'permissions'           =>  ['candidates.edit'], // permissions to be checked for the UI to be show
                     'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
                     'when_value'            =>  'WAITING FOR CONFIRMATION FROM USER' // Value that right for the condition
@@ -131,7 +131,7 @@ class CandidateController extends Controller
                     'action'                =>  'candidates.cv_not_suitable', // Routes to action, eg : dashboard.index, user.create
                     'params'                =>  ['model_url'   =>  $model_url->id],
                     'class'                 =>  'danger',  // Default button class, eg: primary, success, warning, danger, info
-                    'roles'                 =>  ['Super Admin','Manager','HR Manager', 'Management'], // Roles to be checked for the UI to be show
+                    'permissions'           =>  ['candidates.edit'], // permissions to be checked for the UI to be show
                     'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
                     'when_value'            =>  'WAITING FOR CONFIRMATION FROM USER' // Value that right for the condition
@@ -142,7 +142,7 @@ class CandidateController extends Controller
                     'action'                =>  'candidates.send_screening_form', // Routes to action, eg : dashboard.index, user.create
                     'params'                =>  ['model_url'   =>  $model_url->id],
                     'class'                 =>  'primary',  // Default button class, eg: primary, success, warning, danger, info
-                    'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
+                    'permissions'           =>  ['candidates.edit'], // permissions to be checked for the UI to be show
                     'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
                     'when_value'            =>  'CV SUITABLE' // Value that right for the condition
@@ -153,7 +153,7 @@ class CandidateController extends Controller
                     'action'                =>  'candidates.receive_screening_form', // Routes to action, eg : dashboard.index, user.create
                     'params'                =>  ['model_url'   =>  $model_url->id],
                     'class'                 =>  'primary',  // Default button class, eg: primary, success, warning, danger, info
-                    'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
+                    'permissions'           =>  ['candidates.edit'], // permissions to be checked for the UI to be show
                     'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
                     'when_value'            =>  'FORM SCREENING SENT' // Value that right for the condition
@@ -164,7 +164,7 @@ class CandidateController extends Controller
                     'action'                =>  'candidates.suitable_to_interview', // Routes to action, eg : dashboard.index, user.create
                     'params'                =>  ['model_url'   =>  $model_url->id],
                     'class'                 =>  'success',  // Default button class, eg: primary, success, warning, danger, info
-                    'roles'                 =>  ['Super Admin','Manager', 'HR Manager'], // Roles to be checked for the UI to be show
+                    'permissions'           =>  ['candidates.edit'], // permissions to be checked for the UI to be show
                     'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
                     'when_value'            =>  'FORM SCREENING RECEIVED' // Value that right for the condition
@@ -175,7 +175,7 @@ class CandidateController extends Controller
                     'action'                =>  'candidates.not_suitable_to_interview', // Routes to action, eg : dashboard.index, user.create
                     'params'                =>  ['model_url'   =>  $model_url->id],
                     'class'                 =>  'danger',  // Default button class, eg: primary, success, warning, danger, info
-                    'roles'                 =>  ['Super Admin','Manager','HR Manager'], // Roles to be checked for the UI to be show
+                    'permissions'           =>  ['candidates.edit'], // permissions to be checked for the UI to be show
                     'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
                     'when_value'            =>  'FORM SCREENING RECEIVED' // Value that right for the condition
@@ -186,7 +186,7 @@ class CandidateController extends Controller
                     'action'                =>  'candidates.schedule', // Routes to action, eg : dashboard.index, user.create
                     'params'                =>  ['model_url'   =>  $model_url->id],
                     'class'                 =>  'success',  // Default button class, eg: primary, success, warning, danger, info
-                    'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
+                    'permissions'           =>  ['candidates.edit'], // permissions to be checked for the UI to be show
                     'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
                     'when_value'            =>  'SUITABLE TO INTERVIEW' // Value that right for the condition
@@ -197,7 +197,7 @@ class CandidateController extends Controller
                     'action'                =>  'candidates.result', // Routes to action, eg : dashboard.index, user.create
                     'params'                =>  ['model_url'   =>  $model_url->id],
                     'class'                 =>  'primary',  // Default button class, eg: primary, success, warning, danger, info
-                    'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
+                    'permissions'           =>  ['candidates.edit'], // permissions to be checked for the UI to be show
                     'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
                     'when_value'            =>  'WAITING FOR INTERVIEW WITH USER' // Value that right for the condition
@@ -208,7 +208,7 @@ class CandidateController extends Controller
                     'action'                =>  'candidates.suitable_for_ol', // Routes to action, eg : dashboard.index, user.create
                     'params'                =>  ['model_url'   =>  $model_url->id],
                     'class'                 =>  'primary',  // Default button class, eg: primary, success, warning, danger, info
-                    'roles'                 =>  ['Super Admin','Manager','HR Manager'], // Roles to be checked for the UI to be show
+                    'permissions'           =>  ['candidates.edit'], // permissions to be checked for the UI to be show
                     'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
                     'when_value'            =>  "WAITING FOR USER'S DECISION" // Value that right for the condition
@@ -219,7 +219,7 @@ class CandidateController extends Controller
                     'action'                =>  'candidates.not_suitable_for_ol', // Routes to action, eg : dashboard.index, user.create
                     'params'                =>  ['model_url'   =>  $model_url->id],
                     'class'                 =>  'primary',  // Default button class, eg: primary, success, warning, danger, info
-                    'roles'                 =>  ['Super Admin','Manager','HR Manager'], // Roles to be checked for the UI to be show
+                    'permissions'           =>  ['candidates.edit'], // permissions to be checked for the UI to be show
                     'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
                     'when_value'            =>  "WAITING FOR USER'S DECISION" // Value that right for the condition
@@ -230,7 +230,7 @@ class CandidateController extends Controller
                     'action'                =>  'candidates.send_offering', // Routes to action, eg : dashboard.index, user.create
                     'params'                =>  ['model_url'   =>  $model_url->id],
                     'class'                 =>  'primary',  // Default button class, eg: primary, success, warning, danger, info
-                    'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
+                    'permissions'           =>  ['candidates.edit'], // permissions to be checked for the UI to be show
                     'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
                     'when_value'            =>  "SUITABLE FOR OL" // Value that right for the condition
@@ -241,7 +241,7 @@ class CandidateController extends Controller
                     'action'                =>  'candidates.approve_join', // Routes to action, eg : dashboard.index, user.create
                     'params'                =>  ['model_url'   =>  $model_url->id],
                     'class'                 =>  'success',  // Default button class, eg: primary, success, warning, danger, info
-                    'roles'                 =>  ['Super Admin','HR Manager'], // Roles to be checked for the UI to be show
+                    'permissions'           =>  ['candidates.edit'], // permissions to be checked for the UI to be show
                     'when'                  =>  'candidate_status', // Field or relation you want to check to show the button
                     'when_key'              =>  'name', // Only add this when we check on relationship value
                     'when_value'            =>  'OFFERING LETTER SENT' // Value that right for the condition

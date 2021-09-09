@@ -68,6 +68,9 @@ Route::group(["middleware" => "auth", "namespace" => "Admin"], function () {
         Route::get('recruitments/{model_url}/candidates/approve-join/{model}', 'CandidateController@approve_join')->name('candidates.approve_join');
         // Cancel join
         Route::get('recruitments/{model_url}/candidates/cancel-join/{model}', 'CandidateController@cancel_join')->name('candidates.cancel_join');
+
+        // Employees
+        Route::resource('employees', EmployeeController::class);
     });
 
     Route::group([
@@ -94,5 +97,19 @@ Route::group(["middleware" => "auth", "namespace" => "Admin"], function () {
         Route::get('candidate-statuses/edit/{model}',  'CandidateStatusController@edit')->name('candidate_status.edit');
         Route::post('candidate-statuses', 'CandidateStatusController@store')->name('candidate_status.store');
         Route::put('candidate-statuses/{model}', 'CandidateStatusController@update')->name('candidate_status.update');
+
+        // Roles
+        Route::get('roles', 'RoleController@index')->name('roles.index');
+        Route::get('roles/create', 'RoleController@create')->name('roles.create');
+        Route::get('roles/edit/{model}',  'RoleController@edit')->name('roles.edit');
+        Route::post('roles', 'RoleController@store')->name('roles.store');
+        Route::put('roles/{model}', 'RoleController@update')->name('roles.update');
+
+        // Permissions
+        Route::get('permissions', 'PermissionController@index')->name('permissions.index');
+        Route::get('permissions/create', 'PermissionController@create')->name('permissions.create');
+        Route::get('permissions/edit/{model}',  'PermissionController@edit')->name('permissions.edit');
+        Route::post('permissions', 'PermissionController@store')->name('permissions.store');
+        Route::put('permissions/{model}', 'PermissionController@update')->name('permissions.update');
     });
 });
